@@ -1,0 +1,22 @@
+\documentclass{sratikzfig}
+\usetikzlibrary{patterns}
+\begin{document}
+\begin{tikzpicture}
+  \node[transform shape,scale=10,inner sep=0] (left) {A};
+
+  \node[transform shape,scale=10, % Scale the whole node
+        right=3 of left,          % Placement of the node
+        draw,                     % Draw a border
+        rounded corners,          % Give it some rounded corners
+        pattern=bricks,pattern color=red!50,          % Best pattern available!
+        label={[rotate=90,anchor=west]north:LABEL},   % Each label is a node
+        ]
+     (right) % Name of Node
+     {B};    % Text within Node
+
+  \draw[->] (left) -- (right);
+
+  \draw[->,ultra thick] (left.east) to[out=20,in=200] (right.base west);
+
+\end{tikzpicture}
+\end{document}

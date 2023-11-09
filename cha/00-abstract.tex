@@ -1,0 +1,52 @@
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+\begin{otherlanguage*}{american}
+
+The growth of the \ac{IoT} in industries like production, manufacturing, and agriculture has led to a
+wide range of innovations and new products. Currently all major cloud providers such as Microsoft, Google,
+Amazon's AWS and IBM offer \ac{IoT} services and solutions to their customers.
+However many \ac{IIoT} devices that are installed in remote locations, such as offshore oil
+refineries or airplanes, have limited, unstable, or costly network connections. While techniques to minimize the \ac{IIoT} software’s
+network traffic both in message size (such as \textit{Protobuf} or other forms of compression) and in
+message amount (such as local processing with edge computing) have already been established. However the image size,
+update, and consistency of the underlying operating system is still a challenge. With Microsoft's \textit{Azure IoT Device
+Update} service for example, the entire image for the operating system is sent to the device and then
+written to a secondary partition. This results in hundreds of megabytes being transmitted.
+
+In this field study, we investigate if the \textit{NixOS}-based \textit{ReUpNix} can be used as a suitable host operating
+system for Microsoft’s commercial \ac{IoT} platform \textit{Azure IoT Edge} since its image size is significantly smaller
+than Microsoft's recommended \textit{Ubuntu 22.04} image. Further, we investigate the conceptual advantages for \ac{IoT}
+devices that \textit{NixOS}-based systems provide over traditional \textit{Linux} operating systems, when altering configuration.
+For this, we identified the minimum set
+of components and features that have to be added to heavily minified \textit{ReUpNix} in order to have the required
+functionality
+for the OCI-container-based \textit{Azure IoT Edge}, while remaining at a small footprint in disk size and memory
+usage.
+
+\textbf{[Expected result]}
+With \textit{ReUpNix} we observed X\% lower image size, Y\% faster application update times, and
+an equal amount of telemetry messages lost compared to Microsoft’s recommended \textit{Ubuntu 22.04}
+image. However \textit{NixOS}-based systems do not receive official support from Microsoft and product
+managers need to
+decide if the benefits outweigh the loss of Microsoft's support.
+
+
+
+about 1/2 page:   \\
+(1) Motivation (Why do we care?)   \\
+(2) Problem statement (What problem are we trying to solve?)   \\
+(3) Approach (How did we go about it)   \\
+(4) Results (What's the answer?)   \\
+(5) Conclusion (What are the implications of the answer?)\\
+
+
+\end{otherlanguage*}
+
+
+%\chapter*{Kurzfassung}
+%\addcontentsline{toc}{chapter}{Kurzfassung}
+%\begin{otherlanguage*}{ngerman}
+
+%Gleicher Text in Deutsch
+
+% \end{otherlanguage*}

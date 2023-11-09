@@ -1,0 +1,108 @@
+\documentclass[earlydraft]{textmf-local/srathesis}
+% options:
+% [earlydraft] - Settings for quick draft printouts
+% [germanthesis] - Thesis is written in German
+% [plainunnumbered] - Don't print numbers on plain pages
+% [privacy] - Generate a more privacy aware PDF (exclude birthplace and birthday)
+% [twoside] - double sided
+% [watermark] - Print current time/date at bottom of each page
+
+% You can use dataref to reference data points from your experiments symbolical.
+% Thereby, you are able to redo experiments, without reinserting and recalculating all numbers.
+\usepackage{dataref}
+% \input{data/dref}
+
+\bibliography{references}
+% The OSG also has a central bibliography that we share with the System- and Rechnerarchitecture (SRA) group from Hannover.
+%\bibliography{bib/sra-ext}
+%\bibliography{bib/sra-own}
+%\bibliography{bib/osg-own}
+
+\author{Elias Frank}
+\title{A field study using ReUpNix as a host for Microsoft’s Azure IoT Edge platform}
+\thesistype{Bachelorarbeit im Informatik}
+\thesiscite{Bachelor's Thesis}
+\birthday{15. Juni 1999}
+\birthplace{Hamburg}
+\thesisstart{1. Oktober 2017}
+\thesisend{1. August 2014}
+\examiner{XXXX}
+\coexaminer{YYYY}
+\advisors{& \textbf{ZZZZ}\\
+          & \textbf{WWWW}}
+
+\begin{document}
+
+\pagestyle{fancy}
+\pagenumbering{roman}
+
+\maketitle
+
+\input{cha/00-abstract}
+\acresetall
+
+\cleardoublepage
+\tableofcontents
+
+\cleardoublepage
+\pagenumbering{arabic}
+
+\input{cha/01-introduction}
+
+\input{cha/02-fundamentals}
+
+\input{cha/03-architecture}
+
+\input{cha/04-analysis}
+
+\input{cha/05-conclusion}
+
+\cleardoublepage
+
+\pagestyle{fancy-lists}
+
+% \phantomsection is needed for hyperref to reference the correct
+% page.
+
+\phantomsection
+% special page style for the unnumbered lists chapter and its sections.  This
+% prevents numbers in the headers.  The title is set via \chaptermark and
+% \sectionmark, see below.
+\addcontentsline{toc}{chapter}{\listoftitlename}%
+\chaptermark{\listoftitlename}
+
+\addcontentsline{toc}{section}{\glossarytitlename}%
+\sectionmark{\glossarytitlename}
+\input{glossary}
+\cleardoublepage
+
+\phantomsection
+\addcontentsline{toc}{section}{\listfigurename}%
+\sectionmark{\listfigurename}
+\listoffigures
+\cleardoublepage
+
+\phantomsection
+\addcontentsline{toc}{section}{\listtablename}%
+\sectionmark{\listtablename}
+\listoftables
+\cleardoublepage
+
+\phantomsection
+\addcontentsline{toc}{section}{\listlistingname}%
+\sectionmark{\listlistingname}
+\listoflistings
+\cleardoublepage
+
+\phantomsection
+\addcontentsline{toc}{section}{\listalgorithmname}%
+\sectionmark{\listalgorithmname}
+\listofalgorithms
+\cleardoublepage
+
+\phantomsection
+\addcontentsline{toc}{section}{\bibname}%
+\sectionmark{\bibname}
+\printbibliography
+
+\end{document}

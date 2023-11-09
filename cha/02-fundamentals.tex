@@ -1,0 +1,76 @@
+\chapter{Fundamentals}
+\label{sec:fundamentals}
+This chapter introduces the major concepts, technologies,
+and software relevant to this thesis. First, it will
+introduce the hardware and software used for the host system
+on which the builds and tests have been conducted.
+Secondly, it introduces the \textit{Azure IoT Edge} platform
+by Microsoft, with all the components that were used.
+
+\section{Build Host}
+During the experiments conducted in this thesis, it was
+required to compile, package, and build various software.
+Also, the operating system variants required a
+computationally expensive creation of an installable image.
+For building and testing the various operating systems and
+software packages the following hardware was used:
+\begin{itemize}
+    \item Processor: AMD Ryzen 7 5700X,
+    \item Memory: 32 GB,
+    \item Storage: 512 GB SSD,
+\end{itemize}
+
+Further, the following software versions were used on the build host:
+\begin{itemize}
+    \item Linux 6.5.6,
+    \item Git 2.42.0,
+    \item Nix 2.18.1,
+    \item GCC 13.2.1 20230801,
+    \item Make 4.4.1.
+\end{itemize}
+
+
+
+\section{NixOS}
+
+\cite{1411255}
+\section{ReUpNix}
+
+\section{Azure IoT Edge}
+Microsoft's \textit{Azure IoT Edge} platform is a collection of software products and services developed and
+maintained by Microsoft to deploy, run, and manage containerized applications directly on
+\ac{IoT} devices. It follows the Edge Computing paradigm,
+which allows data processing and analysis to occur locally on the devices,
+instead of sending all the collected real-time data to the cloud. Further advantages of this Edge Computing
+architecture include the full utilization of the computing power on the device, low latency,
+privacy, and temporary offline scenarios \cite{msdoc-aziotedge}. While all major cloud service providers
+offer \ac{IoT} platforms and services, a comparison conducted finds that Microsoft's \textit{Azure IoT Edge} provides the most tools,
+especially data visualization tools. However,
+Amazon's \textit{AWS} \ac{IoT} offerings have the largest market
+share \cite{9116254}.
+
+\subsection{Azure IoT Edge Modules}
+In Microsoft's terminology, containerized workloads which will be run on the \ac{IIoT}
+devices are called \textit{IoT Edge Modules}. These modules "can be configured to
+communicate with each other, creating a pipeline of data processing." Developers are
+not limited to only Microsoft's services, instead, they can deploy their own
+applications as long as they are running in \ac{OCI}-compliant \textit{Linux} containers.
+Microsoft calls this approach \textit{Bring your own code} and offers are variety of
+\ac{SDK}s for popular programming languages such as .NET, Java, C and Python \cite{msdoc-supportetplatforms}.
+
+\subsection{Azure IoT Edge Agent}
+\subsection{Azure IoT Hub}
+
+
+\section{Ubuntu 22.04}
+\textit{Ubuntu 22.04} is the latest long term support release of the \textit{Linux}-based operating system \textit{Ubuntu}. Which will receive updates and support
+for the next 5 years, until April 2027 \cite{ubuntu-releasenote}. It is also one of
+Microsoft's recommended operating systems to run containerized applications with
+\textit{Azure IoT Edge} on Linux \cite{msdoc-supportetplatforms}.
+
+\section{Test Setup}
+\subsection{Hardware}
+\subsection{Operating System}
+\subsection{Containerized Application}
+\section{Methodology}
+\section{Related Work}
