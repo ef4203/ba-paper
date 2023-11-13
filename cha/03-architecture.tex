@@ -8,13 +8,20 @@ Developed architecture / system design / implementation: 1/3
 \item go ahead in presenting your developments in more detail
 \end{itemize}
 
+
+\section{Azure IoT Edge Nix Package}
+
 \section{Sample Application}
 For verifying that the \textit{Azure IoT Edge} software behaves correctly
 with the given operating system, a sample application was developed. This
-containerized sample application sends a randomly generated number to the
-\textit{Edge Hub}.
-
-The application features a \ac{HTTP} \ac{REST} \ac{API} for further automation.
+containerized sample application sends a randomly generated number, from here
+on named \textit{measurement value}, to the \textit{Edge Hub}. The architecture
+of how the components interact with each other, was modelled after a real
+world \ac{IIoT} application for natural gas measurements. All proprietary
+source code and everything else which was subject to copyright and intellectual
+property was not used in this research. The application features a \ac{HTTP}
+\ac{REST} \ac{API} for further automation. For a complete overview of which
+containers the application is compromised, refer to table \ref{tab:containers}.
 
 \begin{table}[H]
     \centering
@@ -32,7 +39,52 @@ The application features a \ac{HTTP} \ac{REST} \ac{API} for further automation.
         \bottomrule
     \end{tabular}
     \caption{Sample Application: List of containers}
+    \label{tab:containers}
 \end{table}
+
+
+
+The sections \ref{sec:telemetry-service}, \ref{sec:api}, \ref{sec:ui} further
+describe the functionalities of the individual applications that form together
+the entire sample application.
+
+\subsection{sampleapp Telemetry Service} \label{sec:telemetry-service}
+The \textit{sampleapp Telemetry Service} is an application developed for this
+research. The application has the following main functionalities:
+
+\begin{itemize}
+    \item It sends the current timestamp to the \textit{Edge Hub} on start up,
+    \item It sends a randomly generated telemetry value to the
+    \textit{Edge Hub} every minute,
+    \item It stores the telemetry value in a \ac{SQL} database,
+    \item It sends the current uptime of the application to the \textit{Edge Hub}
+    every hour.
+\end{itemize}
+The \textit{sampleapp Telemetry Service} is written in \textit{C\#} using the
+\textit{ASP.NET} framework and the \textit{Azure Device} \ac{SDK}.
+
+\subsection{sampleapp API} \label{sec:api}
+The \textit{sampleapp API} is a \ac{HTTP} \ac{REST} \ac{API} developed for this
+research. The application has the following main functionalities:
+
+\begin{itemize}
+    \item Retrieve telemetry values from the \ac{SQL} database via an
+    \ac{REST} endpoint,
+    \item Enables customers to connect automation from their local network.
+\end{itemize}
+The \textit{sampleapp API} is written in \textit{C\#} using the \textit{ASP.NET}
+framework and the \textit{Entity Framework Core} for database access.
+
+\subsection{sampleapp UI} \label{sec:ui}
+The \textit{sampleapp UI} is a web application developed for this research.
+The application has the following main functionalities:
+
+\begin{itemize}
+    \item
+\end{itemize}
+The \textit{sampleapp UI} is written in \textit{C\#} using the \textit{ASP.NET}
+framework and the \textit{Blazor Web Assembly} framework for \textit{.NET}.
+
 
 \begin{table}[H]
     \centering
@@ -59,6 +111,39 @@ The application features a \ac{HTTP} \ac{REST} \ac{API} for further automation.
 \end{figure}
 
 \section{Experiments}
+\subsection{Verifying the correctness of Azure IoT Edge}
+For verifying that \textit{Azure IoT Edge} was correctly installed
+and behaves according the expected functionality on the given
+\ac{OS}, a number of criteria where chosen. They represent the registration
+of a single device according to Microsoft's documentation, but further
+invoke the health checks of the Sample Application's components.
+The criteria are as follows:
+
+\begin{enumerate}
+    \item The \code{iotedge} \ac{CLI} is in the path.
+    \item A configuration file can be generated with \code{iotedge config}.
+    \item The device can be registered with \code{iotedge config apply}.
+    \item \code{iotedge check} reports no errors.
+    \item \code{iotedge list} reports that the following containers
+    are running:
+    \begin{itemize}
+        \item edgeAgent
+        \item edgeHub
+        \item IotEdgeMetricsCollector
+        \item sql-server
+        \item sampleapp-telemetry-service
+        \item sampleapp-api
+        \item sampleapp-ui
+    \end{itemize}
+    \item \code{curl localhost:8001} returns "Healthy".
+    \item \code{curl localhost:8002} returns "Healthy".
+    \item Device messages are visible in the cloud using the \textit{Azure IoT Explorer}.
+\end{enumerate}
+These checks must be performed on all the \ac{OS}s, for a direct comparison.
+They serve as a baseline for all further experiments, because all further
+experiments are building on the assumption that \textit{Azure IoT Edge} was
+installed and is behaving correctly.
+
 \subsection{Image size}
 When updating the operating system with an A/B failover model, the entire
 image needs to be downloaded and written to a secondary partition. In this
@@ -66,8 +151,8 @@ image needs to be downloaded and written to a secondary partition. In this
 For this experiment two sizes are relevant, when comparing operating systems.
 Firstly, the actual size of the image that needs to be written to the partition.
 Secondly, the size that the entire system takes up on the disk after booting.
-\subsubsection{Transmitted image size}
-\subsubsection{Size on disk}
+
+\subsection{Size on disk}
 The size on disk will be measured after the system has successfully booted
 and started all \textit{Azure IoT Edge} services including the containerized
 applications. To see if the containers have been successfully started,
@@ -78,7 +163,7 @@ With the following command, it is possible to list all running containers.\\
 iotedge list
 \end{lstlisting}
 After all containers are running, it is possible to read out the disk utilization
-with the \textit{df} command line interface. \cite{man-df}\\
+with the \textit{df} command line interface \cite{man-df}.\\
 
 \begin{lstlisting}[caption=Command to report file system space usage]
 df -h
@@ -86,7 +171,36 @@ df -h
 The value of the disk utilization excluding the \textit{/var} directory
 can be used for comparing operating systems.
 
+\subsection{Boot times}
+Customers of certain industries require high availability and reliability for
+their \ac{IIoT} devices and applications. These availability requirements
+are commonly legally and formally negotiated in \ac{SLA}s between
+the customer and a service provider \cite{msdoc-slas}.
+
+An important consideration for service providers to achieve high
+availability is the boot time of the \ac{OS}. However for this experiment the
+time until operability is considered, instead of the actual boot time of the
+\ac{OS}. The time until operability is more relevant for service providers
+when defining \ac{SLO}.
+For this experiment an outage of the service will be simulated by sending a
+\textit{reboot} system call to the kernel with the \textit{reboot}
+command line tool. It is important to note, that the "--force" option will
+instruct the command line tool to not call the \textit{shutdown} system call,
+which results in a faster shutdown of the system \cite{man-reboot}\cite{man-shutdown}.
+Just before the system is rebooted, the current time will be printed.
+\\
+
+\begin{lstlisting}[caption=Command to print the current time and reboot]
+date +%s && reboot -f
+\end{lstlisting}
+After the \ac{OS} rebooted and \textit{systemd} has started, the
+\textit{Sample Application Telemetry Service} will send the current timestamp
+to the \textit{Azure IoT Hub} where it can be retrieved. When comparing
+the first timestamp from the shell command with the second timestamp from
+the \textit{Azure IoT Hub}, the time until operability can be calculated.
+This experiment must be repeated until the standard deviation is low enough
+to have a confident mean value for each \ac{OS}.
 
 
-\subsection{Time to recover}
+
 \subsection{Endurance}

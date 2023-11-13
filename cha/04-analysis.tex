@@ -50,79 +50,40 @@ Measurement results / analysis / discussion: 1/3
 \caption{Disk utilization after boot by OS in megabytes}
 \end{figure}
 
-\section{Time to recover}
+\section{Mean time to recover}
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}
   \begin{axis}[
-    title  = ! DUMMY DATA !,
+    title  = ReUpNix,
     ybar,
-    ytick             = data,
     enlarge y limits  = {0.15,upper},
     width = 0.5\textwidth,
     nodes near coords,
   ]
-  \addplot coordinates {
-    (3,0)
-    (3.2,10)
-    (3.4,30)
-    (3.6,60)
-    (3.8,75)
-    (4,90)
-    (4.2,75)
-    (4.4,60)
-    (4.6,30)
-    (4.8,10)
-    (5,0)
-    };
+    \addplot table [x=seconds, y=times, col sep=comma] {data/time-to-recover-reupnix.csv};
   \end{axis}
 \end{tikzpicture}
 \begin{tikzpicture}
   \begin{axis}[
-    title  = ! DUMMY DATA !,
+    title  = NixOS,
     ybar,
-    ytick             = data,
     enlarge y limits  = {0.15,upper},
     width = 0.5\textwidth,
     nodes near coords,
   ]
-  \addplot coordinates {
-    (3,0)
-    (3.2,10)
-    (3.4,30)
-    (3.6,60)
-    (3.8,75)
-    (4,90)
-    (4.2,75)
-    (4.4,60)
-    (4.6,30)
-    (4.8,10)
-    (5,0)
-    };
+    \addplot table [x=seconds, y=times, col sep=comma] {data/time-to-recover-nixos.csv};
   \end{axis}
 \end{tikzpicture}
 \begin{tikzpicture}
   \begin{axis}[
-    title  = ! DUMMY DATA !,
+    title  = Ubuntu 22.04,
     ybar,
-    ytick             = data,
     enlarge y limits  = {0.15,upper},
     width = 0.5\textwidth,
     nodes near coords,
   ]
-  \addplot coordinates {
-    (3,0)
-    (3.2,10)
-    (3.4,30)
-    (3.6,60)
-    (3.8,75)
-    (4,90)
-    (4.2,75)
-    (4.4,60)
-    (4.6,30)
-    (4.8,10)
-    (5,0)
-    };
+    \addplot table [x=seconds, y=times, col sep=comma] {data/time-to-recover-ubuntu.csv};
   \end{axis}
 \end{tikzpicture}
 \caption{Time of recovery after a reboot by OS in seconds.}

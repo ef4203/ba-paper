@@ -163,7 +163,7 @@
 \RequirePackage{subcaption}
 
 % Citations
-\RequirePackage[backend=bibtex,style=alphabetic]{biblatex}
+\RequirePackage[backend=bibtex,style=ieee]{biblatex}
 \defbibheading{bibliography}[\refname]{\chapter*{#1}\chaptermark{#1}}
 
 % The "SI" and "num" commands for typesetting units

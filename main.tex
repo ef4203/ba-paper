@@ -1,4 +1,4 @@
-\documentclass[earlydraft]{textmf-local/srathesis}
+\documentclass[]{textmf-local/srathesis}
 % options:
 % [earlydraft] - Settings for quick draft printouts
 % [germanthesis] - Thesis is written in German
@@ -11,6 +11,10 @@
 % Thereby, you are able to redo experiments, without reinserting and recalculating all numbers.
 \usepackage{dataref}
 \usepackage{pgfplots}
+\renewcommand{\baselinestretch}{1.25}
+\usepackage{xcolor}
+\definecolor{light-gray}{gray}{0.95}
+\newcommand{\code}[1]{\colorbox{light-gray}{\texttt{#1}}}
 % \input{data/dref}
 
 \bibliography{references}
