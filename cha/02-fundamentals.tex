@@ -3,70 +3,114 @@
 This chapter introduces the major concepts, technologies,
 and software relevant to this thesis. First, it will
 introduce the hardware and software used for the host system
-on which the builds and tests have been conducted.
-Secondly, it introduces the \textit{Azure IoT Edge} platform
-by Microsoft, with all the components that were used.
+on which the \ac{OS} images have been build and tests have been
+conducted. Secondly, it introduces the \textit{Azure IoT Edge}
+platform by Microsoft, with all the components that were used.
 
-\section{Build Host}
-During the experiments conducted in this thesis, it was
-required to compile, package, and build various software.
-Also, the operating system variants required a
-computationally expensive creation of an installable image.
-For building and testing the various operating systems and
-software packages the following hardware was used:
-\begin{itemize}
-    \item Processor: AMD Ryzen 7 5700X,
-    \item Memory: 32 GB,
-    \item Storage: 512 GB SSD,
-\end{itemize}
-
-Further, the following software versions were used on the build host:
-\begin{itemize}
-    \item Linux 6.5.6,
-    \item Git 2.42.0,
-    \item Nix 2.18.1,
-    \item GCC 13.2.1 20230801,
-    \item Make 4.4.1.
-\end{itemize}
 
 
 
 \section{NixOS}
+\textit{NixOS} is a \textit{Linux}-based operating system that uses the purely
+functional package manager \textit{Nix}. It is currently maintained as
+an Open Source project by the non-profit organization \textit{NixOS Foundation}
+and the \textit{NixOS Community}. The project started in 2003 by Eelco Dolstra,
+who is the current president of the \textit{NixOS Foundation}, as
+a research project at the Utrecht University\cite{dolstra2003} and was introduced again in his 2008
+paper "NixOS: A Purely Functional Linux Distribution".
 
-\cite{1411255}
+\begin{tcolorbox}[title=TODO]
+Describe the following concepts:
+\begin{itemize}
+    \item Declarative Configuration
+    \item Immutable System
+    \item Functional Package Management
+    \item Reproducible Builds
+    \item Rollback and Atomic Upgrades
+\end{itemize}
+
+    Cite information from this paper: \cite{1411255}
+\end{tcolorbox}
+
 \section{ReUpNix}
 
+\begin{tcolorbox}[title=TODO]
+    \begin{itemize}
+        \item Highlight differences to NixOS
+        \item Cite information from this paper: \cite{gollenstede:23:lctes}
+    \end{itemize}
+\end{tcolorbox}
+
+\section{Azure IoT}
+\textit{Azure IoT} is a cloud platform provided by Microsoft that
+empowers organizations to build, deploy, and manage \ac{IoT} solutions at scale.
+\textit{Azure IoT} offers a suite of services and tools designed to connect,
+monitor, and control a diverse array of devices, sensors, and equipment. The
+platform enables integration of \ac{IoT} devices with Microsoft's other cloud
+services, facilitating the collection and analysis of data for actionable insights.
+This ecosystem supports a wide range of industries, from manufacturing and
+healthcare to transportation and smart cities\cite{msdoc-aziot}.
+
+While the "big three" cloud service providers, namely Microsoft, Amazon and
+Google, all offer \ac{IoT} platforms and services, a conducted comparison finds
+that Microsoft's \textit{Azure IoT} provides the most tools for businesses,
+especially data visualization tools. However, Amazon's \textit{AWS} \ac{IoT}
+offerings have the largest market share\cite{9116254}.
+
+
 \section{Azure IoT Edge}
-Microsoft's \textit{Azure IoT Edge} platform is a collection of software products and services developed and
-maintained by Microsoft to deploy, run, and manage containerized applications directly on
-\ac{IoT} devices. It follows the Edge Computing paradigm,
-which allows data processing and analysis to occur locally on the devices,
-instead of sending all the collected real-time data to the cloud. Further advantages of this Edge Computing
-architecture include the full utilization of the computing power on the device, low latency,
-privacy, and temporary offline scenarios \cite{msdoc-aziotedge}. While all major cloud service providers
-offer \ac{IoT} platforms and services, a comparison conducted finds that Microsoft's \textit{Azure IoT Edge} provides the most tools,
-especially data visualization tools. However,
-Amazon's \textit{AWS} \ac{IoT} offerings have the largest market
-share \cite{9116254}.
+\textit{Azure IoT Edge} platform is a collection of software  products and
+services developed and maintained by Microsoft that extends the capabilities
+of \textit{Azure IoT} to the edge of the network. This platform facilitates the
+deployment and management of \ac{IoT} devices, enabling them to run \ac{AI},
+machine learning, and analytics locally. Azure IoT Edge allows organizations to
+process and analyze data on-site, near the data source, reducing latency and
+optimizing bandwidth usage.
+Unlike traditional cloud computing, where data is sent to a centralized server
+for analysis, edge computing occurs on or near the device or "edge" of the
+network. This approach is particularly valuable in scenarios where quick
+response times are critical or where excessive data transfer to the cloud
+is not possible\cite{msdoc-aziotedge}.
+
+All software, as well as \ac{SDK}s and
+libraries which are installed on the device are open source, however the
+cloud services offered by Microsoft are almost exclusively closed source.
+Development and maintainance of \textit{Azure IoT Edge} is publicly visible on
+\textit{GitHub}. The biggest contributions
+to the public repository are done by Microsoft employees Varun Puranik,
+Philip Lin and Damon Barry, but it also features bug-fixes and contributions
+from the community and non-Microsoft employees
+\footnote{Full overview of all contributions: https://github.com/Azure/iotedge/graphs/contributors}.
 
 \subsection{Azure IoT Edge Modules}
 In Microsoft's terminology, containerized workloads which will be run on the \ac{IIoT}
 devices are called \textit{IoT Edge Modules}. These modules "can be configured to
-communicate with each other, creating a pipeline of data processing." Developers are
+communicate with each other, creating a pipeline of data processing." However developers are
 not limited to only Microsoft's services, instead, they can deploy their own
 applications as long as they are running in \ac{OCI}-compliant \textit{Linux} containers.
-Microsoft calls this approach \textit{Bring your own code} and offers are variety of
-\ac{SDK}s for popular programming languages such as .NET, Java, C and Python \cite{msdoc-supportetplatforms}.
+Microsoft calls this approach "bring your own code" and offers are variety of
+\ac{SDK}s for popular programming languages such as .NET, Java, C and Python\cite{msdoc-supportetplatforms}.
 
 \subsection{Azure IoT Edge Agent}
+\begin{tcolorbox}[title=TODO]
+    \begin{itemize}
+        \item Describe the Edge Agent
+    \end{itemize}
+\end{tcolorbox}
+
 \subsection{Azure IoT Hub}
+\begin{tcolorbox}[title=TODO]
+    \begin{itemize}
+        \item Describe the Iot Hub
+    \end{itemize}
+\end{tcolorbox}
 
 
 \section{Ubuntu 22.04}
 \textit{Ubuntu 22.04} is the latest long term support release of the \textit{Linux}-based operating system \textit{Ubuntu}. Which will receive updates and support
-for the next 5 years, until April 2027 \cite{ubuntu-releasenote}. It is also one of
+for the next 5 years, until April 2027\cite{ubuntu-releasenote}. It is also one of
 Microsoft's recommended operating systems to run containerized applications with
-\textit{Azure IoT Edge} on Linux \cite{msdoc-supportetplatforms}.
+\textit{Azure IoT Edge} on Linux\cite{msdoc-supportetplatforms}.
 
 \section{Test Setup}
 \subsection{Hardware}

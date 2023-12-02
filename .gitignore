@@ -302,3 +302,7 @@ TSWLatexianTemp*
 
 # Custom Options
 main.pdf
+main-tiny.pdf
+
+# MacOS
+.DS_Store
