@@ -150,25 +150,6 @@ For this experiment two sizes are relevant, when comparing operating systems.
 Firstly, the actual size of the image that needs to be written to the partition.
 Secondly, the size that the entire system takes up on the disk after booting.
 
-\subsection{Size on disk}
-The size on disk will be measured after the system has successfully booted
-and started all \textit{Azure IoT Edge} services including the containerized
-applications. To see if the containers have been successfully started,
-Microsoft provides the command line interface \textit{iotedge}.
-With the following command, it is possible to list all running containers.\\
-
-\begin{lstlisting}[caption=Command to retrieve the status of all containers]
-iotedge list
-\end{lstlisting}
-After all containers are running, it is possible to read out the disk utilization
-with the \textit{df} command line interface \cite{man-df}.\\
-
-\begin{lstlisting}[caption=Command to report file system space usage]
-df -h
-\end{lstlisting}
-The value of the disk utilization excluding the \textit{/var} directory
-can be used for comparing operating systems.
-
 \subsection{Boot times}
 Customers of certain industries require high availability and reliability for
 their \ac{IIoT} devices and applications. These availability requirements
@@ -200,8 +181,6 @@ This experiment must be repeated until the standard deviation is low enough
 to have a confident mean value for each \ac{OS}.
 
 
-
-\subsection{Endurance}
 
 \section{Build Host}
 During the experiments conducted in this thesis, it was
