@@ -1,19 +1,32 @@
 \chapter{Fundamentals}
 \label{sec:fundamentals}
 This chapter introduces the major concepts, technologies,
-and software relevant to this thesis. First, it will
-introduce the hardware and software used for the host system
-on which the \ac{OS} images have been build and tests have been
-conducted. Secondly, it introduces the \textit{Azure IoT Edge}
-platform by Microsoft, with all the components that were used.
+and software relevant to this thesis. First, it will introduce the operating
+systems \textit{Ubuntu 22.04}, \textit{Yocto Kirkstone Linux}, \textit{NixOS},
+and \textit{ReUpNix}, which we will use for comparison in the later experiments.
 
+Further we will introduce the \textit{Azure IoT Edge} platform by Microsoft,
+with all the components that were used.
 
+\section{Ubuntu 22.04}
+\textit{Ubuntu 22.04} is the latest long term support release of the
+\textit{Linux}-based operating system \textit{Ubuntu} developed by Canonical.
+It will receive updates and support for the next 5 years, until April
+2027\cite{ubuntu-releasenote}. Additionally it is also one of Microsoft's
+recommended operating systems to run containerized applications with
+\textit{Azure IoT Edge} on Linux\cite{msdoc-supportetplatforms}.
 
+\section{Yocto Kirkstone Linux}
+\begin{tcolorbox}[title=TODO]
+    \begin{itemize}
+        \item Describe Yocto
+    \end{itemize}
+\end{tcolorbox}
 
 \section{NixOS}
 \textit{NixOS} is a \textit{Linux}-based operating system that uses the purely
 functional package manager \textit{Nix}. It is currently maintained as
-an Open Source project by the non-profit organization \textit{NixOS Foundation}
+an open source project by the non-profit organization \textit{NixOS Foundation}
 and the \textit{NixOS Community}. The project started in 2003 by Eelco Dolstra,
 who is the current president of the \textit{NixOS Foundation}, as
 a research project at the Utrecht University\cite{dolstra2003} and was introduced again in his 2008
@@ -40,6 +53,8 @@ Describe the following concepts:
         \item Cite information from this paper: \cite{gollenstede:23:lctes}
     \end{itemize}
 \end{tcolorbox}
+
+\section{comparison}
 
 \section{Azure IoT}
 \textit{Azure IoT} is a cloud platform provided by Microsoft that
@@ -118,18 +133,7 @@ Microsoft calls this approach "bring your own code" and offers are variety of
     \end{itemize}
 \end{tcolorbox}
 
-\section{Ubuntu 22.04}
-\textit{Ubuntu 22.04} is the latest long term support release of the \textit{Linux}-based operating system \textit{Ubuntu}. Which will receive updates and support
-for the next 5 years, until April 2027\cite{ubuntu-releasenote}. It is also one of
-Microsoft's recommended operating systems to run containerized applications with
-\textit{Azure IoT Edge} on Linux\cite{msdoc-supportetplatforms}.
 
-\section{Yocto Kirkstone Linux}
-\begin{tcolorbox}[title=TODO]
-    \begin{itemize}
-        \item Describe Yocto
-    \end{itemize}
-\end{tcolorbox}
 
 \section{Methodology}
 \section{Related Work}
