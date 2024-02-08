@@ -42,14 +42,13 @@ in figure XXX.
 	\toprule
 		Operating System & Image Variation 1 & $\Delta$ & Image Variation 2 & $\Delta$\\
 	\midrule
-    \textbf{reUpNix} & \text{1 305.7 MB} & \color{ba-green}{-994.1 MB} &  \text{- MB} & a\\
-    \textbf{NixOS 23.01} & \text{2 364.3 MB} & \textcolor{ba-red}{a} & \text{- MB} & a\\
-    \textbf{Ubuntu 22.04} & \text{2 299.8 MB} & \text{-} & \text{2 311.1 MB} & a\\
+    \textbf{reUpNix} & \text{1 289 MB} & \color{ba-green}{- 1 010 MB} &  \text{- MB} & a\\
+    \textbf{NixOS 23.01} & \text{2 361 MB} & \textcolor{ba-red}{+ 62 MB} & \text{- MB} & a\\
+    \textbf{Ubuntu 22.04} & \text{2 299 MB} & \text{-} & \text{2 311 MB} & \text{-}\\
     \textbf{Yocto Kirkstone} & \text{- MB} & a &\text{- MB} & a\\
-		% $M$         & vehicle mass              & 1.3250e+3 & \unit{\kilo\gram}                           \\
 	\bottomrule
 	\end{tabular}
-	\caption{EMIT factors for a category 9 vehicle}
+	\caption{Image size by OS for each variation}
 	\label{tab:si-in-tables}
 \end{table}
 \begin{figure}[H]
@@ -70,7 +69,7 @@ in figure XXX.
   \legend{Variation 1, Variation 2}
 \end{axis}
 \end{tikzpicture}
-\caption{Image Size by OS in Megabytes}
+\caption{Image size by OS in Megabytes}
 \end{figure}
 We can see that with its 1305 Megabytes \textit{reUpNix} has a 43\% smaller image size
 than Microsoft's recommended Ubuntu 22.04. Further, the difference in image size
