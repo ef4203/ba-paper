@@ -1,11 +1,40 @@
 \chapter{Conclusion}
 
-Conclusion: 1 page 
+Conclusion: 1 page
 
 \begin{itemize}
 \item summarize again what your paper did, but now emphasize more the results, and comparisons
 \item write conclusions that can be drawn from the results found and the discussion presented in the paper
-\item future work (be very brief, explain what, but not much how) 
+\item future work (be very brief, explain what, but not much how)
 \end{itemize}
 
-\section{Microsoft Support}
+\section{Conclusion}
+This section will highlight the main findings of the thesis to provide a
+conclusion.
+
+\subsection{Image And Update Size}
+It was shown that reUpNix has the the potential to drastically reduce the transferred
+data when updating the operating system, which is important for \ac{IIoT} devices
+have a limited Internet connection.
+
+\subsection{Limited Microsoft Support}
+Microsoft does not officially support NixOS or reUpNix, which may be a decisive factor
+for product managers choosing an \ac{OS} for their \ac{IIoT} devices. Microsoft
+only provides so called "Tier 1" support for Ubuntu, Debian, Red Hat Enterprise
+Linux and Windows, which means that Microsoft is actively testing and validating
+new releases. If a developer is using an \ac{OS} that is not officially supported
+and encounters a problem, they need to reproduce the issue with one of Microsoft's
+"Tier 1" supported \ac{OS} before they can open a support ticket with Microsoft
+\cite{msdoc-supportetplatforms}.
+
+\section{Future Work}
+
+\subsection{Podman}
+Podman is a container runtime developed by Red Hat and a direct competitor to Docker.
+In the future, it would be interesting to investigate the possibility of using
+Podman instead of Docker as the container runtime for Azure IoT Edge. Podman is
+not officially supported by Microsoft, but it can potentially used as a
+replacement for Docker, since it can provide a \ac{UDS} for the IoT Edge runtime
+to communicate with the container runtime \cite{book:3556946,msdoc-supportetplatforms}.
+
+\subsection{Implementing A Update Agent Handler}

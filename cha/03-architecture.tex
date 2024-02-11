@@ -1,5 +1,5 @@
 \chapter{Architecture}
-
+\begin{tcolorbox}[title=TODO]
 Developed architecture / system design / implementation: 1/3
 
 \begin{itemize}
@@ -7,106 +7,10 @@ Developed architecture / system design / implementation: 1/3
 \item describe the developed system/algorithm/method from a high-level point of view
 \item go ahead in presenting your developments in more detail
 \end{itemize}
+\end{tcolorbox}
 
 
 \section{Azure IoT Edge Nix Package}
-
-\section{Sample Application}
-For verifying that the \textit{Azure IoT Edge} software behaves correctly
-with the given operating system, a sample application was developed. This
-containerized sample application sends a randomly generated number, from here
-on named \textit{measurement value}, to the \textit{Edge Hub}. The architecture
-of how the components interact with each other, was modelled after a real
-world \ac{IIoT} application for natural gas measurements. All proprietary
-source code and everything else which was subject to copyright and intellectual
-property was not used in this research. The application features a \ac{HTTP}
-\ac{REST} \ac{API} for further automation. For a complete overview of which
-containers the application is compromised, refer to table \ref{tab:containers}.
-
-
-\begin{table}[H]
-    \centering
-    \begin{tabular}{ p{0.33\linewidth} p{0.14\linewidth} p{0.45\linewidth}}
-        \toprule
-        \textbf{Container Name} & \textbf{Developer} & \textbf{Description} \\
-        \midrule
-        Edge Agent & Microsoft & Application for managing containers and deployments. \\
-        Edge Hub & Microsoft & Gateway and buffer for sending messages to cloud services. \\
-        Edge Metrics Collector & Microsoft & Application for collecting container logs, metrics and health data. \\
-        SQL Server & Microsoft & Containerized instance of Microsoft's SQL server. \\
-        sampleapp UI & Elias Frank & Web application for viewing telemetry data from the \ac{API}. \\
-        sampleapp API & Elias Frank & \ac{REST} \ac{API} for retrieving telemetry locally for further automation. \\
-        sampleapp Telemetry Service & Elias Frank & Background service for randomly generating telemetry. \\
-        \bottomrule
-    \end{tabular}
-    \caption{Sample Application: List of containers}
-    \label{tab:containers}
-\end{table}
-
-The sections \ref{sec:telemetry-service}, \ref{sec:api}, \ref{sec:ui} further
-describe the functionalities of the individual applications that form together
-the entire sample application.
-
-\subsection{sampleapp Telemetry Service} \label{sec:telemetry-service}
-The \textit{sampleapp Telemetry Service} is an application developed for this
-research. The application has the following main functionalities:
-
-\begin{itemize}
-    \item It sends the current timestamp to the \textit{Edge Hub} on start up,
-    \item It sends a randomly generated telemetry value to the
-    \textit{Edge Hub} every minute,
-    \item It stores the telemetry value in a \ac{SQL} database,
-    \item It sends the current uptime of the application to the \textit{Edge Hub}
-    every hour.
-\end{itemize}
-The \textit{sampleapp Telemetry Service} is written in \textit{C\#} using the
-\textit{ASP.NET} framework and the \textit{Azure Device} \ac{SDK}.
-
-\subsection{sampleapp API} \label{sec:api}
-The \textit{sampleapp API} is a \ac{HTTP} \ac{REST} \ac{API} developed for this
-research. The application has the following main functionalities:
-
-\begin{itemize}
-    \item Retrieve telemetry values from the \ac{SQL} database via an
-    \ac{REST} endpoint,
-    \item Enables customers to connect automation from their local network.
-\end{itemize}
-The \textit{sampleapp API} is written in \textit{C\#} using the \textit{ASP.NET}
-framework and the \textit{Entity Framework Core} for database access.
-
-\subsection{sampleapp UI} \label{sec:ui}
-The \textit{sampleapp UI} is a web application developed for this research.
-The application has the following main functionalities:
-
-\begin{itemize}
-    \item
-\end{itemize}
-The \textit{sampleapp UI} is written in \textit{C\#} using the \textit{ASP.NET}
-framework and the \textit{Blazor Web Assembly} framework for \textit{.NET}.
-
-\begin{figure}[H]
-    \includegraphics[width=\textwidth]{fig/sample-app-dataflow.drawio.png}
-    \caption{Sample Application: Architecture Overview}
-    \label{fig:sample-app-architecture}
-\end{figure}
-
-
-\begin{table}[H]
-    \centering
-    \begin{tabular}{l l l l }
-        \toprule
-        \textbf{From} & \textbf{To} & \textbf{Port} & \textbf{Protocol} \\
-        \midrule
-        sampleapp Telemetry Service & Edge Hub & C & D \\
-        sampleapp Telemetry Service & SQL Server & C & D \\
-        Edge Metrics Collector & Edge Agent & 9000 & \ac{HTTP} \\
-        Edge Metrics Collector & Edge Hub & 9000 & \ac{HTTP} \\
-        Edge Metrics Collector & sampleapp API & 8080 & \ac{HTTP} \\
-        Edge Metrics Collector & sampleapp Telemetry Service & 8080 & \ac{HTTP} \\
-        \bottomrule
-    \end{tabular}
-    \caption{Sample Application: Communication table}
-\end{table}
 
 \section{Experiments}
 \subsection{Verifying the correctness of Azure IoT Edge}

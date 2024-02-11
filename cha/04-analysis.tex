@@ -35,50 +35,65 @@ We compared \textit{reUpNix}, \textit{NixOS}, Ubuntu 22.04, and
 in chapter XXX. All system images feature an \ac{OCI}-compliant container runtime,
 and the Azure IoT Edge runtime (Variation 1). Additionally, each system has a
 variation with the \ac{ADU} Agent installed (Variation 2). The results are shown
-in figure XXX.
+in table \ref{tab:image-size}.
 \begin{table}[H]
 	\centering
 	\begin{tabular}{l|l|l|l|l}
 	\toprule
-		Operating System & Image Variation 1 & $\Delta$ & Image Variation 2 & $\Delta$\\
+		Operating System & Image Variation 1 & $\Delta$ Ubuntu& Image Variation 2 & $\Delta$ Ubuntu\\
 	\midrule
-    \textbf{reUpNix} & \text{1 289 MB} & \color{ba-green}{- 1 010 MB} &  \text{- MB} & a\\
-    \textbf{NixOS 23.01} & \text{2 361 MB} & \textcolor{ba-red}{+ 62 MB} & \text{- MB} & a\\
+    \textbf{reUpNix} & \text{1 289 MB} & \color{ba-green}{- 1 010 MB} &  \text{X XXX MB} & X\\
+    \textbf{NixOS 23.01} & \text{2 361 MB} & \textcolor{ba-red}{+ 62 MB} & \text{X XXX MB} & X\\
     \textbf{Ubuntu 22.04} & \text{2 299 MB} & \text{-} & \text{2 311 MB} & \text{-}\\
-    \textbf{Yocto Kirkstone} & \text{- MB} & a &\text{- MB} & a\\
+    \textbf{Yocto Kirkstone} & \text{4 933 MB} & \textcolor{ba-red}{+ 2 634 MB} &\text{4 946 MB} & \textcolor{ba-red}{+ 2 635 MB}\\
 	\bottomrule
 	\end{tabular}
 	\caption{Image size by OS for each variation}
-	\label{tab:si-in-tables}
+	\label{tab:image-size}
 \end{table}
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}
-
   \begin{axis}[
     ybar,
     xtick             = data,
     width = 0.8\textwidth,
     height = 0.5\textwidth,
     enlarge x limits  = 0.2,
-    symbolic x coords = {reUpNix, NixOS, Ubuntu, Yocto},
+    symbolic x coords = {reUpNix, NixOS 23.01, Ubuntu 22.04, Yocto},
     legend style={at={( 0.02,0.98)},anchor=north west}
   ]
-  \addplot coordinates { (reUpNix,1305.782) (NixOS,2364.346) (Ubuntu, 2299.894) (Yocto, 4000)};
-  \addplot coordinates { (reUpNix,0) (NixOS, 0) (Ubuntu, 2311.166) (Yocto, 0)};
+  \addplot coordinates { (reUpNix,1289) (NixOS 23.01,2361) (Ubuntu 22.04, 2299) (Yocto, 4933)};
+  \addplot coordinates { (reUpNix,0) (NixOS 23.01, 0) (Ubuntu 22.04, 2311) (Yocto, 4946)};
   \legend{Variation 1, Variation 2}
 \end{axis}
 \end{tikzpicture}
 \caption{Image size by OS in Megabytes}
 \end{figure}
-We can see that with its 1305 Megabytes \textit{reUpNix} has a 43\% smaller image size
+We can see that with its 1289 Megabytes \textit{reUpNix} has a 43\% smaller image size
 than Microsoft's recommended Ubuntu 22.04. Further, the difference in image size
-between Ubuntu 22.04 and \textit{NixOS} is only 64 Megabytes.
+between Ubuntu 22.04 and \textit{NixOS} is only 62 Megabytes.
 Finally, the difference between the Variation 1 and Variation 2 is almost
 negligible across all operating systems, since the \ac{ADU} Agent is small in
 size, and features no additional dependencies.
 
 \section{Mean time to recover}
+\begin{table}[H]
+	\centering
+	\begin{tabular}{l|l|l|l}
+	\toprule
+		Operating System & Mean Time & Std. Deviation & Std. Error \\
+	\midrule
+    \textbf{reUpNix} & 1.0 & 1.0 & 1.0 \\
+    \textbf{NixOS 23.01} & 1.0 & 1.0 & 1.0 \\
+    \textbf{Ubuntu 22.04} & 1.0 & 1.0 & 1.0 \\
+    \textbf{Yocto Kirkstone} & 1.0 & 1.0 & 1.0 \\
+	\bottomrule
+	\end{tabular}
+	\caption{Time to recover by OS in seconds}
+	\label{tab:timetorecover}
+\end{table}
+
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}
@@ -112,6 +127,17 @@ size, and features no additional dependencies.
     nodes near coords,
   ]
     \addplot table [x=seconds, y=times, col sep=comma] {data/time-to-recover-ubuntu.csv};
+  \end{axis}
+\end{tikzpicture}
+\begin{tikzpicture}
+  \begin{axis}[
+    title  = Yocto Kirkstone,
+    ybar,
+    enlarge y limits  = {0.15,upper},
+    width = 0.5\textwidth,
+    nodes near coords,
+  ]
+    \addplot table [x=seconds, y=times, col sep=comma] {data/time-to-recover-yocto.csv};
   \end{axis}
 \end{tikzpicture}
 \caption{Time of recovery after a reboot by OS in seconds.}
