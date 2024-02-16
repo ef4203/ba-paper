@@ -13,38 +13,8 @@ Developed architecture / system design / implementation: 1/3
 \section{Azure IoT Edge Nix Package}
 
 \section{Experiments}
-\subsection{Verifying the correctness of Azure IoT Edge}
-For verifying that \textit{Azure IoT Edge} was correctly installed
-and behaves according the expected functionality on the given
-\ac{OS}, a number of criteria where chosen. They represent the registration
-of a single device according to Microsoft's documentation, but further
-invoke the health checks of the Sample Application's components.
-The criteria are as follows:
 
-\begin{enumerate}
-    \item The \code{iotedge} \ac{CLI} is in the path.
-    \item A configuration file can be generated with \code{iotedge config}.
-    \item The device can be registered with \code{iotedge config apply}.
-    \item \code{iotedge check} reports no errors.
-    \item \code{iotedge list} reports that the following containers
-    are running:
-    \begin{itemize}
-        \item edgeAgent
-        \item edgeHub
-        \item IotEdgeMetricsCollector
-        \item sql-server
-        \item sampleapp-telemetry-service
-        \item sampleapp-api
-        \item sampleapp-ui
-    \end{itemize}
-    \item \code{curl localhost:8001} returns "Healthy".
-    \item \code{curl localhost:8002} returns "Healthy".
-    \item Device messages are visible in the cloud using the \textit{Azure IoT Explorer}.
-\end{enumerate}
-These checks must be performed on all the \ac{OS}s, for a direct comparison.
-They serve as a baseline for all further experiments, because all further
-experiments are building on the assumption that \textit{Azure IoT Edge} was
-installed and is behaving correctly.
+\subsection{Base Image Size}
 
 \subsection{Update Image size}
 \label{sec:update-image}
@@ -84,6 +54,8 @@ the first timestamp from the shell command with the second timestamp from
 the \textit{Azure IoT Hub}, the time until operability can be calculated.
 This experiment must be repeated until the standard deviation is low enough
 to have a confident mean value for each \ac{OS}.
+
+\subsection{Container Updates}
 
 
 

@@ -1,23 +1,26 @@
 \chapter{Conclusion}
 
-Conclusion: 1 page
-
-\begin{itemize}
-\item summarize again what your paper did, but now emphasize more the results, and comparisons
-\item write conclusions that can be drawn from the results found and the discussion presented in the paper
-\item future work (be very brief, explain what, but not much how)
-\end{itemize}
-
 \section{Summary}
+\begin{tcolorbox}[title=TODO]
+Summarize again what the paper did, but now emphasize more the results, and comparisons
+\end{tcolorbox}
 
 \section{Conclusion}
 This section will highlight the main findings of the thesis to provide a
-conclusion.
+conclusion, so that \ac{IIoT} application developer and product managers can
+make a careful consideration when choosing an \ac{OS} for their \ac{IIoT} devices.
 
 \subsection{Image And Update Size}
 It was shown that reUpNix has the the potential to drastically reduce the transferred
 data when updating the operating system, which is important for \ac{IIoT} devices
 have a limited Internet connection.
+
+\subsection{Updating Docker Containers}
+
+\begin{tcolorbox}[title=TODO]
+    Highlight how updating Docker containers with reUpNix is more efficient than
+    updating them with \code{docker pull}.
+\end{tcolorbox}
 
 \subsection{Limited Microsoft Support}
 Microsoft does not officially support NixOS or reUpNix, which may be a decisive factor
@@ -40,3 +43,27 @@ replacement for Docker, since it can provide a \ac{UDS} for the IoT Edge runtime
 to communicate with the container runtime \cite{book:3556946,msdoc-supportetplatforms}.
 
 \subsection{Implementing A Update Agent Handler}
+\begin{tcolorbox}[title=TODO]
+Microsoft allows to implement their own update agent handler, which could be
+used to implement a custom update agent handler that is compatible with reUpNix.
+\end{tcolorbox}
+
+\subsection{Further minification}
+\begin{tcolorbox}[title=TODO]
+Elaborate that this thesis has NOT shown the absolute smallest possible system
+to run Azure IoT Edge on, and that there's still room for further minification.
+\begin{itemize}
+    \item Minify Microsoft's software e.g. by compiling with \code{-w} and \code{-s} flags
+    \item Or using software like \textit{upx} to compress binaries
+    \item Minify Podman and/or Docker runtime
+\end{itemize}
+\end{tcolorbox}
+
+\subsection{Code optimization}
+As with most software projects, the written source code for this thesis could
+almost always be optimized to be written to run faster, use less resources, be
+more concise and be more readable. As the knowledge about the system and the
+Nix language grows, and the helper functions added to Nix increase, the
+written configuration files can be optimized. At the time of the research, the
+Nix build process takes a lot of time and resources, and an optimization could
+lead to an increase in productivity and less time spend waiting.
