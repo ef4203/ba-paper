@@ -4,11 +4,12 @@ This chapter introduces the major concepts, technologies,
 and software relevant to this thesis. First, it will introduce the operating
 systems \textit{Ubuntu 22.04}, \textit{Yocto Kirkstone Linux}, \textit{NixOS},
 and \textit{ReUpNix}, which we will use for comparison in the later experiments.
-
-Further we will introduce the \textit{Azure IoT Edge} platform by Microsoft,
+Further, we will introduce the \textit{Azure IoT Edge} platform by Microsoft,
 with all the components that were used.
+Finally, the last sections will give an overview about the related work.
 
-\section{Ubuntu 22.04}
+\section{Technology}
+\subsection{Ubuntu 22.04}
 \textit{Ubuntu 22.04} is the latest long term support release of the
 \textit{Linux}-based operating system \textit{Ubuntu} developed by Canonical.
 It will receive updates and support for the next 5 years, until April
@@ -16,14 +17,14 @@ It will receive updates and support for the next 5 years, until April
 recommended operating systems to run containerized applications with
 \textit{Azure IoT Edge} on Linux\cite{msdoc-supportetplatforms}.
 
-\section{Yocto Kirkstone Linux}
+\subsection{Yocto Kirkstone Linux}
 \begin{tcolorbox}[title=TODO]
     \begin{itemize}
         \item Describe Yocto
     \end{itemize}
 \end{tcolorbox}
 
-\section{NixOS}
+\subsection{NixOS}
 \textit{NixOS} is a \textit{Linux}-based operating system that uses the purely
 functional package manager \textit{Nix}. It is currently maintained as
 an open source project by the non-profit organization \textit{NixOS Foundation}
@@ -45,7 +46,7 @@ Describe the following concepts:
     Cite information from this paper: \cite{1411255}
 \end{tcolorbox}
 
-\section{ReUpNix}
+\subsection{ReUpNix}
 
 \begin{tcolorbox}[title=TODO]
     \begin{itemize}
@@ -54,12 +55,8 @@ Describe the following concepts:
     \end{itemize}
 \end{tcolorbox}
 
-\section{Comparison}
-\begin{tcolorbox}[title=TODO]
-Briefly highlight the differences between the operating systems.
-\end{tcolorbox}
 
-\section{Azure IoT}
+\subsection{Azure IoT}
 \textit{Azure IoT} is a cloud platform provided by Microsoft that
 empowers organizations to build, deploy, and manage \ac{IoT} solutions at scale.
 \textit{Azure IoT} offers a suite of services and tools designed to connect,
@@ -75,14 +72,14 @@ that Microsoft's \textit{Azure IoT} provides the most tools for businesses,
 especially data visualization tools. However, Amazon's \textit{AWS} \ac{IoT}
 offerings have the largest market share\cite{9116254}.
 
-\subsection{Azure IoT Identity Service}
+\subsubsection{Azure IoT Identity Service}
 \begin{tcolorbox}[title=TODO]
     \begin{itemize}
         \item Describe Azure IoT Identity Service
     \end{itemize}
 \end{tcolorbox}
 
-\subsection{Azure IoT Edge}
+\subsubsection{Azure IoT Edge}
 The \textit{Azure IoT Edge} platform is a collection of software products and
 services developed and maintained by Microsoft that extends the capabilities
 of \textit{Azure IoT} to the edge of the network. This platform facilitates the
@@ -106,7 +103,7 @@ Philip Lin and Damon Barry, but it also features bug-fixes and contributions
 from the community and non-Microsoft employees
 \footnote{Full overview of all contributions: https://github.com/Azure/iotedge/graphs/contributors}.
 
-\subsection{Azure IoT Edge Modules}
+\subsubsection{Azure IoT Edge Modules}
 In Microsoft's terminology, containerized workloads which will be run on the \ac{IIoT}
 devices are called \textit{IoT Edge Modules}. These modules "can be configured to
 communicate with each other, creating a pipeline of data processing." However developers are
@@ -115,28 +112,32 @@ applications as long as they are running in \ac{OCI}-compliant \textit{Linux} co
 Microsoft calls this approach "bring your own code" and offers are variety of
 \ac{SDK}s for popular programming languages such as .NET, Java, C and Python\cite{msdoc-supportetplatforms}.
 
-\subsection{Azure IoT Edge Agent}
+\subsubsection{Azure IoT Edge Agent}
 \begin{tcolorbox}[title=TODO]
     \begin{itemize}
         \item Describe the Edge Agent
     \end{itemize}
 \end{tcolorbox}
 
-\subsection{Azure IoT Hub}
+\subsubsection{Azure IoT Hub}
 \begin{tcolorbox}[title=TODO]
     \begin{itemize}
         \item Describe the Iot Hub
     \end{itemize}
 \end{tcolorbox}
 
-\subsection{Azure IoT Device Update Service}
+\subsubsection{Azure IoT Device Update Service}
 \begin{tcolorbox}[title=TODO]
     \begin{itemize}
         \item Describe ADU
     \end{itemize}
 \end{tcolorbox}
 
-
-
-\section{Methodology}
 \section{Related Work}
+\begin{tcolorbox}[title=TODO]
+    \begin{itemize}
+        \item reUpNix
+        \item NixOS
+        \item Azure IoT Edge
+    \end{itemize}
+\end{tcolorbox}
