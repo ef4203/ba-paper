@@ -13,16 +13,15 @@ Finally, the last sections will give an overview about the related work.
 \textit{Ubuntu 22.04} is the latest long term support release of the
 \textit{Linux}-based operating system \textit{Ubuntu} developed by Canonical.
 It will receive updates and support for the next 5 years, until April
-2027\cite{ubuntu-releasenote}. Additionally it is also one of Microsoft's
+2027 \cite{ubuntu-releasenote}. Additionally it is also one of Microsoft's
 recommended operating systems to run containerized applications with
-\textit{Azure IoT Edge} on Linux\cite{msdoc-supportetplatforms}.
+\textit{Azure IoT Edge} on Linux \cite{msdoc-supportetplatforms}.
 
 \subsection{Yocto Kirkstone Linux}
-\begin{tcolorbox}[title=TODO]
-    \begin{itemize}
-        \item Describe Yocto
-    \end{itemize}
-\end{tcolorbox}
+The \textit{Yocto Project} is an open-source collaboration project that provides tools
+and resources for building custom Linux-based systems for embedded devices.
+\textit{Yocto Kirkstone Linux} is a recent long-term support release of the
+\textit{Yocto Project}, which will receive support until April 2026 \cite{yocto-releases}.
 
 \subsection{NixOS}
 \textit{NixOS} is a \textit{Linux}-based operating system that uses the purely
@@ -30,31 +29,66 @@ functional package manager \textit{Nix}. It is currently maintained as
 an open source project by the non-profit organization \textit{NixOS Foundation}
 and the \textit{NixOS Community}. The project started in 2003 by Eelco Dolstra,
 who is the current president of the \textit{NixOS Foundation}, as
-a research project at the Utrecht University\cite{dolstra2003} and was introduced again in his 2008
-paper "NixOS: A Purely Functional Linux Distribution".
+a research project at the Utrecht University \cite{dolstra2003} and was introduced
+as \textit{NixOS} in his 2008 paper "NixOS: A Purely Functional Linux Distribution".
 
-\begin{tcolorbox}[title=TODO]
-Describe the following concepts:
-\begin{itemize}
-    \item Declarative Configuration
-    \item Immutable System
-    \item Functional Package Management
-    \item Reproducible Builds
-    \item Rollback and Atomic Upgrades
-\end{itemize}
+A \textit{NixOS} system is configured with a set of configuration files, which
+are evaluated by the \textit{Nix} package manager to produce a complete system.
+The configuration files are written in the functional \textit{Nix} programming language,
+which has the advantage of being declarative and reproducible. Further, \textit{Nix}
+utilizes cryptographic hashes to verify the integrity of the inputs and outputs
+for any given build. This means that the same configuration inputs produce the
+same system. This approach aims to improve the correctness and reliability of
+system deployments over traditional system build tools \cite{dolstra2006}.
 
-    Cite information from this paper: \cite{1411255}
-\end{tcolorbox}
+A key concept of \textit{NixOS} is the \textit{Nix Store}, where all packages,
+files, configurations, and other artifacts that the system requires are stored.
+The \textit{Nix Store} is a immutable directory tree, where every \textit{Nix Store}
+object is uniquely identified by its content hash and additionally a
+human-readable name and version. In contrast to other operating systems where the package
+manager is only used to manage the installation and removal of packages, in \textit{NixOS}
+it is also used to manage the system configuration (typically stored in the
+\textit{/etc} directory) and other static parts of the
+system \cite{1411255}.
+
+Lastly, \textit{NixOS} has the possibility to perform a rollback of the system to a
+previous configuration. \textit{NixOS} will keep the previous configuration
+in a list of generations for this purpose \cite{1411255}, allowing users to easily
+revert to a known stable state in case of errors or undesired changes. This
+feature provides an efficient way to manage system updates and changes over time.
 
 \subsection{ReUpNix}
+\textit{reUpNix} is a research project at the Hamburg University of Technology,
+which aims to improve the shortcomings of \textit{NixOS} specifically for
+embedded and \ac{IoT} devices. It was introduced a the International Conference on
+\ac{LCTES} in 2023 and is primarily maintained by Niklas Gollenstede.
 
-\begin{tcolorbox}[title=TODO]
-    \begin{itemize}
-        \item Highlight differences to NixOS
-        \item Cite information from this paper: \cite{gollenstede:23:lctes}
-    \end{itemize}
-\end{tcolorbox}
+Since \textit{NixOS} is a general-purpose operating system, it is not optimized
+for embedded and \ac{IoT} devices. As a result of this, the base image size of
+\textit{NixOS} is relatively large, since it aims to support a wide range of
+software and hardware for different use cases. \textit{reUpNix} aims to address
+this issue by providing a minification process, which removes unnecessary
+files, configurations and applications from the base image \cite{gollenstede:23:lctes}.
 
+Additionally, it addresses the problem of the update size, which is an important
+factor for \ac{IoT} devices, since they might have limited bandwidth and
+potentially unreliable connections. The regular update mechanism for \textit{Nix}
+will compute which dependencies are required and are not already present in the \textit{Nix Store}.
+Once the dependencies are computed, the required packages are downloaded and
+placed in the \textit{Nix Store}, regardless of how many files where changed inside
+the package. In a desktop or server environment, this
+update process is typically not an issue, since these devices are usually
+connected via high speed internet connections. In contrast, an \ac{IoT} device
+would waste a lot of bandwidth and time to download packages in which only a
+small set of files have changed. \textit{reUpNix} addresses this issue by
+replacing the regular \textit{Nix} update mechanism with a custom update mechanism
+which only downloads the difference and applies them to the \textit{Nix Store}
+\cite{gollenstede:23:lctes}.
+
+Finally, \textit{reUpNix} provides a way to declaratively define and update
+the configuration for the bootloader as well as disk partitioning. This wasn't
+covered by \textit{NixOS} before, and is a crucial feature for embedded and
+\ac{IoT} devices \cite{gollenstede:23:lctes}.
 
 \subsection{Azure IoT}
 \textit{Azure IoT} is a cloud platform provided by Microsoft that
@@ -64,20 +98,23 @@ monitor, and control a diverse array of devices, sensors, and equipment. The
 platform enables integration of \ac{IoT} devices with Microsoft's other cloud
 services, facilitating the collection and analysis of data for actionable insights.
 This ecosystem supports a wide range of industries, from manufacturing and
-healthcare to transportation and smart cities\cite{msdoc-aziot}.
+healthcare to transportation and smart cities \cite{msdoc-aziot}.
 
 While the "big three" cloud service providers, namely Microsoft, Amazon and
 Google, all offer \ac{IoT} platforms and services, a conducted comparison finds
 that Microsoft's \textit{Azure IoT} provides the most tools for businesses,
 especially data visualization tools. However, Amazon's \textit{AWS} \ac{IoT}
-offerings have the largest market share\cite{9116254}.
+offerings have the largest market share \cite{9116254}.
 
 \subsubsection{Azure IoT Identity Service}
-\begin{tcolorbox}[title=TODO]
-    \begin{itemize}
-        \item Describe Azure IoT Identity Service
-    \end{itemize}
-\end{tcolorbox}
+The \textit{Azure IoT Identity Service} is a set of system services developed
+by Microsoft that \ac{IoT} developers can leverage to build applications which
+communicate with the \textit{Azure IoT} cloud platform. They provide abstractions
+for provisioning, managing, and authenticating devices, as well as managing
+certificates and secrets on the device \cite{aiiot}. The services are implemented
+in the Rust programming language and run under Linux-based system as \textit{systemd}
+services.
+
 
 \subsubsection{Azure IoT Edge}
 The \textit{Azure IoT Edge} platform is a collection of software products and
@@ -91,7 +128,7 @@ Unlike traditional cloud computing, where data is sent to a centralized server
 for analysis, edge computing occurs on or near the device or "edge" of the
 network. This approach is particularly valuable in scenarios where quick
 response times are critical or where excessive data transfer to the cloud
-is not possible\cite{msdoc-aziotedge}.
+is not possible \cite{msdoc-aziotedge}.
 
 All software, as well as \ac{SDK}s and
 libraries which are installed on the device are open source, however the
@@ -110,34 +147,46 @@ communicate with each other, creating a pipeline of data processing." However de
 not limited to only Microsoft's services, instead, they can deploy their own
 applications as long as they are running in \ac{OCI}-compliant \textit{Linux} containers.
 Microsoft calls this approach "bring your own code" and offers are variety of
-\ac{SDK}s for popular programming languages such as .NET, Java, C and Python\cite{msdoc-supportetplatforms}.
+\ac{SDK}s for popular programming languages such as .NET, Java, C and Python
+\cite{msdoc-supportetplatforms}.
 
 \subsubsection{Azure IoT Edge Agent}
-\begin{tcolorbox}[title=TODO]
-    \begin{itemize}
-        \item Describe the Edge Agent
-    \end{itemize}
-\end{tcolorbox}
+The \textit{Azure IoT Edge Agent} is a crucial component of the \textit{Azure IoT Edge}
+platform, responsible for managing the lifecycle of \textit{IoT Edge Modules} and
+handling communication between these modules and the \textit{Azure IoT Hub}.
+It executes the deployment, configuration, and monitoring of modules running on
+edge devices, by communicating with the \ac{OCI}-container runtime,
+ensuring they function according to defined deployment and settings.
+The \textit{Azure IoT Edge Agent} also leverages the \textit{Azure IoT Identity Service}
+for secure communication, handling authentication and encryption for data exchange
+between the edge devices and the cloud \cite{msdoc-aziotedge-arch}.
+
 
 \subsubsection{Azure IoT Hub}
-\begin{tcolorbox}[title=TODO]
-    \begin{itemize}
-        \item Describe the Iot Hub
-    \end{itemize}
-\end{tcolorbox}
+The \textit{Azure IoT Hub} is a cloud service developed by Microsoft designed to
+enable secure and scalable communication between a fleet of \ac{IoT} devices and
+the cloud. It serves as a central message queue, enabling devices to send telemetry
+data, and be managed remotely. With features such as device registration,
+authentication, and monitoring, the \textit{Azure IoT Hub} provides a reliable and efficient
+way to connect and manage, a diverse fleet of \ac{IoT} devices, empowering
+organizations and developers to build and deploy \ac{IoT} solutions at scale \cite{msdoc-aziothub}.
 
 \subsubsection{Azure IoT Device Update Service}
-\begin{tcolorbox}[title=TODO]
-    \begin{itemize}
-        \item Describe ADU
-    \end{itemize}
-\end{tcolorbox}
+The \textit{Azure IoT Device Update Service} is a cloud service developed by Microsoft
+for managing and automating the firmware and system updates of \ac{IoT} devices at scale.
+It enables organizations to securely deploy, monitor, and schedule updates for
+a large number of connected devices, ensuring they are always up-to-date with
+the latest security patches, bug fixes, and feature enhancements. This service
+simplifies the management of device updates, offering capabilities such as
+rollback options, group-based deployments, and detailed reporting to track the
+status of updates across diverse \ac{IoT} device fleets. In order to use the service,
+the devices must be running the \textit{Azure IoT Edge} runtime, as well as the
+\textit{Azure IoT Device Update Agent} a \textit{systemd} service which is
+responsible for the communication with the \textit{Azure IoT Device Update Service}
+\cite{msdoc-adu}.
+
 
 \section{Related Work}
 \begin{tcolorbox}[title=TODO]
-    \begin{itemize}
-        \item reUpNix
-        \item NixOS
-        \item Azure IoT Edge
-    \end{itemize}
+???
 \end{tcolorbox}
