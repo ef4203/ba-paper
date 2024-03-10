@@ -6,8 +6,7 @@ Further, we will introduce the \textit{Azure IoT Edge} platform by Microsoft,
 with all the components that were used.
 Finally, the last sections will give an overview about the related work.
 
-\section{Technology}
-\subsection{Ubuntu 22.04}
+\section{Ubuntu 22.04}
 \textit{Ubuntu 22.04} is the latest long term support release of the
 \textit{Linux}-based operating system \textit{Ubuntu} developed by Canonical.
 It will receive updates and support for the next 5 years, until April
@@ -15,13 +14,13 @@ It will receive updates and support for the next 5 years, until April
 recommended operating systems to run containerized applications with
 \textit{Azure IoT Edge} on Linux \cite{msdoc-supportetplatforms}.
 
-\subsection{Yocto Kirkstone Linux}
+\section{Yocto Kirkstone Linux}
 The \textit{Yocto Project} is an open-source collaboration project that provides tools
 and resources for building custom Linux-based systems for embedded devices.
 \textit{Yocto Kirkstone Linux} is a recent long-term support release of the
 \textit{Yocto Project}, which will receive support until April 2026 \cite{yocto-releases}.
 
-\subsection{NixOS}
+\section{NixOS}
 \textit{NixOS} is a \textit{Linux}-based operating system that uses the purely
 functional package manager \textit{Nix}. It is currently maintained as
 an open source project by the non-profit organization \textit{NixOS Foundation}
@@ -55,7 +54,7 @@ in a list of generations for this purpose \cite{1411255}, allowing users to easi
 revert to a known stable state in case of errors or undesired changes. This
 feature provides an efficient way to manage system updates and changes over time.
 
-\subsection{ReUpNix}
+\section{ReUpNix}
 \textit{reUpNix} is a research project at the Hamburg University of Technology,
 which aims to improve the shortcomings of \textit{NixOS} specifically for
 embedded and \ac{IoT} devices. It was introduced a the International Conference on
@@ -88,7 +87,7 @@ the configuration for the bootloader as well as disk partitioning. This wasn't
 covered by \textit{NixOS} before, and is a crucial feature for embedded and
 \ac{IoT} devices \cite{gollenstede:23:lctes}.
 
-\subsection{Azure IoT}
+\section{Azure IoT}
 \textit{Azure IoT} is a cloud platform provided by Microsoft that
 empowers organizations to build, deploy, and manage \ac{IoT} solutions at scale.
 \textit{Azure IoT} offers a suite of services and tools designed to connect,
@@ -104,7 +103,7 @@ that Microsoft's \textit{Azure IoT} provides the most tools for businesses,
 especially data visualization tools. However, Amazon's \textit{AWS} \ac{IoT}
 offerings have the largest market share \cite{9116254}.
 
-\subsubsection{Azure IoT Identity Service}
+\subsection{Azure IoT Identity Service}
 The \textit{Azure IoT Identity Service} is a set of system services developed
 by Microsoft that \ac{IoT} developers can leverage to build applications which
 communicate with the \textit{Azure IoT} cloud platform. They provide abstractions
@@ -114,7 +113,7 @@ in the Rust programming language and run under Linux-based system as \textit{sys
 services.
 
 
-\subsubsection{Azure IoT Edge}
+\subsection{Azure IoT Edge}
 The \textit{Azure IoT Edge} platform is a collection of software products and
 services developed and maintained by Microsoft that extends the capabilities
 of \textit{Azure IoT} to the edge of the network. This platform facilitates the
@@ -138,7 +137,7 @@ Philip Lin and Damon Barry, but it also features bug-fixes and contributions
 from the community and non-Microsoft employees
 \footnote{Full overview of all contributions: https://github.com/Azure/iotedge/graphs/contributors}.
 
-\subsubsection{Azure IoT Edge Modules}
+\subsection{Azure IoT Edge Modules}
 In Microsoft's terminology, containerized workloads which will be run on the \ac{IIoT}
 devices are called \textit{IoT Edge Modules}. These modules "can be configured to
 communicate with each other, creating a pipeline of data processing." However developers are
@@ -148,7 +147,7 @@ Microsoft calls this approach "bring your own code" and offers are variety of
 \ac{SDK}s for popular programming languages such as .NET, Java, C and Python
 \cite{msdoc-supportetplatforms}.
 
-\subsubsection{Azure IoT Edge Agent}
+\subsection{Azure IoT Edge Agent}
 The \textit{Azure IoT Edge Agent} is a crucial component of the \textit{Azure IoT Edge}
 platform, responsible for managing the lifecycle of \textit{IoT Edge Modules} and
 handling communication between these modules and the \textit{Azure IoT Hub}.
@@ -160,7 +159,7 @@ for secure communication, handling authentication and encryption for data exchan
 between the edge devices and the cloud \cite{msdoc-aziotedge-arch}.
 
 
-\subsubsection{Azure IoT Hub}
+\subsection{Azure IoT Hub}
 The \textit{Azure IoT Hub} is a cloud service developed by Microsoft designed to
 enable secure and scalable communication between a fleet of \ac{IoT} devices and
 the cloud. It serves as a central message queue, enabling devices to send telemetry
@@ -169,7 +168,7 @@ authentication, and monitoring, the \textit{Azure IoT Hub} provides a reliable a
 way to connect and manage, a diverse fleet of \ac{IoT} devices, empowering
 organizations and developers to build and deploy \ac{IoT} solutions at scale \cite{msdoc-aziothub}.
 
-\subsubsection{Azure IoT Device Update Service}
+\subsection{Azure IoT Device Update Service}
 The \textit{Azure IoT Device Update Service} is a cloud service developed by Microsoft
 for managing and automating the firmware and system updates of \ac{IoT} devices at scale.
 It enables organizations to securely deploy, monitor, and schedule updates for
