@@ -1,7 +1,3 @@
-\chapter{Introduction}
-\label{sec:introduction}
-
-
 % \section{Context}
 Since its first mention in 2006 \cite{Adelmann2006ToolkitFB} the \ac{IoT}
 is a growing industry sector and active research field. A 2018 study conducted
@@ -25,23 +21,25 @@ requiring innovative solutions for data optimization.
 To address these challenges, there are already several approaches to compress
 the transmitted data without a loss of information, which have shown to reduce
 the data transmitted, but also require more computing power on the \ac{IoT}
-devices \cite{9243457}. An additional technique to reduce the amount of data,
+devices \cite{9243457}. An additional technique to reduce the amount of data
 is to use a more efficient serialization format, such as Google's \textit{ProtoBuf}
-which has shown to reduce the size of data transmitted drastically in comparison
-to \textit{JSON} or \textit{XML} \cite{7765670}. Lastly, when switching to a
-edge computing approach, the data can be preprocessed and aggregated before
-sending it to the cloud, which reduces the amount of data transmitted.
+which has shown to reduce the size of data transmitted for a particular application
+by 83\% and 80\% in comparison to \textit{JSON} and \textit{BSON} respectively \cite{7765670}.
+Lastly, when switching to an edge computing approach, the data can be preprocessed
+and aggregated before sending it to the cloud, which reduces the amount of data
+transmitted.
 
 
 \section{Problem}
-
 As applications often gain functionality and complexity with each release, the
 size of software may also increase. \ac{IoT} devices operating in environments
 with limited bandwidth will face increasing challenges. One case where this is
 particularly evident is the \textit{Linux} kernel used by many \ac{IoT} and embedded
 devices, which expands in size with every new release \cite{linux-kernel-report}.
 
-Research has shown that updating security issues in \ac{IoT} systems as quickly
+However, product managers and developers are advised to update their devices with
+the latest software since
+research has shown that updating security issues in \ac{IoT} systems as quickly
 and as frequently as possible significantly enhances the security of these systems.
 This is especially important for \ac{IIoT} devices, which have an extended attack
 surface and where an outage can impose physical and financial damage \cite{s20247160}.
@@ -52,20 +50,58 @@ devices is improved by frequent updating. Anand et al. showed in 2018 that the
 performance and reliability of \ac{IoT} applications can be significantly improved
 by updating frequently \cite{Anand2018}.
 
-\bigskip\noindent Note: A B Updates are even worse
+When updating the \ac{OS} for an \ac{IoT} device, it is very common to use an
+A/B partition scheme, which will keep the device operational while downloading
+and installing the latest version to the inactive partition and then switch with
+a reboot once the update is complete. However, this approach is impractical for
+devices which have limited storage, as the inactive partition will consume
+half of the available storage. Further and most importantly, when updating
+it is required to download an entire bootable \ac{OS} image which can be
+hundreds of \ac{MB} in size. This is not feasible for devices with limited
+internet connection.
 
-\bigskip\noindent Note: Docker Updates also not great
-
-\bigskip\noindent Average Docker Container size?
-
+For \ac{IoT} applications that are using the edge computing architecture, the popular
+approach is to use \ac{OCI}-containers (e.g. Docker) to package and update
+their applications.
+However, a large scale study conducted by Zhao et al. showed that 80\% of the
+70,000 most popular \ac{OCI}-container images on \textit{Dockerhub} are more than
+190 \ac{MB} in size, and contain a high amount of duplicate files shared across the images
+and layers, especially for the images which are larger than 190 \ac{MB} \cite{9242268}.
+This has the serious implications that updating \ac{OCI}-container images with
+the existing methodology on a device with limited bandwidth is also impractical
+and challenging.
 
 \section{Strategy}
-\begin{tcolorbox}[title=TODO]
-    \begin{itemize}
-    \item Creating NixOS derivations for Azure IoT Edge
-    \item Integration the previously created modules into the minified ReUpNix
-    \item Measure the size of the image
-    \item Measure the time it takes to reboot the device
-    \item Measure the size of the update
-    \end{itemize}
-\end{tcolorbox}
+To address the problem of reliably updating \ac{IoT} and \ac{IIoT}
+devices with limited bandwidth, we need to investigate if using a different
+update strategy in contrast to A/B partitioning can reduce the amount of data transmitted.
+We have selected \textit{reUpNix} as the operating system to investigate, as its
+update mechanism is specifically designed for \ac{IoT} and embedded devices with
+limited bandwidth and storage \cite{gollenstede:23:lctes}. However, an integration
+with a popular \ac{IoT} platform cloud services and \textit{reUpNix} has not
+been done yet.
+
+As a cloud platform for \ac{IoT} we have chosen Microsoft's \textit{Azure IoT}
+as it is one of the most popular cloud platforms for \ac{IoT} and \ac{IIoT} applications.
+\textit{Azure IoT Edge} in particular extends \textit{Azure IoT} to run
+\ac{OCI}-containers on \ac{IoT} devices, which is a popular approach for edge
+computing.
+
+We need to find a strategy to update the \ac{OS} of \ac{IoT} device running
+\textit{Azure IoT Edge} using \textit{Azure IoT Device Update Service} with
+\textit{reUpNix}'s update mechanism. The strategy needs to reduce the transmitted data
+for an update significantly in comparison to using a full \ac{OS} image in an
+A/B partition schema. Additionally, we need to verify that using a different
+\ac{OS} than the one recommended by Microsoft does not significantly impact
+the reliability and performance of the \ac{IoT} device.
+
+
+Not only the \ac{OS} needs to be updated, but also the \ac{IoT} applications
+running as \ac{OCI}-containers on the device. To achieve this, we need to find a strategy
+using \textit{reUpNix}'s \ac{OS} update mechanism to reduce the transmitted data
+size in comparison to using \code{docker pull}. The proposed strategy must
+reliably save bandwidth for the popular \ac{OCI}-container images from
+\textit{Dockerhub}, while also not significantly increasing the disk storage
+requirements on the device and integrating well with the existing container
+runtime and \textit{Azure IoT Edge}.
+

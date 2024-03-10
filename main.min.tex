@@ -1,0 +1,43 @@
+\documentclass{article}
+\usepackage[nolist,nohyperlinks]{acronym}
+\usepackage{multicol}
+\usepackage{geometry}
+\usepackage{tcolorbox}
+\usepackage{graphics}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{biblatex}
+\usepackage[T1]{fontenc}
+
+
+\bibliography{references}
+
+\renewcommand{\familydefault}{cmss}
+\geometry{a4paper, left=20mm, right=20mm, top=20mm, bottom=20mm}
+
+\definecolor{light-gray}{gray}{0.95}
+\newcommand{\code}[1]{\colorbox{light-gray}{\texttt{#1}}}
+
+\author{Elias Frank}
+\title{Integration of reUpNix System and Container Updates with Azure IoT Edge and Docker}
+\begin{document}
+\maketitle
+\begin{multicols}{2}
+    \begin{abstract}
+        {
+        \fontfamily{qtm}\selectfont
+        \input{cha/00-abstract}
+        }
+    \end{abstract}
+\section{Introduction}
+\input{cha/01-introduction.tex}
+% \input{cha/02-fundamentals.tex}
+\input{cha/03-architecture.tex}
+
+\input{cha/04-analysis.tex}
+\input{cha/05-conclusion.tex}
+\end{multicols}
+\input{glossary}
+
+\printbibliography
+\end{document}

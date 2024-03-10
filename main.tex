@@ -48,6 +48,7 @@
 
 \maketitle
 
+\chapter*{Abstract}
 \input{cha/00-abstract}
 \acresetall
 
@@ -57,10 +58,18 @@
 \cleardoublepage
 \pagenumbering{arabic}
 
+
+\chapter{Introduction}
 \input{cha/01-introduction}
+
+\chapter{Fundamentals}
 \input{cha/02-fundamentals}
+
+\chapter{Architecture}
 \input{cha/03-architecture}
+\chapter{Analysis}
 \input{cha/04-analysis}
+\chapter{Conclusion}
 \input{cha/05-conclusion}
 
 \cleardoublepage
@@ -79,6 +88,7 @@
 
 \addcontentsline{toc}{section}{\glossarytitlename}%
 \sectionmark{\glossarytitlename}
+\chapter*{\glossarytitlename}
 \input{glossary}
 \cleardoublepage
 
