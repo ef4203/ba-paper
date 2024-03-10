@@ -1,34 +1,63 @@
 \chapter{Introduction}
-%\chapter{Einleitung}
 \label{sec:introduction}
 
-\begin{tcolorbox}[title=TODO]
-general motivation for your work, context and goals: 1-2 pages
 
-\begin{itemize}
-\item \textbf{Context:} make sure to link where your work fits in
-\item \textbf{Problem:} gap in knowledge, too expensive, too slow, a deficiency, superseded technology
-\item \textbf{Strategy:} the way you will address the problem
-\end{itemize}
-\end{tcolorbox}
+% \section{Context}
+Since its first mention in 2006 \cite{Adelmann2006ToolkitFB} the \ac{IoT}
+is a growing industry sector and active research field. A 2018 study conducted
+by Dachyar et al., shows that \ac{IoT} has been continuously growing, is expected
+to grow further, and will rise in demand for research and commercial application
+because of its function to connect a variety of devices. The primary industries
+where \ac{IoT} devices and applications are used today are manufacturing,
+agriculture, public service, electronics, health, energy, and mining.
+While most research is focused on topics such as security, protocols, energy and
+power consumption \cite{dachyar2019knowledge}.
 
-\section{Context}
-\begin{tcolorbox}[title=TODO]
-    \begin{itemize}
-        \item Give a overview about IoT and IIoT
-        \item Describe the Azure IoT and competitors
-        \item Mention NixOS and ReUpNix and how they relate to tradition OS
-    \end{itemize}
-\end{tcolorbox}
+\ac{IoT} devices that are deployed in the mining and energy industry are often
+installed in locations with limited, unreliable, or expensive network
+connectivity, such as off-shore oil rigs or underground mining sites.
+Some other industries have similar challenging installation sites, such as
+satellites, cargo ships, and remote weather stations.
+The limited bandwidth available in these remote locations poses a significant
+obstacle for transmitting large amounts of data reliably and efficiently,
+requiring innovative solutions for data optimization.
+
+To address these challenges, there are already several approaches to compress
+the transmitted data without a loss of information, which have shown to reduce
+the data transmitted, but also require more computing power on the \ac{IoT}
+devices \cite{9243457}. An additional technique to reduce the amount of data,
+is to use a more efficient serialization format, such as Google's \textit{ProtoBuf}
+which has shown to reduce the size of data transmitted drastically in comparison
+to \textit{JSON} or \textit{XML} \cite{7765670}. Lastly, when switching to a
+edge computing approach, the data can be preprocessed and aggregated before
+sending it to the cloud, which reduces the amount of data transmitted.
+
 
 \section{Problem}
-\begin{tcolorbox}[title=TODO]
-    \begin{itemize}
-        \item Describe the problem with Operating Systems for IoT devices
-        \item Describe problems with updating IoT devices
-        \item Describe problems with network, latency and bandwidth when updating
-    \end{itemize}
-\end{tcolorbox}
+
+As applications often gain functionality and complexity with each release, the
+size of software may also increase. \ac{IoT} devices operating in environments
+with limited bandwidth will face increasing challenges. One case where this is
+particularly evident is the \textit{Linux} kernel used by many \ac{IoT} and embedded
+devices, which expands in size with every new release \cite{linux-kernel-report}.
+
+Research has shown that updating security issues in \ac{IoT} systems as quickly
+and as frequently as possible significantly enhances the security of these systems.
+This is especially important for \ac{IIoT} devices, which have an extended attack
+surface and where an outage can impose physical and financial damage \cite{s20247160}.
+For \ac{IoT} devices with limited connectivity, crucial security updates can be
+significantly delayed or even impossible to apply, as the update size may exceed
+the available bandwidth or disk storage. But not just the security of \ac{IoT}
+devices is improved by frequent updating. Anand et al. showed in 2018 that the
+performance and reliability of \ac{IoT} applications can be significantly improved
+by updating frequently \cite{Anand2018}.
+
+\bigskip\noindent Note: A B Updates are even worse
+
+\bigskip\noindent Note: Docker Updates also not great
+
+\bigskip\noindent Average Docker Container size?
+
 
 \section{Strategy}
 \begin{tcolorbox}[title=TODO]
