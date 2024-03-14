@@ -185,50 +185,27 @@ images that are not present on the device. It uses a \ac{UDS} to communicate
 with the container runtime, to pull the image. The same can be manually achieved
 with the \code{docker pull} command, when using Docker as the container runtime.
 
-\subsection{Setup}
-\begin{enumerate}
-    \item Obtain the container image (e.g. via \code{docker pull} or \code{docker build}),
-    \item Fully unpack the image, including all layers,
-    \item Merge all layers,
-    \item Store the unpacked image in the Nix store,
-    \item Include the Nix store object in to the system configuration,
-    \item Load the image on boot.
-\end{enumerate}
-\subsubsection{Hypothesis}
+In an \ac{IIoT} scenario, where network connectivity is limited or expensive,
+we want to avoid pulling entire container images, when only a few files have
+changed. Since the \textit{Nix store} has a pretty efficient mechanism for
+deduplicating files, we want to investigate if we can use \textit{reUpNix}'s
+update mechanism to update containers in a more efficient way.
+
+Our proposed approach is to pull and unpack the container images during the built
+process of the \ac{OS}, letting \textit{Docker} populate the \textit{/var/lib/docker}
+directory inside a build-sandbox with the container image layers and meta data.
+Then storing the result in the \textit{Nix store} and including the
+\textit{Nix store} object in to the system configuration. On boot, the
+\textit{/var/lib/docker} directory is then mounted from the \textit{Nix store}
+with an overlay, so that the container runtime can access the container images.
+
+We need to verify by comparing the \textit{reUpNix} update size to the size of the container layers
+which are updated by a docker pull, that this approach reduces the data transmitted.
+
+\subsection{Hypothesis}
 Our hypothesis is, that updating containers with \textit{reUpNix}'s differential
 update mechanism will be more efficient than updating them with Azure IoT Edge or
 the \code{docker pull} command. This is due to the fact that, if the uppermost
 layer of a container image, only contains minimal changes (e.g. only a few
 changed files), the differential update will only transmit the changed files in
 that layer, instead of the entire layer.
-
-\subsection{Conducting Experiments}
-\section{Testing Environment}
-\subsection{Software}
-\subsection{Target Hardware}
-\subsection{Build Host}
-During the experiments conducted in this thesis, it was required to compile,
-package, and build various software. Creating the \ac{OS} variants required a
-computationally expensive
-creation of an installable image. For building the
-various \ac{OS}s and software packages the following hardware was used:
-
-\begin{itemize}
-    \item Processor: AMD Ryzen 7 5700X,
-    \item Memory: 32 GB (Additionally 64 GB swapped),
-    \item Storage: 512 GB SSD.
-\end{itemize}
-
-\noindent
-A test build was performed with a significantly less powerful machine than the
-one presented here, which were not able to complete the build.
-Further, the following software versions were used on the build host:
-\begin{itemize}
-    \item Linux 6.5.6,
-    \item Git 2.42.0,
-    \item Nix 2.18.1,
-    \item GCC 13.2.1 20230801,
-    \item Make 4.4.1.
-\end{itemize}
-
-\section{Experiments}
