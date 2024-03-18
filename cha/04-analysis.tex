@@ -100,20 +100,43 @@ for \textit{Azure IoT Edge}.
 \clearpage
 
 \section{Update size}
+In the previously section we have already discussed that we were able to create
+\textit{Nix} packages for the \textit{Azure IoT Edge} runtime and its dependencies.
+Since we have establish that \textit{reUpNix} can be used to create a minimal
+\ac{OS} image for \textit{Azure IoT Edge}, we can now compare the update size
+when updating with \textit{reUpNix}'s differential updates to the update size
+when updating in an A/B partitioning scheme. Both methods can be used
+with \ac{ADU} Agent, with the exception that for \textit{reUpNix} the \ac{ADU}
+needs to use a script handler to apply the update, while for A/B partitioning
+the built-in \ac{ADU} handler can be used. We wanted to compare the update size
+for an update which changes the majority of packages in the system, so we
+picked a \textit{Nixpkgs} version from November 1st, 2023 as the base and March 16th,
+2024 as the target upstream. The results of the comparison are shown in table
+\ref{tab:update-size}.
+
 \begin{table}[H]
 	\centering
 	\begin{tabular}{l|l|l}
 	\toprule
 		Operating System & Image Variation 1 & $\Delta$ Ubuntu\\
 	\midrule
-    \textbf{reUpNix} & \text{1 289 MB} & \color{ba-green}{- 1 010 MB} \\
-    \textbf{NixOS 23.01} & \text{2 361 MB} & \textcolor{ba-red}{+ 62 MB} \\
-    \textbf{Ubuntu 22.04} & \text{2 299 MB} & \text{-} \\
-    \textbf{Yocto Kirkstone} & \text{4 933 MB} & \textcolor{ba-red}{+ 2 634 MB} \\
+    \textbf{reUpNix} & \text{3.8 MB} & \color{ba-green}{- 2 130.2 MB} \\
+    \textbf{NixOS 23.01} & \text{XXXX MB} & \textcolor{ba-red}{+ XX MB} \\
+    \textbf{Ubuntu 22.04} & \text{2 134 MB} & \text{-} \\
+    \textbf{Yocto Kirkstone} & \text{4 717 MB} & \textcolor{ba-red}{+ 2 583 MB} \\
 	\bottomrule
 	\end{tabular}
 	\caption{Update size by OS for each variation}
+  \label{tab:update-size}
 \end{table}
+
+\noindent
+We can clearly see that \textit{reUpNix} has a 99.8\% smaller update size
+than \textit{Ubuntu 22.04}, which is a significant improvement. Applying the
+differential update methodology of \textit{reUpNix} to \ac{IoT} devices
+running \textit{Azure IoT Edge}, will significantly reduce the amount of data
+transmitted in comparison to using A/B partitioning. This is important for
+devices with a limited Internet connection, and it enables a more frequent updating.
 
 \begin{figure}[htbp]
   \centering
@@ -138,10 +161,10 @@ for \textit{Azure IoT Edge}.
       ]
 
       \addplot coordinates {
-        (1,1289)
-        (2,2361)
-        (3,2299)
-        (4,4933)
+        (1,3.8)
+        (2,0)
+        (3,2134)
+        (4,4717)
       };
 
     \end{axis}
@@ -250,46 +273,71 @@ public class Program
       ybar,
       bar width=0.5cm,
       width=1.1\textwidth,
-      height=0.5\textwidth,
-      bar width=0.3cm, % Decrease the bar width
-      % xlabel={Container Image},
-      % ylabel={Download Size},
+      height=0.4\textwidth,
+      bar width=0.3cm,
       xtick=data,
       xticklabels={
         nginx, mongo, busybox, mysql, ruby, httpd, golang, mariadb, ubuntu, node
       },
       x tick label style={rotate=45,anchor=east},
+      legend style={
+        at={(0.01,0.97)},
+        anchor=north west,
+        legend columns=-1,
+      }
       ]
 
       \addplot[fill=blue!40] coordinates {
         (1,100) % nginx
-        (2,200) % mongo
-        (3,100) % busybox
-        (4,140) % mysql
-        (5,110) % ruby
-        (6,110) % httpd
-        (7,90)  % golang
-        (8,111) % mariadb
+        (2,100) % mongo
+        (3,0.151) % busybox
+        (4,100) % mysql
+        (5,100) % ruby
+        (6,100) % httpd
+        (7,100)  % golang
+        (8,100) % mariadb
         (9,100) % ubuntu
-        (10,10) % node
+        (10,100) % node
       };
 
       \addplot[fill=red!40] coordinates {
-        (1,120) % nginx
-        (2,220) % mongo
-        (3,190) % busybox
-        (4,170) % mysql
-        (5,120) % ruby
-        (6,180) % httpd
-        (7,100) % golang
-        (8,123) % mariadb
-        (9,100) % ubuntu
-        (10,100) % node
+        (1,67.25) % nginx
+        (2,246.58 ) % mongo
+        (3,2.05) % busybox
+        (4,174.94 ) % mysql
+        (5,367.45 ) % ruby
+        (6,61.53 ) % httpd
+        (7,285.59 ) % golang
+        (8,117.04 ) % mariadb
+        (9,28.17 ) % ubuntu
+        (10,382.26 ) % node
       };
 
       \legend{reUpNix, Docker Pull}
     \end{axis}
   \end{tikzpicture}
   \caption{Container Image Download Size}
-  \label{fig:container_download_size}
+  \label{fig:container-size}
 \end{figure}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{l|l|l|l}
+	\toprule
+		Container Image & Docker Pull Size & reUpNix Size & $\Delta$ \% \\
+	\midrule
+    \textbf{nginx} & 67.25 MB & 1.0 & 1.0 \\
+    \textbf{mongo} & 246.58 MB & 1.0 & 1.0 \\
+    \textbf{busybox} & 2.05 MB & 0.15 MB & \color{ba-green}{- 92\%} \\
+    \textbf{mysql} & 174.94 MB & 1.0 & 1.0 \\
+    \textbf{ruby} & 367.45 MB & 1.0 & 1.0 \\
+    \textbf{httpd} & 61.53 MB & 1.0 & 1.0 \\
+    \textbf{golang} & 285.59 MB & 1.0 & 1.0 \\
+    \textbf{mariadb} & 117.04 MB & 1.0 & 1.0 \\
+    \textbf{ubuntu} & 28.17 MB & 1.0 & 1.0 \\
+    \textbf{node} & 382.26 MB & 1.0 & 1.0 \\
+	\bottomrule
+	\end{tabular}
+	\caption{Container Image Download Size}
+	\label{tab:container-size}
+\end{table}
