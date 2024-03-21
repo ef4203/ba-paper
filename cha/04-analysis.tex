@@ -175,6 +175,15 @@ devices with a limited Internet connection, and it enables a more frequent updat
 \clearpage
 
 \section{Time To Recover}
+In order to verify that the \textit{reUpNix} system can recover from a reboot
+in an acceptable time frame, we measured the time it takes for the system to
+reboot and send a message via the \textit{Azure IoT Edge Hub} with the proposed
+methodology from chapter \ref{sec:time-to-recover}. We used a sample application
+to send the current timestamp to the \textit{Azure IoT Edge Hub} after the system
+has rebooted. An excerpt from the sample application is shown in listing
+\ref{lst:sampleapp}.
+
+
 \begin{lstlisting}[
     caption={Sample App Which Sends The Current Timestamp Startup},
     label=lst:sampleapp]
@@ -201,10 +210,10 @@ public class Program
 	\centering
 	\begin{tabular}{l|l|l|l}
 	\toprule
-		Operating System & Mean & Std. Deviation & Std. Error \\
+		Operating System & Average & Std. Deviation & Std. Error \\
 	\midrule
-    \textbf{reUpNix} & 1.0 & 1.0 & 1.0 \\
-    \textbf{NixOS 23.01} & 1.0 & 1.0 & 1.0 \\
+    \textbf{reUpNix} & 16.0 & 2.44 & 0.67 \\
+    \textbf{NixOS 23.01} & 24.06 & 8.73 & 1.62 \\
     \textbf{Ubuntu 22.04} & 1.0 & 1.0 & 1.0 \\
     \textbf{Yocto Kirkstone} & 1.0 & 1.0 & 1.0 \\
 	\bottomrule
@@ -219,22 +228,29 @@ public class Program
   \begin{axis}[
     title  = ReUpNix,
     ybar,
+    bar width=0.15cm,
     enlarge y limits  = {0.15,upper},
     width = 0.5\textwidth,
-    nodes near coords,
   ]
     \addplot table [x=seconds, y=times, col sep=comma] {data/time-to-recover-reupnix.csv};
+    \draw[dashed,red] (axis cs:15.33,\pgfkeysvalueof{/pgfplots/ymin}) -- (axis cs:15.33,\pgfkeysvalueof{/pgfplots/ymax});
+    \draw[dashed] (axis cs:16,\pgfkeysvalueof{/pgfplots/ymin}) -- (axis cs:16,\pgfkeysvalueof{/pgfplots/ymax});
+    \draw[dashed,red] (axis cs:16.67,\pgfkeysvalueof{/pgfplots/ymin}) -- (axis cs:16.67,\pgfkeysvalueof{/pgfplots/ymax});
   \end{axis}
 \end{tikzpicture}
 \begin{tikzpicture}
   \begin{axis}[
     title  = NixOS,
     ybar,
+    bar width=0.15cm,
     enlarge y limits  = {0.15,upper},
     width = 0.5\textwidth,
-    nodes near coords,
+    % nodes near coords,
   ]
     \addplot table [x=seconds, y=times, col sep=comma] {data/time-to-recover-nixos.csv};
+    \draw[dashed,red] (axis cs:22.44,\pgfkeysvalueof{/pgfplots/ymin}) -- (axis cs:22.44,\pgfkeysvalueof{/pgfplots/ymax});
+    \draw[dashed] (axis cs:24.06,\pgfkeysvalueof{/pgfplots/ymin}) -- (axis cs:24.06,\pgfkeysvalueof{/pgfplots/ymax});
+    \draw[dashed,red] (axis cs:25.68,\pgfkeysvalueof{/pgfplots/ymin}) -- (axis cs:25.68,\pgfkeysvalueof{/pgfplots/ymax});
   \end{axis}
 \end{tikzpicture}
 \begin{tikzpicture}
@@ -264,7 +280,18 @@ public class Program
 
 \clearpage
 \section{Container Updates}
-
+With the proposed methodology in chapter \ref{sec:container-updates} we were able
+to install \ac{OCI}-container images
+on an \ac{IoT} device running \textit{reUpNix} without using \code{docker pull}.
+We verified that the installed images can be used to run containers with \textit{Docker}
+and match the images from \textit{Docker Hub} by comparing the \textit{SHA256} checksums.
+Since the images are now stored in the \textit{Nix} store, we used the \textit{reUpNix}
+differential update mechanism to install the container images and compared the update size
+with the compressed size that would be downloaded with \code{docker pull}. We used
+the same compression algorithm (\textit{gzip}) to compress the update artifacts,
+as \textit{Docker} uses to compress the container images. With this methodology
+we tested the top 10 most pulled images from \textit{Docker Hub} and the results
+can be seen in table \ref{tab:container-size} and figure \ref{fig:container-size}.
 
 \begin{figure}[htbp]
   \centering
@@ -288,16 +315,16 @@ public class Program
       ]
 
       \addplot[fill=blue!40] coordinates {
-        (1,100) % nginx
-        (2,100) % mongo
-        (3,0.151) % busybox
-        (4,100) % mysql
-        (5,100) % ruby
-        (6,100) % httpd
-        (7,100)  % golang
-        (8,100) % mariadb
-        (9,100) % ubuntu
-        (10,100) % node
+        (1,61.83) % nginx
+        (2,233.22) % mongo
+        (3,2.03) % busybox
+        (4,158.14) % mysql
+        (5,319.78) % ruby
+        (6,55.22) % httpd
+        (7,261.24)  % golang
+        (8,111.46) % mariadb
+        (9,26.38) % ubuntu
+        (10,343.49) % node
       };
 
       \addplot[fill=red!40] coordinates {
@@ -316,9 +343,11 @@ public class Program
       \legend{reUpNix, Docker Pull}
     \end{axis}
   \end{tikzpicture}
-  \caption{Container Image Download Size}
+  \caption{Container Image Download Size in MB}
   \label{fig:container-size}
 \end{figure}
+
+\clearpage
 
 \begin{table}[H]
 	\centering
@@ -326,18 +355,30 @@ public class Program
 	\toprule
 		Container Image & Docker Pull Size & reUpNix Size & $\Delta$ \% \\
 	\midrule
-    \textbf{nginx} & 67.25 MB & 1.0 & 1.0 \\
-    \textbf{mongo} & 246.58 MB & 1.0 & 1.0 \\
-    \textbf{busybox} & 2.05 MB & 0.15 MB & \color{ba-green}{- 92\%} \\
-    \textbf{mysql} & 174.94 MB & 1.0 & 1.0 \\
-    \textbf{ruby} & 367.45 MB & 1.0 & 1.0 \\
-    \textbf{httpd} & 61.53 MB & 1.0 & 1.0 \\
-    \textbf{golang} & 285.59 MB & 1.0 & 1.0 \\
-    \textbf{mariadb} & 117.04 MB & 1.0 & 1.0 \\
-    \textbf{ubuntu} & 28.17 MB & 1.0 & 1.0 \\
-    \textbf{node} & 382.26 MB & 1.0 & 1.0 \\
+    \textbf{nginx} & 67.25 MB & 61.83 MB & \color{ba-green}{- 8.0\%} \\
+    \textbf{mongo} & 246.58 MB & 233.22 MB & \color{ba-green}{- 5.6\%} \\
+    \textbf{busybox} & 2.05 MB & 2.03 MB & \color{ba-green}{- 0.9\%} \\
+    \textbf{mysql} & 174.94 MB & 158.14 MB & \color{ba-green}{- 9.6\%} \\
+    \textbf{ruby} & 367.45 MB & 319.78 MB & \color{ba-green}{- 12.9\%} \\
+    \textbf{httpd} & 61.53 MB & 55.22 MB & \color{ba-green}{- 10.2\%} \\
+    \textbf{golang} & 285.59 MB & 261.24 MB & \color{ba-green}{- 8.5\%} \\
+    \textbf{mariadb} & 117.04 MB & 111.46 MB & \color{ba-green}{- 4.7\%} \\
+    \textbf{ubuntu} & 28.17 MB & 26.38 MB & \color{ba-green}{- 6.3\%} \\
+    \textbf{node} & 382.26 MB & 343.49 MB & \color{ba-green}{- 10.1\%} \\
 	\bottomrule
 	\end{tabular}
 	\caption{Container Image Download Size}
 	\label{tab:container-size}
 \end{table}
+
+\noindent
+We can see from the results that the \textit{reUpNix} differential update mechanism
+is more efficient in installing container image updates than using \code{docker pull}.
+For all of the top 10 most pulled images from \textit{Docker Hub}, we can save
+transferred data size by using \textit{reUpNix}. Even container images that are
+only a few Megabytes in size, like \textit{busybox}, can be transmitted in a more
+efficient way with \textit{reUpNix}'s differential update methodology. This means
+that using \textit{reUpNix} to install container images on \ac{IoT} devices, is more
+efficient than using \code{docker pull} and our proposed methodology can be used
+as a replacement which still works with \textit{Azure IoT Edge}.
+
