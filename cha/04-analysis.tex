@@ -208,19 +208,23 @@ public class Program
 
 \begin{table}[H]
 	\centering
-	\begin{tabular}{l|l|l|l}
+	\begin{tabular}{l|l|l|l|l}
 	\toprule
-		Operating System & Average & Std. Deviation & Std. Error \\
+		Operating System & Average & Adjusted Average\footnote &  Std. Deviation & Std. Error \\
 	\midrule
-    \textbf{reUpNix} & 16.0 & 2.44 & 0.67 \\
-    \textbf{NixOS 23.01} & 24.06 & 8.73 & 1.62 \\
-    \textbf{Ubuntu 22.04} & 1.0 & 1.0 & 1.0 \\
-    \textbf{Yocto Kirkstone} & 1.0 & 1.0 & 1.0 \\
+    \textbf{reUpNix} & 16.0 & 15.0 &  2.44 & 0.67 \\
+    \textbf{NixOS 23.01} & 24.06 & 19.06 & 8.73 & 1.62 \\
+    \textbf{Ubuntu 22.04} & 33.30 & 23.30 & 8.74 & 1.82 \\
+    \textbf{Yocto Kirkstone} & 1.0 & 1.0 & 1.0  & 1.0 \\
 	\bottomrule
 	\end{tabular}
 	\caption{Time to recover by OS in seconds}
 	\label{tab:timetorecover}
 \end{table}
+\footnotetext{The adjusted average accounts for the delay that is configured in
+the bootloader to wait for user input, which is 1 second for \textit{reUpNix},
+5 seconds for \textit{NixOS 23.01}, and 10 seconds for \textit{Yocto Kirkstone}
+and \textit{Ubuntu 22.04} respectively.}
 
 \begin{figure}[H]
 \centering
@@ -257,11 +261,15 @@ public class Program
   \begin{axis}[
     title  = Ubuntu 22.04,
     ybar,
+    bar width=0.15cm,
     enlarge y limits  = {0.15,upper},
     width = 0.5\textwidth,
-    nodes near coords,
   ]
     \addplot table [x=seconds, y=times, col sep=comma] {data/time-to-recover-ubuntu.csv};
+
+    \draw[dashed,red] (axis cs:31.48,\pgfkeysvalueof{/pgfplots/ymin}) -- (axis cs:31.48,\pgfkeysvalueof{/pgfplots/ymax});
+    \draw[dashed] (axis cs:33.3,\pgfkeysvalueof{/pgfplots/ymin}) -- (axis cs:33.3,\pgfkeysvalueof{/pgfplots/ymax});
+    \draw[dashed,red] (axis cs:35.12,\pgfkeysvalueof{/pgfplots/ymin}) -- (axis cs:35.12,\pgfkeysvalueof{/pgfplots/ymax});
   \end{axis}
 \end{tikzpicture}
 \begin{tikzpicture}
@@ -270,6 +278,7 @@ public class Program
     ybar,
     enlarge y limits  = {0.15,upper},
     width = 0.5\textwidth,
+    bar width=0.15cm,
     nodes near coords,
   ]
     \addplot table [x=seconds, y=times, col sep=comma] {data/time-to-recover-yocto.csv};
