@@ -13,7 +13,7 @@ power consumption \cite{dachyar2019knowledge}.
 installed in locations with limited, unreliable, or expensive network
 connectivity, such as off-shore oil rigs or underground mining sites.
 Some other industries have similar challenging installation sites, such as
-satellites, cargo ships, and remote weather stations.
+satellites \cite{electronics8111247}, cargo ships \cite{9090272}, and remote weather stations \cite{info12040146}.
 The limited bandwidth available in these remote locations poses a significant
 obstacle for transmitting large amounts of data reliably and efficiently,
 requiring innovative solutions for data optimization.
@@ -32,10 +32,10 @@ transmitted.
 
 \section{Problem}
 As applications often gain functionality and complexity with each release, the
-size of software may also increase. \ac{IoT} devices operating in environments
-with limited bandwidth will face increasing challenges. One case where this is
+size of software may also increase. For \ac{IoT} devices operating in environments
+with limited bandwidth this is a increased challenges. One case where this is
 particularly evident is the \textit{Linux} kernel used by many \ac{IoT} and embedded
-devices, which expands in size with every new release \cite{linux-kernel-report}.
+devices, which has expanded in size with every new release \cite{linux-kernel-report}.
 
 However, product managers and developers are advised to update their devices with
 the latest software since
@@ -60,9 +60,8 @@ it is required to download an entire bootable \ac{OS} image which can be
 hundreds of \ac{MB} in size. This is not feasible for devices with limited
 internet connection.
 
-For \ac{IoT} applications that are using the edge computing architecture, the popular
-approach is to use \ac{OCI}-containers (e.g. Docker) to package and update
-their applications.
+For \ac{IoT} applications that are using an edge computing architecture, the popular
+approach is to use \ac{OCI}-containers (e.g. Docker) to package and update applications.
 However, a large scale study conducted by Zhao et al. showed that 80\% of the
 70,000 most popular \ac{OCI}-container images on \textit{Dockerhub} are more than
 190 \ac{MB} in size, and contain a high amount of duplicate files shared across the images
@@ -80,7 +79,9 @@ We have selected \textit{reUpNix} as the operating system to investigate, as its
 update mechanism is specifically designed for \ac{IoT} and embedded devices with
 limited bandwidth and storage \cite{gollenstede:23:lctes}. However, an integration
 with a popular \ac{IoT} platform cloud services and \textit{reUpNix} has not
-been done yet.
+been done yet. The \textit{NixOS}-based \textit{reUpNix} provides a reproducible
+build system, which is highly desirable property for keeping a consistent state
+in a large fleet of \ac{IoT} or \ac{IIoT} devices.
 
 As a cloud platform for \ac{IoT} we have chosen Microsoft's \textit{Azure IoT}
 as it is one of the most popular cloud platforms for \ac{IoT} and \ac{IIoT} applications.
@@ -88,7 +89,7 @@ as it is one of the most popular cloud platforms for \ac{IoT} and \ac{IIoT} appl
 \ac{OCI}-containers on \ac{IoT} devices, which is a popular approach for edge
 computing.
 
-We need to find a strategy to update the \ac{OS} of \ac{IoT} device running
+In section \ref{sec:update-size} we designed a strategy to update the \ac{OS} of \ac{IoT} device running
 \textit{Azure IoT Edge} using \textit{Azure IoT Device Update Service} with
 \textit{reUpNix}'s update mechanism. The strategy needs to reduce the transmitted data
 for an update significantly in comparison to using a full \ac{OS} image in an
@@ -97,8 +98,9 @@ A/B partition schema. Additionally, we need to verify that using a different
 the reliability and performance of the \ac{IoT} device.
 
 
-Not only the \ac{OS} needs to be updated, but also the \ac{IoT} applications
-running as \ac{OCI}-containers on the device. To achieve this, we need to find a strategy
+Not just the \ac{OS} needs to be updated, but also the \ac{IoT} applications
+running as \ac{OCI}-containers on the device. To achieve this,
+we propose a strategy in section \ref{sec:container-updates}
 using \textit{reUpNix}'s \ac{OS} update mechanism to reduce the transmitted data
 size in comparison to using \code{docker pull}. The proposed strategy must
 reliably save bandwidth for the popular \ac{OCI}-container images from
