@@ -1,5 +1,5 @@
 \addcontentsline{toc}{chapter}{Abstract}
-% \begin{otherlanguage*}{american}
+\begin{otherlanguage*}{american}
 
 The growth of the \ac{IoT} in industries like production, manufacturing, and
 agriculture has led to a wide range of innovations and new products. Currently
@@ -8,7 +8,7 @@ all major cloud providers such as Microsoft, Google, Amazon's AWS and IBM offer
 which are installed in remote locations, such as offshore oil rigs or airplanes,
 have limited, unstable, or costly network connections. Techniques to
 minimize the \ac{IIoT} software’s network traffic both in message size
-(such as \textit{Protobuf} or other forms of compression), and in message amount
+(such as \textit{ProtoBuf} or other forms of compression), and in message amount
 (such as local processing with edge computing) have already been established.
 However the image size, update, and consistency of the underlying operating
 system is still a challenge. With Microsoft's \textit{Azure IoT Device
@@ -20,19 +20,16 @@ In this field study, we investigate if the \textit{NixOS}-based \textit{ReUpNix}
 can be used as a suitable host operating system for Microsoft’s commercial
 \ac{IoT} platform \textit{Azure IoT Edge}, since its image size is significantly
 smaller than Microsoft's recommended Linux images.
-Further, we investigate the conceptual advantages for \ac{IoT}
-devices that \textit{NixOS}-based systems provide over traditional \textit{Linux}
-operating systems, when updating the system. For this, we identified the
+ For this, we identified the
 minimum set of components and features that have to be added to heavily minified
 \textit{ReUpNix} in order to have the required functionality for the
 Docker-container-based \textit{Azure IoT Edge}, while remaining at a small
 footprint in disk size.
 
-\textbf{[Expected result]}
 With \textit{ReUpNix} as a host operating system for \textit{Azure IoT Edge}, we
-observed A\% smaller image size due to the minification and B\% smaller size of
+observed 43\% smaller image size due to the minification and 90\% smaller size of
 system updates due to the fact that only differences are sent, compared to
-Microsoft's recommended \textit{Ubuntu 22.04} and a custom \textit{Yocto Linux}
+Microsoft's recommended \textit{Ubuntu 22.04}
 image. Further we showed that it is possible to pre-install Docker container
 layers on the device, such that the amount of data that needs to be transmitted
 in the case of a container update with \textit{Azure IoT Edge} is heavily reduced.
@@ -40,13 +37,44 @@ However \textit{NixOS}-based systems do not receive official support from
 Microsoft and product managers need to decide if the benefits outweigh the loss
 of Microsoft's support.
 
-% \end{otherlanguage*}
+\end{otherlanguage*}
 
 
-%\chapter*{Kurzfassung}
-%\addcontentsline{toc}{chapter}{Kurzfassung}
-%\begin{otherlanguage*}{ngerman}
+\chapter*{Kurzfassung}
+\addcontentsline{toc}{chapter}{Kurzfassung}
+\begin{otherlanguage*}{ngerman}
+Das Wachstum des Internet of Things (IoT) in Branchen wie Produktion, Fertigung
+und Landwirtschaft hat zu einer Vielzahl von Innovationen und neuer Produkten geführt.
+Derzeit bieten alle großen Cloud-Anbieter wie Microsoft, Google, Amazons AWS und IBM
+ihren Kunden IoT-Dienste und Lösungen an.
+Allerdings gibt es einige Industrielle IoT-Geräte (IIoT), welche
+ an abgelegenen Orten installiert sind, wie z. B. auf Bohrinseln oder in Flugzeugen,
+die begrenzte, instabile oder teure Netzwerkverbindungen haben.
+Methodiken zur Minimierung des Netzwerkverkehrs von IIoT-Software sowohl in der
+Nachrichten größe (wie ProtoBuf oder  Kompression) als auch in der Anzahl der Nachrichten
+(z. B. lokale Verarbeitung mit Edge Computing) wurden bereits etabliert.
+Allerdings bleiben die größe, das update und die Konsistenz des zugrunde liegenden
+betriebssystems eine Herausforderung. Mit Microsofts Azure IoT Device Update Service
+wird beispielsweise das gesamte Image für das Betriebssystem an das Gerät gesendet
+und dort auf eine sekundäre Partition geschrieben. Dies führt zu hunderten von Megabytes
+die übertragen werden.
 
-%Gleicher Text in Deutsch
+In dieser Studie untersuchen wir ob das NixOS-basierte ReUpNix als geeignetes
+betriebssystems genutzt werden kann für Microsofts kommerzielle IoT-Plattform
+IoT Edge, da das Betriebssystem signifikant kleiner ist als Microsofts empfohlenes
+Betriebssystem Ubuntu 22.04. Dafür haben wir die minimalen Komponenten und Funktionen
+die zum stark minimierten ReUpNix hinzugefügt werden müssen identifiziert, um die
+Docker-container-basierte Azure IoT Edge runtime zu unterstützen, während wir
+weiterhin einen kleinen Fußabdruck auf der Festplatte beibehalten.
 
-% \end{otherlanguage*}
+Mit ReUpNix als Host-Betriebssystem für Azure IoT Edge haben wir eine 43\%
+kleiner Imagegröße aufgrund der Minimierung und 90\% kleinere Größe von
+Updates die gesendet werden müssen, da nur die Unterschiede in den dateien gesendet
+werden, im vergleich zu Microsofts empfohlenem Ubuntu 22.04 Image. Weiterhin haben
+wir gezeigt, dass es möglich ist Docker-Container-Layer auf dem Gerät vorzuinstallieren,
+so dass die Menge an Daten, die im Falle eines Container-Updates mit Azure IoT Edge,
+übertragen werden muss, stark reduziert wird. Allerdings erhalten NixOS-basierte
+Betriebssysteme keine offizielle Gewährleistung von Microsoft und Produktmanager
+müssen entscheiden, ob die Vorteile den Verlust der Gewährleistung von Microsoft überwiegen.
+
+\end{otherlanguage*}

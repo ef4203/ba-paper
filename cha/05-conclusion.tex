@@ -5,28 +5,27 @@ We have focused on the update mechanism of \textit{reUpNix} and how it can be us
 to save bandwidth when updating the \ac{OS} and \ac{OCI}-container images on the device,
 since some \ac{IoT} devices have limited bandwidth, because they are installed in
 remote locations and/or have limited storage. We were able to show that \textit{Azure IoT Edge}
-can be packaged and run on the \textit{Nix}-based \textit{reUpNix} and does not
+can be packaged and run on the \textit{Nix}-based \textit{reUpNix} and
+\textit{reUpNix}'s \textit{Nix store} does not introduce any significant overhead
+or delay when recovering from a reboot. When comparing \textit{reUpNix} to
+other \ac{OS} that are able to run \textit{Azure IoT Edge}, we observed that \textit{reUpNix}
+had a significantly smaller image size than the other \ac{OS}. In particular,
+\textit{reUpNix} has a 43\% smaller image size than for example Microsoft's
+recommended \textit{Ubuntu 22.04}. We also showed that \textit{reUpNix}'s update
+methodology is significantly more efficient than the commonly used A/B partition
+schema. In our tests, \textit{reUpNix} was able to update the \ac{OS} and save
+90.3\% of the transferred data compared to a A/B partition schema with \textit{Ubuntu 22.04}.
 
 
 \section{Conclusion}
-This section will highlight the main findings of the thesis to provide a
-conclusion, so that \ac{IIoT} application developers and product managers can
-make a careful consideration when choosing an \ac{OS} for their \ac{IIoT} devices.
-
-\subsection{Image And Update Size}
 It was shown that reUpNix has the the potential to drastically reduce the transferred
 data when updating the operating system, which is important for \ac{IIoT} devices
-that have a limited Internet connection.
+that have a limited Internet connection. \textit{reUpNix} provides a viable
+alternative for \ac{IoT} devices running \textit{Azure IoT Edge}
+to the commonly used A/B partition schema, which is used by most platforms,
+including the \textit{Azure Device Update Service}.
 
-\subsection{Updating Docker Containers}
-
-\begin{tcolorbox}[title=TODO]
-    Highlight how updating Docker containers with reUpNix is more efficient than
-    updating them with \code{docker pull}.
-\end{tcolorbox}
-
-\subsection{Limited Microsoft Support}
-Microsoft does not officially support NixOS or reUpNix, which may be a decisive factor
+However, Microsoft does not officially support NixOS or reUpNix, which may be a decisive factor
 for product managers choosing an \ac{OS} for their \ac{IIoT} devices. Microsoft
 only provides so called "Tier 1" support for Ubuntu, Debian, Red Hat Enterprise
 Linux and Windows, which means that Microsoft is actively testing and validating
@@ -35,38 +34,28 @@ and encounters a problem, they need to reproduce the issue with one of Microsoft
 "Tier 1" supported \ac{OS} before they can open a support ticket with Microsoft
 \cite{msdoc-supportetplatforms}.
 
+Lastly, \textit{reUpNix}'s differential updates also reduce the data transmitted
+when updating or installing \ac{OCI}-container images, compared to using \code{docker pull}.
+This is important for \ac{IIoT} devices that run \textit{Azure IoT Edge} or other
+container runtimes, which enables them to update their container images more frequently
+and bring customers new features faster in an edge computing environment.
+
+
 \section{Future Work}
+In order to store the \ac{OCI}-container images in the \textit{Nix store} and
+handle the update of the images easier, we could implement a custom storage
+provider for docker images that uses the \textit{Nix store} as the backend.
+This would eliminate some of the complexity of the current solution and reduce
+the overhead required to load the container images.
 
-\subsection{Podman}
-Podman is a container runtime developed by Red Hat and a direct competitor to Docker.
-In the future it would be interesting to investigate the possibility of using
-Podman instead of Docker as the container runtime for Azure IoT Edge. Podman is
-not officially supported by Microsoft, but it can potentially be used as a
-replacement for Docker, since it can provide a \ac{UDS} for the IoT Edge runtime
-to communicate with the container runtime \cite{book:3556946,msdoc-supportetplatforms}.
+Further, we could investigate the possibility of implementing a custom update
+handler for the \textit{Azure Device Update Agent} since Microsoft allows
+the implementation of custom update handlers. This would allow us replace the
+currently script handler with a dedicated update handler that is compatible
+with \textit{reUpNix}'s update mechanism and has lower overhead.
 
-\subsection{Implementing A Update Agent Handler}
-\begin{tcolorbox}[title=TODO]
-Microsoft allows to implement their own update agent handler, which could be
-used to implement a custom update agent handler that is compatible with reUpNix.
-\end{tcolorbox}
-
-\subsection{Further minification}
-\begin{tcolorbox}[title=TODO]
-Elaborate that this thesis has NOT shown the absolute smallest possible system
-to run Azure IoT Edge on, and that there's still room for further minification.
-\begin{itemize}
-    \item Minify Microsoft's software e.g. by compiling with \code{-w} and \code{-s} flags
-    \item Or using software like \textit{upx} to compress binaries
-    \item Minify Podman and/or Docker runtime
-\end{itemize}
-\end{tcolorbox}
-
-\subsection{Code optimization}
-As with most software projects, the written source code for this thesis could
-almost always be optimized to be written to run faster, use less resources, be
-more concise and be more readable. As the knowledge about the system and the
-Nix language grows, and the helper functions added to Nix increase, the
-written configuration files can be optimized. At the time of the research, the
-Nix build process takes a lot of time and resources, and an optimization could
-lead to an increase in productivity and less time spent waiting.
+Lastly, we have not shown that the system we have built is the smallest possible
+system to run \textit{Azure IoT Edge} on. There are still possibilites to explore, which
+further minify the system, such as using \textit{Podmand} instead of \textit{Docker}
+or minifying the \textit{Azure IoT Edge} runtime and the \textit{Azure IoT Edge} modules
+or using software like \textit{upx} to compress binaries.
