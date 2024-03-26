@@ -235,7 +235,7 @@ can be seen in table \ref{tab:timetorecover} and figure \ref{fig:timetorecover}.
     \textbf{reUpNix} & 16.0 & 15.0 &  2.44 & 0.67 \\
     \textbf{NixOS 23.01} & 24.06 & 19.06 & 8.73 & 1.62 \\
     \textbf{Ubuntu 22.04} & 33.30 & 23.30 & 8.74 & 1.82 \\
-    \textbf{Yocto Kirkstone} & 1.0 & 1.0 & 1.0  & 1.0 \\
+    \textbf{Yocto Kirkstone} & 260.71 & 250.71 & 10.39  & 2.77 \\
 	\bottomrule
 	\end{tabular}
 	\caption{Average Time to Recover by OS in Seconds}
@@ -298,10 +298,12 @@ and \textit{Ubuntu 22.04} respectively.}
     ybar,
     enlarge y limits  = {0.15,upper},
     width = 0.3\textwidth,
-    bar width=0.15cm,
-    nodes near coords,
+    bar width=0.05cm,
   ]
     \addplot table [x=seconds, y=times, col sep=comma] {data/time-to-recover-yocto.csv};
+    \draw[dashed,red] (axis cs:257.94,\pgfkeysvalueof{/pgfplots/ymin}) -- (axis cs:257.94,\pgfkeysvalueof{/pgfplots/ymax});
+    \draw[dashed] (axis cs:260.71,\pgfkeysvalueof{/pgfplots/ymin}) -- (axis cs:260.71,\pgfkeysvalueof{/pgfplots/ymax});
+    \draw[dashed,red] (axis cs:263.48,\pgfkeysvalueof{/pgfplots/ymin}) -- (axis cs:263.48,\pgfkeysvalueof{/pgfplots/ymax});
   \end{axis}
 \end{tikzpicture}
 \caption{Number of Measurements by Duration}
