@@ -20,7 +20,7 @@ requiring innovative solutions for data optimization.
 
 To address these challenges, there are already several approaches to compress
 the transmitted data without a loss of information, which have shown to reduce
-the data transmitted, but also require more computing power on the \ac{IoT}
+the data transmitted but also require more computing power on the \ac{IoT}
 devices \cite{9243457}. An additional technique to reduce the amount of data
 is to use a more efficient serialization format, such as Google's \textit{ProtoBuf}
 which has shown to reduce the size of data transmitted for a particular application
@@ -33,12 +33,12 @@ transmitted.
 \section{Problem}
 As applications often gain functionality and complexity with each release, the
 size of software may also increase. For \ac{IoT} devices operating in environments
-with limited bandwidth this is a increased challenges. One case where this is
+with limited bandwidth, this is an increased challenges. One case where this is
 particularly evident is the \textit{Linux} kernel used by many \ac{IoT} and embedded
 devices, which has expanded in size with every new release \cite{linux-kernel-report}.
 
 However, product managers and developers are advised to update their devices with
-the latest software since
+the latest software, since
 research has shown that updating security issues in \ac{IoT} systems as quickly
 and as frequently as possible significantly enhances the security of these systems.
 This is especially important for \ac{IIoT} devices, which have an extended attack
@@ -50,12 +50,12 @@ devices is improved by frequent updating. Anand et al. showed in 2018 that the
 performance and reliability of \ac{IoT} applications can be significantly improved
 by updating frequently \cite{Anand2018}.
 
-When updating the \ac{OS} for an \ac{IoT} device, it is very common to use an
+When updating the \ac{OS} for an \ac{IoT} device it is very common to use an
 A/B partition scheme, which will keep the device operational while downloading
 and installing the latest version to the inactive partition and then switch with
 a reboot once the update is complete. However, this approach is impractical for
 devices which have limited storage, as the inactive partition will consume
-half of the available storage. Further and most importantly, when updating
+half of the available storage. Further and most importantly, when updating,
 it is required to download an entire bootable \ac{OS} image which can be
 hundreds of \ac{MB} in size. This is not feasible for devices with limited
 internet connection.
@@ -98,13 +98,13 @@ A/B partition schema. Additionally, we need to verify that using a different
 the reliability and performance of the \ac{IoT} device.
 
 
-Not just the \ac{OS} needs to be updated, but also the \ac{IoT} applications
+Not just the \ac{OS} needs to be updated but also the \ac{IoT} applications
 running as \ac{OCI}-containers on the device. To achieve this,
 we propose a strategy in section \ref{sec:container-updates}
 using \textit{reUpNix}'s \ac{OS} update mechanism to reduce the transmitted data
 size in comparison to using \code{docker pull}. The proposed strategy must
 reliably save bandwidth for the popular \ac{OCI}-container images from
-\textit{Dockerhub}, while also not significantly increasing the disk storage
+\textit{Dockerhub} while also not significantly increasing the disk storage
 requirements on the device and integrating well with the existing container
 runtime and \textit{Azure IoT Edge}.
 

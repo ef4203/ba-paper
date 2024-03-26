@@ -2,7 +2,7 @@ This chapter introduces the major concepts, technologies,
 and software relevant to this thesis. First, it will introduce the operating
 systems \textit{Ubuntu 22.04}, \textit{Yocto Kirkstone Linux}, \textit{NixOS},
 and \textit{ReUpNix}, which we will use for comparison in the later experiments.
-Further, we will introduce the \textit{Azure IoT Edge} platform by Microsoft,
+Further, we will introduce the \textit{Azure IoT Edge} platform by Microsoft
 with all the components that were used.
 Finally, the last sections will give an overview about the related work.
 
@@ -10,7 +10,7 @@ Finally, the last sections will give an overview about the related work.
 \textit{Ubuntu 22.04} is the latest long term support release of the
 \textit{Linux}-based operating system \textit{Ubuntu} developed by Canonical.
 It will receive updates and support for the next 5 years, until April
-2027 \cite{ubuntu-releasenote}. Additionally it is also one of Microsoft's
+2027 \cite{ubuntu-releasenote}. Additionally, it is one of Microsoft's
 recommended operating systems to run containerized applications with
 \textit{Azure IoT Edge} on Linux \cite{msdoc-supportetplatforms}.
 
@@ -25,7 +25,7 @@ and resources for building custom Linux-based systems for embedded devices.
 functional package manager \textit{Nix}. It is currently maintained as
 an open source project by the non-profit organization \textit{NixOS Foundation}
 and the \textit{NixOS Community}. The project started in 2003 by Eelco Dolstra,
-who is the current president of the \textit{NixOS Foundation}, as
+who is the current president of the \textit{NixOS Foundation} as
 a research project at the Utrecht University \cite{dolstra2003} and was introduced
 as \textit{NixOS} in his 2008 paper "NixOS: A Purely Functional Linux Distribution".
 
@@ -40,7 +40,7 @@ system deployments over traditional system build tools \cite{dolstra2006}.
 
 A key concept of \textit{NixOS} is the \textit{Nix Store}, where all packages,
 files, configurations, and other artifacts that the system requires are stored.
-The \textit{Nix Store} is a immutable directory tree, where every \textit{Nix Store}
+The \textit{Nix Store} is an immutable directory tree, where every \textit{Nix Store}
 object is uniquely identified by its content hash and additionally a
 human-readable name and version. In contrast to other operating systems where the package
 manager is only used to manage the installation and removal of packages, in \textit{NixOS}
@@ -57,11 +57,11 @@ feature provides an efficient way to manage system updates and changes over time
 \section{ReUpNix}
 \textit{reUpNix} is a research project at the Hamburg University of Technology,
 which aims to improve the shortcomings of \textit{NixOS} specifically for
-embedded and \ac{IoT} devices. It was introduced a the International Conference on
+embedded and \ac{IoT} devices. It was introduced at the International Conference on
 \ac{LCTES} in 2023 and is primarily maintained by Niklas Gollenstede.
 
 Since \textit{NixOS} is a general-purpose operating system, it is not optimized
-for embedded and \ac{IoT} devices. As a result of this, the base image size of
+for embedded and \ac{IoT} devices. As a result of this the base image size of
 \textit{NixOS} is relatively large, since it aims to support a wide range of
 software and hardware for different use cases. \textit{reUpNix} aims to address
 this issue by providing a minification process, which removes unnecessary
@@ -109,7 +109,7 @@ by Microsoft that \ac{IoT} developers can leverage to build applications which
 communicate with the \textit{Azure IoT} cloud platform. They provide abstractions
 for provisioning, managing, and authenticating devices, as well as managing
 certificates and secrets on the device \cite{aiiot}. The services are implemented
-in the Rust programming language and run under Linux-based system as \textit{systemd}
+in the Rust programming language and run under Linux-based systems as \textit{systemd}
 services.
 
 
@@ -128,7 +128,7 @@ response times are critical or where excessive data transfer to the cloud
 is not possible \cite{msdoc-aziotedge}.
 
 All software, as well as \ac{SDK}s and
-libraries which are installed on the device are open source, however the
+libraries, which are installed on the device, are open source. However, the
 cloud services offered by Microsoft are almost exclusively closed source.
 Development and maintainance of \textit{Azure IoT Edge} is publicly visible on
 \textit{GitHub}. The biggest contributions
@@ -138,12 +138,12 @@ from the community and non-Microsoft employees
 \footnote{Full overview of all contributions: https://github.com/Azure/iotedge/graphs/contributors}.
 
 \subsection{Azure IoT Edge Modules}
-In Microsoft's terminology, containerized workloads which will be run on the \ac{IIoT}
-devices are called \textit{IoT Edge Modules}. These modules "can be configured to
-communicate with each other, creating a pipeline of data processing." However developers are
+In Microsoft's terminology, containerized workloads, which will be run on the \ac{IIoT}
+devices, are called \textit{IoT Edge Modules}. These modules "can be configured to
+communicate with each other, creating a pipeline of data processing." However, developers are
 not limited to only Microsoft's services, instead, they can deploy their own
 applications as long as they are running in \ac{OCI}-compliant \textit{Linux} containers.
-Microsoft calls this approach "bring your own code" and offers are variety of
+Microsoft calls this approach "bring your own code" and offers a variety of
 \ac{SDK}s for popular programming languages such as .NET, Java, C and Python
 \cite{msdoc-supportetplatforms}.
 
@@ -152,20 +152,20 @@ The \textit{Azure IoT Edge Agent} is a crucial component of the \textit{Azure Io
 platform, responsible for managing the lifecycle of \textit{IoT Edge Modules} and
 handling communication between these modules and the \textit{Azure IoT Hub}.
 It executes the deployment, configuration, and monitoring of modules running on
-edge devices, by communicating with the \ac{OCI}-container runtime,
-ensuring they function according to defined deployment and settings.
+edge devices by communicating with the \ac{OCI}-container runtime,
+ensuring that they function according to defined deployment and settings.
 The \textit{Azure IoT Edge Agent} also leverages the \textit{Azure IoT Identity Service}
 for secure communication, handling authentication and encryption for data exchange
 between the edge devices and the cloud \cite{msdoc-aziotedge-arch}.
 
 
 \subsection{Azure IoT Hub}
-The \textit{Azure IoT Hub} is a cloud service developed by Microsoft designed to
+The \textit{Azure IoT Hub} is a cloud service developed by Microsoft, designed to
 enable secure and scalable communication between a fleet of \ac{IoT} devices and
 the cloud. It serves as a central message queue, enabling devices to send telemetry
 data, and be managed remotely. With features such as device registration,
 authentication, and monitoring, the \textit{Azure IoT Hub} provides a reliable and efficient
-way to connect and manage, a diverse fleet of \ac{IoT} devices, empowering
+way to connect and manage a diverse fleet of \ac{IoT} devices, empowering
 organizations and developers to build and deploy \ac{IoT} solutions at scale \cite{msdoc-aziothub}.
 
 \subsection{Azure IoT Device Update Service}
@@ -178,7 +178,7 @@ simplifies the management of device updates, offering capabilities such as
 rollback options, group-based deployments, and detailed reporting to track the
 status of updates across diverse \ac{IoT} device fleets. In order to use the service,
 the devices must be running the \textit{Azure IoT Edge} runtime, as well as the
-\textit{Azure IoT Device Update Agent} a \textit{systemd} service which is
+\textit{Azure IoT Device Update Agent}, a \textit{systemd} service which is
 responsible for the communication with the \textit{Azure IoT Device Update Service}
 \cite{msdoc-adu}.
 

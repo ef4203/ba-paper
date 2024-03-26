@@ -43,7 +43,7 @@ those dependencies.
 
 Once we have created a minimal operating system image using \textit{reUpNix}, we
 need to measure the size of the image. Then repeat the measurements for
-\textit{Ubuntu 22.04}, \textit{Yocto Kirkstone} and \textit{NixOS}, such that
+\textit{Ubuntu 22.04}, \textit{Yocto Kirkstone}, and \textit{NixOS}, such that
 we are able to compare the operating systems and draw a conclusion.
 
 \subsection{Hypothesis}
@@ -58,7 +58,7 @@ will also be significantly smaller than the image size of \textit{NixOS},
 \label{sec:update-size}
 When updating the operating system with an A/B partition schema, the entire
 image needs to be downloaded and written to a secondary partition. In this
-\ac{OTA} scenario the size of the operating system image is critical, as we have
+\ac{OTA} scenario, the size of the operating system image is critical, as we have
 already discussed in chapter \ref{sec:image-size}.
 However, if we adapt a different methodology than an A/B partition schema
 for updating the operating system, we can potentially reduce the update size
@@ -90,12 +90,13 @@ significantly smaller than the update size of \textit{Ubuntu 22.04} and
 of \textit{reUpNix} including the \textit{Azure IoT Edge} runtime.
 
 \section{Time To Recover}
+\label{sec:time-to-recover}
 Customers of certain industries require high availability and reliability for
 their \ac{IIoT} devices and applications. These availability requirements
-are commonly legally and formally negotiated in an \ac{SLA} between
+are commonly legally and formally negotiated in a \ac{SLA} between
 the customer and a service provider \cite{msdoc-slas}. An important consideration
 for service providers to achieve high availability is the boot time of the
-\ac{OS}. However, for this experiment the time to recover is considered,
+\ac{OS}. However, for this experiment the time to recover is considered
 instead of the actual boot time of the \ac{OS}. For this experiment, we define the
 time to recover as the time until Azure IoT Edge runtime is operable again after
 an unexpected reboot.
@@ -172,7 +173,7 @@ to have a confident mean value for each \ac{OS}.
 \subsection{Hypothesis}
 Our hypothesis is that the time to recover will be very similar for all
 \ac{OS}s. Since they all run \textit{Linux}, the Azure IoT Edge runtime and
-a similar set of software, such as \textit{systemd} and \ac{SSH}. However, due
+a similar set of software, such as \textit{systemd}, and \ac{SSH}. However, due
 to the reduced size of \textit{reUpNix}, we may see a slight advantage in the
 time to recover, since the \ac{OS} has to load less data from the disk. Further,
 \textit{reUpNix} has a minified kernel and a reduced set of kernel modules.
@@ -183,8 +184,9 @@ When using Azure IoT Edge, \ac{IIoT} applications are deployed as containers bec
 they change more frequent than the entire \ac{OS}. When a module is updated
 with a new deployment manifest, Azure IoT Edge retrieves any new container
 images that are not present on the device. It uses a \ac{UDS} to communicate
-with the container runtime, to pull the image. The same can be manually achieved
-with the \code{docker pull} command, when using Docker as the container runtime.
+with the container runtime, and instructs it to pull the image. The same can be
+manually achieved with the \code{docker pull} command, when using \textit{Docker}
+as the container runtime.
 
 In an \ac{IIoT} scenario, where network connectivity is limited or expensive,
 we want to avoid pulling entire container images when only a few files have

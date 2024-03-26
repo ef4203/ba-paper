@@ -3,7 +3,7 @@ In this thesis we have investigated the possibility of using \textit{reUpNix} as
 host \ac{OS} for running the popular \textit{Azure IoT} platform on \ac{IIoT} devices.
 We have focused on the update mechanism of \textit{reUpNix} and how it can be used
 to save bandwidth when updating the \ac{OS} and \ac{OCI}-container images on the device,
-since some \ac{IoT} devices have limited bandwidth, because they are installed in
+since some \ac{IoT} devices have limited bandwidth because they are installed in
 remote locations and/or have limited storage. We were able to show that \textit{Azure IoT Edge}
 can be packaged and run on the \textit{Nix}-based \textit{reUpNix} and
 \textit{reUpNix}'s \textit{Nix store} does not introduce any significant overhead
@@ -55,7 +55,7 @@ currently script handler with a dedicated update handler that is compatible
 with \textit{reUpNix}'s update mechanism and has lower overhead.
 
 Lastly, we have not shown that the system we have built is the smallest possible
-system to run \textit{Azure IoT Edge} on. There are still possibilites to explore, which
+system to run \textit{Azure IoT Edge} on. There are still possibilities to explore, which
 further minify the system, such as using \textit{Podmand} instead of \textit{Docker}
 or minifying the \textit{Azure IoT Edge} runtime and the \textit{Azure IoT Edge} modules
 or using software like \textit{upx} to compress binaries.
