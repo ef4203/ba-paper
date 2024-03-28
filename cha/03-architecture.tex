@@ -174,33 +174,38 @@ to have a confident mean value for each \ac{OS}.
 Our hypothesis is that the time to recover will be very similar for all
 \ac{OS}s. Since they all run \textit{Linux}, the Azure IoT Edge runtime and
 a similar set of software, such as \textit{systemd}, and \ac{SSH}. However, due
-to the reduced size of \textit{reUpNix}, we may see a slight advantage in the
+to the reduced size of \textit{reUpNix}, there may be a slight advantage in the
 time to recover, since the \ac{OS} has to load less data from the disk. Further,
 \textit{reUpNix} has a minified kernel and a reduced set of kernel modules.
 
 \section{Container Updates}
 \label{sec:container-updates}
-When using Azure IoT Edge, \ac{IIoT} applications are deployed as containers because
+When using Azure IoT Edge, \ac{IIoT} applications are deployed as containers and
 they change more frequent than the entire \ac{OS}. When a module is updated
 with a new deployment manifest, Azure IoT Edge retrieves any new container
 images that are not present on the device. It uses a \ac{UDS} to communicate
-with the container runtime, and instructs it to pull the image. The same can be
+with the container runtime and instructs it to pull the image. The same can be
 manually achieved with the \code{docker pull} command, when using \textit{Docker}
 as the container runtime.
 
-In an \ac{IIoT} scenario, where network connectivity is limited or expensive,
-we want to avoid pulling entire container images when only a few files have
+In an \ac{IoT} scenario, where network connectivity is limited or expensive,
+it should be avoided to pull the entire container image when only a few files have
 changed. Since the \textit{Nix store} has a pretty efficient mechanism for
 deduplicating files, we want to investigate if we can use \textit{reUpNix}'s
 update mechanism to update containers in a more efficient way.
 
-Our proposed approach is to pull and unpack the container images during the built
-process of the \ac{OS}, letting \textit{Docker} populate the \textit{/var/lib/docker}
-directory inside a build-sandbox with the container image layers and meta data.
-Then storing the result in the \textit{Nix store} and including the
-\textit{Nix store} object in to the system configuration. On boot, the
-\textit{/var/lib/docker} directory is then mounted from the \textit{Nix store}
-with an overlay, so that the container runtime can access the container images.
+Our proposed approach is to pull and unpack the container images during the build
+process of the \ac{OS}, and then storing the container image layers in the
+\textit{Nix store}. When a container image needs to be updated, it can
+be included in the system configuration and updated with \textit{reUpNix}.
+Since the container image layers are stored in the \textit{Nix store}, if an
+image layer is already present, it will not be transmitted again. This is due
+to the differential update mechanism of \textit{reUpNix}.
+On boot, the container images can be loaded from the \textit{Nix store} and
+loaded wit the \code{docker image load} command.
+For further optimization, the container image layers can be also unpacked,
+such that \textit{reUpNix} can create a differential update on a file level for
+the layers, which will be very efficient if only a few files have changed.
 
 We need to verify by comparing the \textit{reUpNix} update size to the size of the container layers,
 which are updated by a docker pull, that this approach reduces the data transmitted.
