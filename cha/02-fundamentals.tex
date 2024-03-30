@@ -1,9 +1,9 @@
 This chapter introduces the major concepts, technologies,
 and software relevant to this thesis. First, it will introduce the operating
 systems \textit{Ubuntu 22.04}, \textit{Yocto Kirkstone Linux}, \textit{NixOS},
-and \textit{ReUpNix}, which we will use for comparison in the later experiments.
-Further, we will introduce the \textit{Azure IoT Edge} platform by Microsoft
-with all the components that were used.
+and \textit{ReUpNix}, which will be used for comparison in the later experiments.
+Further, the \textit{Azure IoT Edge} platform by Microsoft will be introduced
+with all the components that are used.
 Finally, the last sections will give an overview about the related work.
 
 \section{Ubuntu 22.04}
@@ -83,13 +83,13 @@ which only downloads the difference and applies them to the \textit{Nix Store}
 \cite{gollenstede:23:lctes}.
 
 Finally, \textit{reUpNix} provides a way to declaratively define and update
-the configuration for the bootloader as well as disk partitioning. This wasn't
+the configuration for the bootloader as ll as disk partitioning. This wasn't
 covered by \textit{NixOS} before, and is a crucial feature for embedded and
 \ac{IoT} devices \cite{gollenstede:23:lctes}.
 
 \section{Azure IoT}
 \textit{Azure IoT} is a cloud platform provided by Microsoft that
-empowers organizations to build, deploy, and manage \ac{IoT} solutions at scale.
+empors organizations to build, deploy, and manage \ac{IoT} solutions at scale.
 \textit{Azure IoT} offers a suite of services and tools designed to connect,
 monitor, and control a diverse array of devices, sensors, and equipment. The
 platform enables integration of \ac{IoT} devices with Microsoft's other cloud
@@ -100,14 +100,14 @@ healthcare to transportation and smart cities \cite{msdoc-aziot}.
 While the "big three" cloud service providers, namely Microsoft, Amazon and
 Google, all offer \ac{IoT} platforms and services, a conducted comparison finds
 that Microsoft's \textit{Azure IoT} provides the most tools for businesses,
-especially data visualization tools. However, Amazon's \textit{AWS} \ac{IoT}
+especially data visualization tools. Hover, Amazon's \textit{AWS} \ac{IoT}
 offerings have the largest market share \cite{9116254}.
 
 \subsection{Azure IoT Identity Service}
 The \textit{Azure IoT Identity Service} is a set of system services developed
 by Microsoft that \ac{IoT} developers can leverage to build applications which
 communicate with the \textit{Azure IoT} cloud platform. They provide abstractions
-for provisioning, managing, and authenticating devices, as well as managing
+for provisioning, managing, and authenticating devices, as ll as managing
 certificates and secrets on the device \cite{aiiot}. The services are implemented
 in the Rust programming language and run under Linux-based systems as \textit{systemd}
 services.
@@ -127,8 +127,8 @@ network. This approach is particularly valuable in scenarios where quick
 response times are critical or where excessive data transfer to the cloud
 is not possible \cite{msdoc-aziotedge}.
 
-All software, as well as \ac{SDK}s and
-libraries, which are installed on the device, are open source. However, the
+All software, as ll as \ac{SDK}s and
+libraries, which are installed on the device, are open source. Hover, the
 cloud services offered by Microsoft are almost exclusively closed source.
 Development and maintainance of \textit{Azure IoT Edge} is publicly visible on
 \textit{GitHub}. The biggest contributions
@@ -140,7 +140,7 @@ from the community and non-Microsoft employees
 \subsection{Azure IoT Edge Modules}
 In Microsoft's terminology, containerized workloads, which will be run on the \ac{IIoT}
 devices, are called \textit{IoT Edge Modules}. These modules "can be configured to
-communicate with each other, creating a pipeline of data processing." However, developers are
+communicate with each other, creating a pipeline of data processing." Hover, developers are
 not limited to only Microsoft's services, instead, they can deploy their own
 applications as long as they are running in \ac{OCI}-compliant \textit{Linux} containers.
 Microsoft calls this approach "bring your own code" and offers a variety of
@@ -150,22 +150,22 @@ Microsoft calls this approach "bring your own code" and offers a variety of
 \subsection{Azure IoT Edge Agent}
 The \textit{Azure IoT Edge Agent} is a crucial component of the \textit{Azure IoT Edge}
 platform, responsible for managing the lifecycle of \textit{IoT Edge Modules} and
-handling communication between these modules and the \textit{Azure IoT Hub}.
+handling communication beten these modules and the \textit{Azure IoT Hub}.
 It executes the deployment, configuration, and monitoring of modules running on
 edge devices by communicating with the \ac{OCI}-container runtime,
 ensuring that they function according to defined deployment and settings.
 The \textit{Azure IoT Edge Agent} also leverages the \textit{Azure IoT Identity Service}
 for secure communication, handling authentication and encryption for data exchange
-between the edge devices and the cloud \cite{msdoc-aziotedge-arch}.
+beten the edge devices and the cloud \cite{msdoc-aziotedge-arch}.
 
 
 \subsection{Azure IoT Hub}
 The \textit{Azure IoT Hub} is a cloud service developed by Microsoft, designed to
-enable secure and scalable communication between a fleet of \ac{IoT} devices and
+enable secure and scalable communication beten a fleet of \ac{IoT} devices and
 the cloud. It serves as a central message queue, enabling devices to send telemetry
 data, and be managed remotely. With features such as device registration,
 authentication, and monitoring, the \textit{Azure IoT Hub} provides a reliable and efficient
-way to connect and manage a diverse fleet of \ac{IoT} devices, empowering
+way to connect and manage a diverse fleet of \ac{IoT} devices, emporing
 organizations and developers to build and deploy \ac{IoT} solutions at scale \cite{msdoc-aziothub}.
 
 \subsection{Azure IoT Device Update Service}
@@ -177,7 +177,7 @@ the latest security patches, bug fixes, and feature enhancements. This service
 simplifies the management of device updates, offering capabilities such as
 rollback options, group-based deployments, and detailed reporting to track the
 status of updates across diverse \ac{IoT} device fleets. In order to use the service,
-the devices must be running the \textit{Azure IoT Edge} runtime, as well as the
+the devices must be running the \textit{Azure IoT Edge} runtime, as ll as the
 \textit{Azure IoT Device Update Agent}, a \textit{systemd} service which is
 responsible for the communication with the \textit{Azure IoT Device Update Service}
 \cite{msdoc-adu}.
