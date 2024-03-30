@@ -142,9 +142,9 @@ as the delta between those two timestamps:
     T := |t_1 - t_0|
 \end{equation}
 However, since rebooting the \ac{OS} is a process with many variances, the experiment
-must be repeated multiple times. If we repeat the experiment $n$ times, where
-$T_i$ represents the result of the $i$-th repetition, we can calculate
-a mean value for $T$ as:
+must be repeated multiple times. If the experiment can be repeated $n$ times, where
+$T_i$ represents the result of the $i$-th repetition, a mean value for $T$ can be 
+calculated as:
 
 \begin{equation}
     \mu := \frac{\sum_{i=1}^{n}T_i}{n}
@@ -189,8 +189,8 @@ as the container runtime.
 In an \ac{IoT} scenario, where network connectivity is limited or expensive,
 it should be avoided to pull the entire container image when only a few files have
 changed. Since the \textit{Nix store} has a pretty efficient mechanism for
-deduplicating files, we want to investigate if we can use \textit{reUpNix}'s
-update mechanism to update containers in a more efficient way.
+deduplicating files, it has to be investigated if \textit{reUpNix}'s
+update mechanism can be used to update containers in a more efficient way.
 
 Our proposed approach is to pull and unpack the container images during the build
 process of the \ac{OS}, and then storing the container image layers in the
@@ -205,7 +205,7 @@ For further optimization, the container image layers can be also unpacked,
 such that \textit{reUpNix} can create a differential update on a file level for
 the layers, which will be very efficient if only a few files have changed.
 
-We need to verify by comparing the \textit{reUpNix} update size to the size of the container layers,
+It needs to be verified by comparing the \textit{reUpNix} update size to the size of the container layers,
 which are updated by a docker pull, that this approach reduces the data transmitted.
 
 \subsection{Hypothesis}
