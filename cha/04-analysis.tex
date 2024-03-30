@@ -110,7 +110,7 @@ for embedded and \ac{IoT} systems. The largest image in this comparison is
 \textit{Yocto Kirkstone}, which is 2,634 Megabytes larger than \textit{Ubuntu 22.04}.
 However, it features no effort to minimize the size of the \ac{OS} and it
 just contains a default development configuration of the \textit{Yocto Project}
-for \textit{Azure IoT Edge}. It can be seen that our hypothesis, that \textit{reUpNix}
+for \textit{Azure IoT Edge}. It can be seen that the hypothesis, that \textit{reUpNix}
 is by far the smallest \ac{OS} in this comparison, is confirmed. The minification
 process is effective and \textit{reUpNix} is a viable option for \ac{IoT} devices
 running \textit{Azure IoT Edge} with limited storage capacity. Even if it would be
@@ -321,7 +321,7 @@ the system to wait until all processes are terminated before rebooting. Further,
 it can be seen that \textit{reUpNix} has a faster time to recover than \textit{NixOS 23.01},
 which means that the minification process of \textit{reUpNix} does not introduce
 delay in the boot process and the opposite is true.
-Our measurements show that \textit{reUpNix} is a viable option for \ac{IoT} devices
+The measurements show that \textit{reUpNix} is a viable option for \ac{IoT} devices
 and that the \textit{Nix} package manager does not introduce a significant delay.
 \textit{Azure IoT Edge} with its dependencies can be installed and run on
 \textit{reUpNix} with a comparable, even better, time to recover as Microsoft's
@@ -465,7 +465,7 @@ with \code{docker pull}.
 For all of the top 10 most pulled images from \textit{Docker Hub}, we can save
 transferred data size by using \textit{reUpNix} and \textit{bzip2}. This means
 that using \textit{reUpNix} to install container images on \ac{IoT} devices is more
-efficient than using \code{docker pull} and our proposed methodology can be used
+efficient than using \code{docker pull} and the proposed methodology can be used
 as a replacement which still works with \textit{Azure IoT Edge}.
 
 For using the \textit{reUpNix} differential update mechanism to install container
