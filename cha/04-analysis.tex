@@ -9,14 +9,14 @@
 
 \section{Image Size}
 It has been possible to create a minimal \ac{OS} image with the Azure IoT Edge runtime
-using \textit{reUpNix}. To achieve this, \textit{Nix} derivations and modules for 
-the \textit{Azure IoT Edge} runtime and the \textit{Azure IoT Edge Identity Service} 
+using \textit{reUpNix}. To achieve this, \textit{Nix} derivations and modules for
+the \textit{Azure IoT Edge} runtime and the \textit{Azure IoT Edge Identity Service}
 have been created. Additionally, a \textit{Nix} derivation for the \ac{ADU} Agent has been created.
 Microsoft has the source code for the previously mentioned components
 publicly available on GitHub, the \textit{Nix} packages could be built directly
 from source, which is written in Rust and C and uses Cargo and CMake respectively.
 For the third-party dependencies, namely \textit{libc}, \textit{libtss}, \textit{libcurl}, and
-\textit{openssl}, of the \textit{Azure IoT Edge} runtime, the already existing \textit{Nix} packages 
+\textit{openssl}, of the \textit{Azure IoT Edge} runtime, the already existing \textit{Nix} packages
 from the \textit{Nixpkgs} repository have been used.
 By using the existing \textit{Nix} packages, it could be ensured that the dependencies
 are linked with the correct paths in the \textit{Nix} store and can be reused
@@ -135,8 +135,8 @@ added to \textit{reUpNix} be able to run \textit{Podman}, would have to be inves
 In the previous section it has already been discussed that it has been possible to create
 \textit{Nix} packages for the \textit{Azure IoT Edge} runtime and its dependencies.
 Since it has been established that \textit{reUpNix} can be used to create a minimal
-\ac{OS} image for \textit{Azure IoT Edge}, the update size when updating with \textit{reUpNix}'s differential updates 
-can now be compared to the update size when updating in an A/B partitioning scheme. 
+\ac{OS} image for \textit{Azure IoT Edge}, the update size when updating with \textit{reUpNix}'s differential updates
+can now be compared to the update size when updating in an A/B partitioning scheme.
 Both methods can be used with \ac{ADU} Agent, with the exception that for \textit{reUpNix} the \ac{ADU}
 needs to use a script handler to apply the update, while for A/B partitioning
 the built-in \ac{ADU} handler can be used. When comparing the update size
@@ -331,7 +331,7 @@ recommended \textit{Ubuntu 22.04}.
 %\clearpage
 \section{Container Installation}
 With the proposed methodology in chapter \ref{sec:container-updates}, it has been possible
-to install \ac{OCI}-container images on an \ac{IoT} device running \textit{reUpNix} without 
+to install \ac{OCI}-container images on an \ac{IoT} device running \textit{reUpNix} without
 using \code{docker pull}.
 It has been verified that the installed images can be used to run containers with \textit{Docker}
 and match the images from \textit{Docker Hub} by comparing the \textit{SHA256} checksums.
@@ -492,19 +492,23 @@ can be used to install container images on \ac{IoT} devices running \textit{Azur
 To measure the efficiency of the \textit{reUpNix} differential update mechanism
 when updating container images, a selection of the most popular container images
 from \textit{Docker hub} were updated to the latest version from the previous version
-using the \textit{reUpNix} differential update mechanism. The results of the
-comparison
+using the \textit{reUpNix} differential update mechanism. \textit{Docker} uses
+\textit{gzip} to compress the layers of the image when pulling. For the differential
+updates of \textit{reUPNix}, \textit{gzip} was also used to compress the updates,
+however, the update can be compressed with any algorithm. The results of the
+comparison can be seen in table \ref{tab:container-update-size}.
 
 \begin{table}[H]
 	\centering
-	\begin{tabular}{l|c|c|c}
+  \footnotesize
+	\begin{tabular}{l|c|c|c|c|c|c}
 	\toprule
-	 Image & Docker Pull & reUpNix & $\Delta$ \% \\
+	 Image & From& To & Layers & Pull Size & reUpNix Size &$\Delta$ \% \\
 	\midrule
-    \textbf{nginx} & 67.25 MB & 61.83 MB & \color{ba-green}{- 8.0 \%} \\
-    \textbf{mongo} & 246.58 MB & 233.22 MB & \color{ba-green}{- 5.6 \%} \\
-    \textbf{busybox} & 2.05 MB & 2.03 MB & \color{ba-green}{- 0.9 \%} \\
-    \textbf{ubuntu} & 28.17 MB & 26.15 MB & \color{ba-green}{- 6.3 \%} \\
+    \textbf{ubuntu} & jammy-20240212 & jammy-20240227 & 1 & 29.54 MB &28.72 MB & \color{ba-green}{- 2.77 \%} \\
+    \textbf{node} & 20.12.0-bullseye & 21.7.1-bullseye & 13 & 357.03 MB & 362.64 MB & \color{ba-red}{+ 1.57 \%} \\
+    \textbf{ruby} & 3.1.4-bookworm & 3.2.3-bookworm & 16 & 365.76 MB & 372.82 MB & \color{ba-red}{+ 1.93 \%} \\
+    \textbf{busybox} & 1.35.0-glibc & 1.36.1-glibc & 1 & 2.05 MB & 2.15 MB & \color{ba-red}{+ 4.87 \%} \\
 	\bottomrule
 	\end{tabular}
 	\caption{Container Image Update Size}
@@ -512,4 +516,29 @@ comparison
 \end{table}
 
 \noindent
-It is clear from the results
+The results show that when using the \textit{reUpNix} differential update mechanism
+to update container images, the size of the update is slightly larger than the size
+when using \code{docker pull} for most of the tested images. This is mostly due
+to the fact that when vendors
+publish new versions of their container images, they usually include new features
+and update the software in the image, which means that almost all files on all
+layers have to be updated.
+
+The additional size can be explained by the fact that the \textit{reUpNix}
+differential update mechanism takes up some space for the update script itself,
+which needs to store information about \textit{Nix store} paths were the files
+to update are located.
+
+The established hypothesis, that the \textit{reUpNix} differential update mechanism
+are more efficient than using \code{docker pull} for updating container images
+is not true. There are however images, like \textit{ubuntu}, where the update size
+was smaller when updating with \textit{reUpNix}, but this was mainly due to the
+fact that the time between releases was the shortest for this image.
+
+\subsection{Improved Compression}
+To further reduce the update size, the \textit{reUpNix} differential updates can
+be compressed with a more efficient algorithm than \textit{gzip}. With \textit{reUpNix}
+updates, users are not bound to \textit{gzip}, like with docker. A quick test
+yielded that using \textit{bzip2} to compress the updates instead of \textit{gzip},
+the update size can be further reduced. For example, the container image \textit{ubuntu}
+was 6.3\% smaller when compressed with \textit{bzip2} instead of \textit{gzip}.
