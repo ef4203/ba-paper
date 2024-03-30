@@ -1,19 +1,19 @@
 \section{Summary}
-In this thesis we have investigated the possibility of using \textit{reUpNix} as the
-host \ac{OS} for running the popular \textit{Azure IoT} platform on \ac{IIoT} devices.
-We have focused on the update mechanism of \textit{reUpNix} and how it can be used
+In this thesis the possibility of using \textit{reUpNix} as the host \ac{OS} for 
+running the popular \textit{Azure IoT} platform on \ac{IIoT} devices has been investigated.
+The focus of this study has been on the update mechanism of \textit{reUpNix} and how it can be used
 to save bandwidth when updating the \ac{OS} and \ac{OCI}-container images on the device,
 since some \ac{IoT} devices have limited bandwidth because they are installed in
-remote locations and/or have limited storage. We were able to show that \textit{Azure IoT Edge}
+remote locations and/or have limited storage. It could be shown that \textit{Azure IoT Edge}
 can be packaged and run on the \textit{Nix}-based \textit{reUpNix} and
 \textit{reUpNix}'s \textit{Nix store} does not introduce any significant overhead
 or delay when recovering from a reboot. When comparing \textit{reUpNix} to
-other \ac{OS} that are able to run \textit{Azure IoT Edge}, we observed that \textit{reUpNix}
+other \ac{OS} that are able to run \textit{Azure IoT Edge}, it has been observed that \textit{reUpNix}
 had a significantly smaller image size than the other \ac{OS}. In particular,
 \textit{reUpNix} has a 43\% smaller image size than for example Microsoft's
-recommended \textit{Ubuntu 22.04}. We also showed that \textit{reUpNix}'s update
+recommended \textit{Ubuntu 22.04}. It has also been shown that \textit{reUpNix}'s update
 methodology is significantly more efficient than the commonly used A/B partition
-schema. In our tests, \textit{reUpNix} was able to update the \ac{OS} and save
+schema. In the tests, \textit{reUpNix} was able to update the \ac{OS} and save
 90.3\% of the transferred data compared to a A/B partition schema with \textit{Ubuntu 22.04}.
 
 
@@ -43,18 +43,18 @@ and bring customers new features faster in an edge computing environment.
 
 \section{Future Work}
 In order to store the \ac{OCI}-container images in the \textit{Nix store} and
-handle the update of the images easier, we could implement a custom storage
-provider for docker images that uses the \textit{Nix store} as the backend.
+handle the update of the images easier, a custom storage provider for docker images 
+that uses the \textit{Nix store} as the backend could be implemented.
 This would eliminate some of the complexity of the current solution and reduce
 the overhead required to load the container images.
 
-Further, we could investigate the possibility of implementing a custom update
-handler for the \textit{Azure Device Update Agent} since Microsoft allows
-the implementation of custom update handlers. This would allow us replace the
-currently script handler with a dedicated update handler that is compatible
+Further, the possibility of implementing a custom update handler for 
+the \textit{Azure Device Update Agent} could be investigated, since Microsoft allows
+the implementation of custom update handlers. This would allow the replacement of the
+current script handler with a dedicated update handler that is compatible
 with \textit{reUpNix}'s update mechanism and has lower overhead.
 
-Lastly, we have not shown that the system we have built is the smallest possible
+Lastly, it has not been shown that the system that has been built is the smallest possible
 system to run \textit{Azure IoT Edge} on. There are still possibilities to explore, which
 further minify the system, such as using \textit{Podmand} instead of \textit{Docker}
 or minifying the \textit{Azure IoT Edge} runtime and the \textit{Azure IoT Edge} modules
