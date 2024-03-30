@@ -8,34 +8,34 @@
 %\end{tcolorbox}
 
 \section{Image Size}
-We were able to create a minimal \ac{OS} image with the Azure IoT Edge runtime
-using \textit{reUpNix}. To achieve this, we created \textit{Nix} derivations
-and modules for the \textit{Azure IoT Edge} runtime and the \textit{Azure IoT Edge
-Identity Service}. We also created a \textit{Nix} derivation for the \ac{ADU} Agent.
+It has been possible to create a minimal \ac{OS} image with the Azure IoT Edge runtime
+using \textit{reUpNix}. To achieve this, \textit{Nix} derivations and modules for 
+the \textit{Azure IoT Edge} runtime and the \textit{Azure IoT Edge Identity Service} 
+have been created. Additionally, a \textit{Nix} derivation for the \ac{ADU} Agent has been created.
 Microsoft has the source code for the previously mentioned components
-publicly available on GitHub, so we could build the \textit{Nix} packages directly
+publicly available on GitHub, the \textit{Nix} packages could be built directly
 from source, which is written in Rust and C and uses Cargo and CMake respectively.
 For the third-party dependencies, namely \textit{libc}, \textit{libtss}, \textit{libcurl}, and
-\textit{openssl}, of the \textit{Azure IoT Edge} runtime, we used
-the already existing \textit{Nix} packages from the \textit{Nixpkgs} repository.
-By using the existing \textit{Nix} packages, we could ensure that the dependencies
-are linked with the correct paths in the \textit{Nix} store, and can be reused
+\textit{openssl}, of the \textit{Azure IoT Edge} runtime, the already existing \textit{Nix} packages 
+from the \textit{Nixpkgs} repository have been used.
+By using the existing \textit{Nix} packages, it could be ensured that the dependencies
+are linked with the correct paths in the \textit{Nix} store and can be reused
 by other \textit{Nix} packages.
-Further, we had to add the already existing \textit{Nix} package for \textit{Docker}
+Further, the already existing \textit{Nix} package for \textit{Docker} had to be added
 to the system configuration, since it is required by \textit{Azure IoT Edge}.
 However, it is not a hard dependency, in case the user wants to exchange \textit{Docker}
 with \textit{Moby} or \textit{Podman}, which are also able to run \ac{OCI}-compliant
 container images.
 
 Finally, since \textit{reUpNix} removes some unnecessary
-Kernel modules, we had to add Kernel modules back to the system configuration in order
+Kernel modules, Kernel modules had to be added back to the system configuration in order
 to be able to run \textit{Docker}.
-Most notably, we had to add the kernel modules
-\textit{br\_netfilter}, \textit{xt\_nat} and \textit{8021q} to the system configuration,
+Most notably, the kernel modules
+\textit{br\_netfilter}, \textit{xt\_nat} and \textit{8021q} had to be added to the system configuration,
 since they are required for \textit{Docker} networking.
 
-We compared \textit{reUpNix}, \textit{NixOS 23.01}, \textit{Ubuntu 22.04}, and
-\textit{Yocto Kirkstone} by their installed image size, with the methodology introduced
+\textit{reUpNix}, \textit{NixOS 23.01}, \textit{Ubuntu 22.04}, and
+\textit{Yocto Kirkstone} had to be compared by their installed image size, with the methodology introduced
 in chapter \ref{sec:image-size}. All system images feature an \ac{OCI}-compliant container runtime
 and the Azure IoT Edge runtime. The results of the comparison are shown in table \ref{tab:image-size}.
 
@@ -58,7 +58,7 @@ and the Azure IoT Edge runtime. The results of the comparison are shown in table
 \end{table}
 
 \noindent
-We can see from table \ref{tab:image-size} that with its 1,289 \ac{MB},
+It can be seen from table \ref{tab:image-size} that with its 1,289 \ac{MB},
 \textit{reUpNix} has a 43\% smaller base image size than Microsoft's recommended
 \textit{Ubuntu 22.04}. It is also 45\% smaller than the base image size of
 \textit{NixOS 23.01}, which shows that the minification process is very effective
@@ -110,12 +110,12 @@ for embedded and \ac{IoT} systems. The largest image in this comparison is
 \textit{Yocto Kirkstone}, which is 2,634 Megabytes larger than \textit{Ubuntu 22.04}.
 However, it features no effort to minimize the size of the \ac{OS} and it
 just contains a default development configuration of the \textit{Yocto Project}
-for \textit{Azure IoT Edge}. We can see that our hypothesis, that \textit{reUpNix}
+for \textit{Azure IoT Edge}. It can be seen that our hypothesis, that \textit{reUpNix}
 is by far the smallest \ac{OS} in this comparison, is confirmed. The minification
 process is effective and \textit{reUpNix} is a viable option for \ac{IoT} devices
-running \textit{Azure IoT Edge} with limited storage capacity. Even if we would
-update \textit{reUpNix} with an A/B partitioning scheme, which is not the proposed
-methodology, the update size would be smaller, and we would still have less data
+running \textit{Azure IoT Edge} with limited storage capacity. Even if it would be
+updated \textit{reUpNix} with an A/B partitioning scheme, which is not the proposed
+methodology, the update size would be smaller, and it would still have less data
 transmitted in comparison to the other \ac{OS}.
 
 \subsection{Podman}
@@ -125,25 +125,22 @@ Podman instead of Docker as the container runtime for Azure IoT Edge. Podman is
 not officially supported by Microsoft, but it can potentially be used as a
 replacement for Docker, since it can provide a \ac{UDS} for the IoT Edge runtime
 to communicate with the container runtime \cite{book:3556946,msdoc-supportetplatforms}.
-In a quick comparison made with an unminified \textit{NixOS} image, we found that
+In a quick comparison made with an unminified \textit{NixOS} image, it has been found that
 using \textit{Podman} instead of \textit{Docker} would reduce the image size by
-15\%. However, \textit{Podman} does not run on \textit{reUpNix} out of the box,
-we would have to invest some effort to investigate, which components have to be
-added to \textit{reUpNix} be able to run \textit{Podman}.
+15\%. However, \textit{Podman} does not run on \textit{reUpNix} out of the box.
+Some effort to investigate, which components have to be
+added to \textit{reUpNix} be able to run \textit{Podman}, would have to be invested.
 
 \section{Update size}
-In the previous section we have already discussed that we were able to create
+In the previous section it has already been discussed that it has been possible to create
 \textit{Nix} packages for the \textit{Azure IoT Edge} runtime and its dependencies.
-Since we have established that \textit{reUpNix} can be used to create a minimal
-\ac{OS} image for \textit{Azure IoT Edge}, we can now compare the update size
-when updating with \textit{reUpNix}'s differential updates to the update size
-when updating in an A/B partitioning scheme. Both methods can be used
-with \ac{ADU} Agent, with the exception that for \textit{reUpNix} the \ac{ADU}
+Since it has been established that \textit{reUpNix} can be used to create a minimal
+\ac{OS} image for \textit{Azure IoT Edge}, the update size when updating with \textit{reUpNix}'s differential updates 
+can now be compared to the update size when updating in an A/B partitioning scheme. 
+Both methods can be used with \ac{ADU} Agent, with the exception that for \textit{reUpNix} the \ac{ADU}
 needs to use a script handler to apply the update, while for A/B partitioning
-the built-in \ac{ADU} handler can be used. We wanted to compare the update size
-for an update, which changes the majority of packages in the system, so we
-picked a \textit{Nixpkgs} version from November 1st, 2023 as the base and March 16th,
-2024 as the target upstream. The results of the comparison are shown in table
+the built-in \ac{ADU} handler can be used. When comparing the update size
+for an update, which changes the majority of packages in the system, a \textit{Nixpkgs} version from November 1st, 2023 as the base and March 16th, 2024 as the target upstream have been picked. The results of the comparison are shown in table
 \ref{tab:update-size}.
 
 \begin{table}[H]
@@ -163,7 +160,7 @@ picked a \textit{Nixpkgs} version from November 1st, 2023 as the base and March 
 \end{table}
 
 \noindent
-We can clearly see that \textit{reUpNix} has a 90.3\% smaller update size
+It can be clearly seen that \textit{reUpNix} has a 90.3\% smaller update size
 than \textit{Ubuntu 22.04}, which is a significant improvement. Applying the
 differential update methodology of \textit{reUpNix} to \ac{IoT} devices
 running \textit{Azure IoT Edge} will significantly reduce the amount of data
@@ -206,7 +203,7 @@ devices with a limited Internet connection and it enables a more frequent updati
 \end{figure}
 
 \noindent
-In figure \ref{fig:update-size} we can see yet again how large the difference
+In figure \ref{fig:update-size} it can be seen yet again how large the difference
 in size is and that \textit{reUpNix} is the most efficient \ac{OS} in this comparison.
 Using \textit{reUpNix} for \ac{IoT} devices running \textit{Azure IoT Edge}
 instead of Microsoft's recommended \textit{Ubuntu 22.04} will significantly reduce
@@ -214,13 +211,13 @@ the data transmitted, when updating the \ac{OS} and the \textit{Azure IoT Edge} 
 
 \section{Time To Recover}
 In order to verify that the \textit{reUpNix} system can recover from a reboot
-in an acceptable time frame, we measured the time it takes for the system to
+in an acceptable time frame, the time it takes for the system to
 reboot and send a message via the \textit{Azure IoT Edge Hub} with the proposed
-methodology from chapter \ref{sec:time-to-recover}. We used the first message
+methodology from chapter \ref{sec:time-to-recover} has been measured. The first message
 that the \textit{Edge Agent} sends to the \textit{Edge Hub} after a reboot as
-a measure, because this message includes the timestamp when it was sent.
+a measure has been used, because this message includes the timestamp when it was sent.
 The \textit{Edge Agent} immediately sends an update message to the \textit{Azure
-IoT Hub} to signal that the device is online. We repeated the same experiment
+IoT Hub} to signal that the device is online. The same experiment has been repeated
 for all of the \ac{OS}, namely \textit{reUpNix}, \textit{NixOS 23.01},
 \textit{Ubuntu 22.04}, and \textit{Yocto Kirkstone}. The results of the comparison
 can be seen in table \ref{tab:timetorecover} and figure \ref{fig:timetorecover}.
@@ -310,18 +307,18 @@ and \textit{Ubuntu 22.04} respectively.}
 \label{fig:timetorecover}
 \end{figure}
 \noindent
-We can see from the results that \textit{reUpNix} has on average the fastest time
-to recover, from the four \ac{OS} we tested, even if we account for the different
-delays that are configured for the bootloader. So our hypothesis, that \textit{reUpNix}
+It can be seen from the results that \textit{reUpNix} has on average the fastest time
+to recover, from the four \ac{OS} that have been tested, even when accounting for the different
+delays that are configured for the bootloader. So the hypothesis, that \textit{reUpNix}
 and \textit{NixOS} will provide no significant delay in the boot process due to
 the \textit{Nix} package manager, is confirmed. The two \ac{OS} using the
 \textit{Nix} package manager have a similar or better, time to recover as the \ac{OS},
 which use a traditional file system and directory structure, even when taking
-the standard deviation and standard error into account. We also observed some outliers
-for \textit{Ubuntu 22.04} and \textit{NixOS 23.01}, which are due to the
+the standard deviation and standard error into account. Some outliers
+for \textit{Ubuntu 22.04} and \textit{NixOS 23.01} have been observed, which are due to the
 fact that reboot command was issued without the force flag, which will cause
 the system to wait until all processes are terminated before rebooting. Further,
-we see that \textit{reUpNix} has a faster time to recover than \textit{NixOS 23.01},
+it can be seen that \textit{reUpNix} has a faster time to recover than \textit{NixOS 23.01},
 which means that the minification process of \textit{reUpNix} does not introduce
 delay in the boot process and the opposite is true.
 Our measurements show that \textit{reUpNix} is a viable option for \ac{IoT} devices
@@ -333,13 +330,13 @@ recommended \textit{Ubuntu 22.04}.
 
 %\clearpage
 \section{Container Installation}
-With the proposed methodology in chapter \ref{sec:container-updates}, we were able
-to install \ac{OCI}-container images
-on an \ac{IoT} device running \textit{reUpNix} without using \code{docker pull}.
-We verified that the installed images can be used to run containers with \textit{Docker}
+With the proposed methodology in chapter \ref{sec:container-updates}, it has been possible
+to install \ac{OCI}-container images on an \ac{IoT} device running \textit{reUpNix} without 
+using \code{docker pull}.
+It has been verified that the installed images can be used to run containers with \textit{Docker}
 and match the images from \textit{Docker Hub} by comparing the \textit{SHA256} checksums.
-Since the images are now stored in the \textit{Nix} store, we used the \textit{reUpNix}
-differential update mechanism to install the container images and compared the update size
+Since the images are now stored in the \textit{Nix} store, the \textit{reUpNix}
+differential update mechanism has been used to install the container images and compare the update size
 with the compressed size that would be downloaded with \code{docker pull}. In
 contrast to \textit{Docker}, \textit{reUpNix} updates can be compressed with a
 more efficient algorithm, since there's a freedom of choice up to the implementation.
