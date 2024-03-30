@@ -73,9 +73,9 @@ and challenging.
 
 \section{Strategy}
 To address the problem of reliably updating \ac{IoT} and \ac{IIoT}
-devices with limited bandwidth, we need to investigate if using a different
+devices with limited bandwidth, it needs to be investigated if using a different
 update strategy in contrast to A/B partitioning can reduce the amount of data transmitted.
-We have selected \textit{reUpNix} as the operating system to investigate, as its
+It has been selected \textit{reUpNix} as the operating system to investigate, as its
 update mechanism is specifically designed for \ac{IoT} and embedded devices with
 limited bandwidth and storage \cite{gollenstede:23:lctes}. However, an integration
 with a popular \ac{IoT} platform cloud services and \textit{reUpNix} has not
@@ -83,24 +83,24 @@ been done yet. The \textit{NixOS}-based \textit{reUpNix} provides a reproducible
 build system, which is highly desirable property for keeping a consistent state
 in a large fleet of \ac{IoT} or \ac{IIoT} devices.
 
-As a cloud platform for \ac{IoT} we have chosen Microsoft's \textit{Azure IoT}
+As a cloud platform for \ac{IoT}, Microsoft's \textit{Azure IoT} has been chosen
 as it is one of the most popular cloud platforms for \ac{IoT} and \ac{IIoT} applications.
 \textit{Azure IoT Edge} in particular extends \textit{Azure IoT} to run
 \ac{OCI}-containers on \ac{IoT} devices, which is a popular approach for edge
 computing.
 
-In section \ref{sec:update-size} we designed a strategy to update the \ac{OS} of \ac{IoT} device running
+In section \ref{sec:update-size} a strategy has been designed to update the \ac{OS} of \ac{IoT} device running
 \textit{Azure IoT Edge} using \textit{Azure IoT Device Update Service} with
 \textit{reUpNix}'s update mechanism. The strategy needs to reduce the transmitted data
 for an update significantly in comparison to using a full \ac{OS} image in an
-A/B partition schema. Additionally, we need to verify that using a different
+A/B partition schema. Additionally, it needs to be verified that using a different
 \ac{OS} than the one recommended by Microsoft does not significantly impact
 the reliability and performance of the \ac{IoT} device.
 
 
 Not just the \ac{OS} needs to be updated but also the \ac{IoT} applications
-running as \ac{OCI}-containers on the device. To achieve this,
-we propose a strategy in section \ref{sec:container-updates}
+running as \ac{OCI}-containers on the device. To achieve this, 
+a strategy in section \ref{sec:container-updates} has to be proposed,
 using \textit{reUpNix}'s \ac{OS} update mechanism to reduce the transmitted data
 size in comparison to using \code{docker pull}. The proposed strategy must
 reliably save bandwidth for the popular \ac{OCI}-container images from
