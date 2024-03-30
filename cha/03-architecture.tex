@@ -169,7 +169,7 @@ This experiment must be repeated until the standard error is low enough
 to have a confident mean value for each \ac{OS}.
 
 \subsection{Hypothesis}
-Our hypothesis is that the time to recover will be very similar for all
+The hypothesis is that the time to recover will be very similar for all
 \ac{OS}s. Since they all run \textit{Linux}, the Azure IoT Edge runtime and
 a similar set of software, such as \textit{systemd}, and \ac{SSH}. However, due
 to the reduced size of \textit{reUpNix}, there may be a slight advantage in the
@@ -192,7 +192,7 @@ changed. Since the \textit{Nix store} has a pretty efficient mechanism for
 deduplicating files, it has to be investigated if \textit{reUpNix}'s
 update mechanism can be used to update containers in a more efficient way.
 
-Our proposed approach is to pull and unpack the container images during the build
+The proposed approach is to pull and unpack the container images during the build
 process of the \ac{OS}, and then storing the container image layers in the
 \textit{Nix store}. When a container image needs to be updated, it can
 be included in the system configuration and updated with \textit{reUpNix}.
@@ -209,7 +209,7 @@ It needs to be verified by comparing the \textit{reUpNix} update size to the siz
 which are updated by a docker pull, that this approach reduces the data transmitted.
 
 \subsection{Hypothesis}
-Our hypothesis is that updating containers with \textit{reUpNix}'s differential
+The hypothesis is that updating containers with \textit{reUpNix}'s differential
 update mechanism will be more efficient than updating them with Azure IoT Edge or
 the \code{docker pull} command. This is due to the fact, that if the
 layers of the container image are extracted into the \textit{Nix store} and
