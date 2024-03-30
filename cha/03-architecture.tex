@@ -19,7 +19,7 @@ than Microsoft's recommended \textit{Ubuntu 22.04} needs to be created, while st
 feature the efficient update mechanism of \textit{reUpNix}.
 
 However, \textit{Azure Iot Edge} is not officially supported on \textit{NixOS}
-by Microsoft and there is no \textit{Nix} package available. Therefore, a \textit{Nix} package 
+by Microsoft and there is no \textit{Nix} package available. Therefore, a \textit{Nix} package
 for \textit{Azure IoT Edge} and all of its dependencies from the publicly available source code
 needs to be created. This is a crucial step, since
 without a working \textit{Azure IoT Edge} runtime, there cannot be drawn any meaningful
@@ -28,7 +28,7 @@ conclusions for updating \ac{IIoT} devices using \textit{Azure IoT}.
 To create the \textit{Nix} packages, the dependencies of
 \textit{Azure IoT Edge} and how to package them needs to be understood. As it can be seen in figure
 \ref{fig:dependency-tree}, \textit{Azure IoT Edge} runtime has a tree of dependencies,
-many of which are common to \textit{Linux} systems, which means that the over 80,000 already 
+many of which are common to \textit{Linux} systems, which means that the over 80,000 already
 existing \textit{Nix} packages can be utilized to meet those dependencies.
 \clearpage
 
@@ -60,14 +60,14 @@ image needs to be downloaded and written to a secondary partition. In this
 \ac{OTA} scenario, the size of the operating system image is critical, as it has been
 already discussed in chapter \ref{sec:image-size}.
 However, if a different methodology than an A/B partition schema is being adapted
-for updating the operating system, the update size can potentially be reduced 
+for updating the operating system, the update size can potentially be reduced
 drastically.
 
 It has to be established, if using \textit{reUpNix}'s differential updates as the
 update mechanism for an \ac{IIoT} device with \textit{Azure IoT Edge}
 will result in a smaller update size in comparison to using an A/B partition schema with
-\textit{Ubuntu 22.04} and \textit{Yocto Kirkstone}. To do so, an update for a \textit{reUpNix} system, 
-in which the majority of software packages installed is being upgraded, needs to be created, so that it is comparable 
+\textit{Ubuntu 22.04} and \textit{Yocto Kirkstone}. To do so, an update for a \textit{reUpNix} system,
+in which the majority of software packages installed is being upgraded, needs to be created, so that it is comparable
 to a distribution upgrade of \textit{Ubuntu 22.04} and \textit{Yocto Kirkstone}.
 
 Importantly, the created updates, regardless for which \ac{OS}, must all be
@@ -95,7 +95,7 @@ are commonly legally and formally negotiated in a \ac{SLA} between
 the customer and a service provider \cite{msdoc-slas}. An important consideration
 for service providers to achieve high availability is the boot time of the
 \ac{OS}. However, for this experiment the time to recover is considered
-instead of the actual boot time of the \ac{OS}. For this experiment, the time to recover 
+instead of the actual boot time of the \ac{OS}. For this experiment, the time to recover
 is defined as the time until Azure IoT Edge runtime is operable again after
 an unexpected reboot.
 
@@ -143,7 +143,7 @@ as the delta between those two timestamps:
 \end{equation}
 However, since rebooting the \ac{OS} is a process with many variances, the experiment
 must be repeated multiple times. If the experiment can be repeated $n$ times, where
-$T_i$ represents the result of the $i$-th repetition, a mean value for $T$ can be 
+$T_i$ represents the result of the $i$-th repetition, a mean value for $T$ can be
 calculated as:
 
 \begin{equation}
@@ -179,7 +179,7 @@ time to recover, since the \ac{OS} has to load less data from the disk. Further,
 \section{Container Updates}
 \label{sec:container-updates}
 When using Azure IoT Edge, \ac{IIoT} applications are deployed as containers and
-they change more frequent than the entire \ac{OS}. When a module is updated
+they tend change more frequent than the entire \ac{OS}. When a module is updated
 with a new deployment manifest, Azure IoT Edge retrieves any new container
 images that are not present on the device. It uses a \ac{UDS} to communicate
 with the container runtime and instructs it to pull the image. The same can be

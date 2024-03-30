@@ -150,7 +150,6 @@ for an update, which changes the majority of packages in the system, a \textit{N
 		Operating System & Image Variation 1 & $\Delta$ Ubuntu\\
 	\midrule
     \textbf{reUpNix} & \text{206 MB} & \color{ba-green}{- 1 928 MB} \\
-    \textbf{NixOS 23.01} & \text{XXXX MB} & \textcolor{ba-red}{+ XX MB} \\
     \textbf{Ubuntu 22.04} & \text{2 134 MB} & \text{-} \\
     \textbf{Yocto Kirkstone} & \text{4 717 MB} & \textcolor{ba-red}{+ 2 583 MB} \\
 	\bottomrule
@@ -172,13 +171,12 @@ devices with a limited Internet connection and it enables a more frequent updati
   \begin{tikzpicture}
     \begin{axis}[
       ybar,
-      bar width=0.5cm,
+      bar width=0.75cm,
       % width=0.5\textwidth,
       % height=0.5\textwidth,
       xtick=data,
       xticklabels={
         {reUpNix},
-        {NixOS 23.11},
         {Ubuntu 22.04},
         {Yocto Kirkstone}
       },
@@ -191,9 +189,8 @@ devices with a limited Internet connection and it enables a more frequent updati
 
       \addplot coordinates {
         (1,206)
-        (2,0)
-        (3,2134)
-        (4,4717)
+        (2,2134)
+        (3,4717)
       };
 
     \end{axis}
