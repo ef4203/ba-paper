@@ -1,5 +1,5 @@
 \section{Summary}
-In this thesis the possibility of using \textit{reUpNix} as the host \ac{OS} for 
+In this thesis the possibility of using \textit{reUpNix} as the host \ac{OS} for
 running the popular \textit{Azure IoT} platform on \ac{IIoT} devices has been investigated.
 The focus of this study has been on the update mechanism of \textit{reUpNix} and how it can be used
 to save bandwidth when updating the \ac{OS} and \ac{OCI}-container images on the device,
@@ -34,21 +34,21 @@ and encounters a problem, they need to reproduce the issue with one of Microsoft
 "Tier 1" supported \ac{OS} before they can open a support ticket with Microsoft
 \cite{msdoc-supportetplatforms}.
 
-Lastly, \textit{reUpNix}'s differential updates also reduce the data transmitted
-when updating or installing \ac{OCI}-container images, compared to using \code{docker pull}.
-This is important for \ac{IIoT} devices that run \textit{Azure IoT Edge} or other
-container runtimes, which enables them to update their container images more frequently
-and bring customers new features faster in an edge computing environment.
+Lastly, this study showed that using
+\textit{reUpNix}'s differential updates to update \ac{OCI}-container images
+does not reduce the data transmitted drastically for all images, compared to using
+\code{docker pull}. However, the \textit{Nix store} can be used to store the images
+and it is possible to load the images from the \textit{Nix store} into \textit{Docker}.
 
 
 \section{Future Work}
 In order to store the \ac{OCI}-container images in the \textit{Nix store} and
-handle the update of the images easier, a custom storage provider for docker images 
+handle the update of the images easier, a custom storage provider for docker images
 that uses the \textit{Nix store} as the backend could be implemented.
 This would eliminate some of the complexity of the current solution and reduce
 the overhead required to load the container images.
 
-Further, the possibility of implementing a custom update handler for 
+Further, the possibility of implementing a custom update handler for
 the \textit{Azure Device Update Agent} could be investigated, since Microsoft allows
 the implementation of custom update handlers. This would allow the replacement of the
 current script handler with a dedicated update handler that is compatible

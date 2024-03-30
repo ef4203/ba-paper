@@ -30,9 +30,10 @@ With \textit{ReUpNix} as a host operating system for \textit{Azure IoT Edge}, a
 43\% smaller image size due to the minification was observed and 90\% smaller size of
 system updates due to the fact that only differences are sent, compared to
 Microsoft's recommended \textit{Ubuntu 22.04} image.
-Further, it was shown that it is possible to pre-install Docker container
+Further, it was shown that it is possible to install Docker container
 layers on the device, such that the amount of data that needs to be transmitted
-in the case of a container update with \textit{Azure IoT Edge} is heavily reduced.
+in the case of a container update with \textit{Azure IoT Edge} is reduced, if
+an efficient compression is used.
 However, \textit{NixOS}-based systems do not receive official support from
 Microsoft and product managers need to decide if the benefits outweigh the loss
 of Microsoft's support.
@@ -71,9 +72,10 @@ Mit ReUpNix als Host-Betriebssystem für Azure IoT Edge haben wir eine 43\%
 kleinere Imagegröße aufgrund der Minimierung und 90\% kleinere Größe von
 Updates, die gesendet werden müssen, da nur die Unterschiede in den Dateien gesendet
 werden, im Vergleich zu Microsofts empfohlenem Ubuntu 22.04 Image. Weiterhin haben
-wir gezeigt, dass es möglich ist, Docker-Container-Layer auf dem Gerät vorzuinstallieren,
+wir gezeigt, dass es möglich ist, Docker-Container-Layer auf dem Gerät zu installieren,
 so dass die Menge an Daten, die im Falle eines Container-Updates mit Azure IoT Edge
-übertragen werden muss, stark reduziert wird. Allerdings erhalten NixOS-basierte
+übertragen werden muss, reduziert wird, sofern man effizientere Kompression verwendet.
+ Allerdings erhalten NixOS-basierte
 Betriebssysteme keine offizielle Gewährleistung von Microsoft und Produktmanager
 müssen entscheiden, ob die Vorteile den Verlust der Gewährleistung von Microsoft überwiegen.
 

@@ -325,174 +325,27 @@ and that the \textit{Nix} package manager does not introduce a significant delay
 recommended \textit{Ubuntu 22.04}.
 
 
-%\clearpage
-\section{Container Installation}
+
+\section{Container Updates}
 With the proposed methodology in chapter \ref{sec:container-updates}, it has been possible
 to install \ac{OCI}-container images on an \ac{IoT} device running \textit{reUpNix} without
-using \code{docker pull}.
-It has been verified that the installed images can be used to run containers with \textit{Docker}
-and match the images from \textit{Docker Hub} by comparing the \textit{SHA256} checksums.
-Since the images are now stored in the \textit{Nix} store, the \textit{reUpNix}
-differential update mechanism has been used to install the container images and compare the update size
-with the compressed size that would be downloaded with \code{docker pull}. In
-contrast to \textit{Docker}, \textit{reUpNix} updates can be compressed with a
-more efficient algorithm, since there's a freedom of choice up to the implementation.
-\textit{Docker} uses \textit{gzip} for compressing images, while the updates with
-\textit{reUpNix} in this comparison have been compressed with \textit{bzip2}.
-
-Further, it was investigated if the update size can be further reduced by extracting
-the file contents of the images layers into the \textit{Nix store}. This would mean
-that \textit{Nix} can use file-level deduplication and \textit{reUpNix} can use
-its differential update mechanism to reconstruct the files in the \textit{Nix store}
-by using the already existing files on the device. The resulting update file was
-then also compressed with \textit{bzip2}. However, due to the \textit{Nix store}
+using \code{docker pull}. It has been verified that the installed images can be used
+to run with \textit{Docker} and \textit{Azure IoT Edge}.
+However, due to the \textit{Nix store}
 not preserving timestamps and order of files,
 the reconstructed image does not have the same \textit{SHA256} checksum as the
 original image from \textit{Docker Hub}, but the files are identical. For
 \textit{Azure IoT Edge} this is not a problem, since the \textit{Edge Agent} only
 references the image by its name and tag and not by its \textit{SHA256} checksum.
 
-
-With this methodology the top 10 most pulled images from \textit{Docker Hub}
-were examined and the results can be seen in table \ref{tab:container-size} and figure
-\ref{fig:container-size}, where \textit{reUpNix (packed)} refers to the update
-with its layers still being packed in a \textit{tar}-archive and \textit{reUpNix (unpacked)}
-referring to the update with the layers being extracted and uncompressed into the
-\textit{Nix store}.
-\clearpage
-
-\begin{figure}[htbp]
-  \centering
-  \begin{tikzpicture}
-    \begin{axis}[
-      ybar,
-      width=1\textwidth,
-      height=0.45\textwidth,
-      enlarge y limits  = {0.4,upper},
-      bar width=0.24cm,
-      xtick=data,
-      xticklabels={
-        nginx, mongo, busybox, mysql, ruby, httpd, golang, mariadb, ubuntu, node
-      },
-      x tick label style={rotate=45,anchor=east},
-      legend style={
-        at={(0.01,0.97)},
-        anchor=north west,
-        legend columns=-1,
-      }
-      ]
-
-      \addplot[fill=blue!40] coordinates {
-        (1,61.83) % nginx
-        (2,233.22) % mongo
-        (3,2.03) % busybox
-        (4,158.14) % mysql
-        (5,319.78) % ruby
-        (6,55.22) % httpd
-        (7,261.24)  % golang
-        (8,111.46) % mariadb
-        (9,26.38) % ubuntu
-        (10,343.49) % node
-      };
-
-      \addplot[fill=yellow!40] coordinates {
-        (1,61.68) % nginx
-        (2,233.41 ) % mongo
-        (3,4.54) % busybox
-        (4,0 ) % mysql
-        (5,333.13 ) % ruby
-        (6,110.75 ) % httpd
-        (7,520.70 ) % golang
-        (8,223.08 ) % mariadb
-        (9,53.04 ) % ubuntu
-        (10,340.26 ) % node
-      };
-
-      \addplot[fill=red!40] coordinates {
-        (1,67.25) % nginx
-        (2,246.58 ) % mongo
-        (3,2.05) % busybox
-        (4,174.94 ) % mysql
-        (5,367.45 ) % ruby
-        (6,61.53 ) % httpd
-        (7,285.59 ) % golang
-        (8,117.04 ) % mariadb
-        (9,28.17 ) % ubuntu
-        (10,382.26 ) % node
-      };
-
-
-      \legend{reUpNix (packed), reUpNix (unpacked), Docker Pull}
-    \end{axis}
-  \end{tikzpicture}
-  \caption{Container Image Download Size in MB}
-  \label{fig:container-size}
-\end{figure}
-
-\begin{table}[H]
-	\centering
-	\begin{tabular}{l|c|c|c|c|c}
-	\toprule
-	 Image & Docker Pull & reUpNix (Packed) & $\Delta$ \% & reUpNix (Unpacked) & $\Delta$ \%\\
-	\midrule
-    \textbf{nginx} & 67.25 MB & 61.83 MB & \color{ba-green}{- 8.0 \%} & 61.68 MB & \color{ba-green}{- 8.2 \%}\\
-    \textbf{mongo} & 246.58 MB & 233.22 MB & \color{ba-green}{- 5.6 \%} & 233.41MB & \color{ba-green}{- 5.3 \%}\\
-    \textbf{busybox} & 2.05 MB & 2.03 MB & \color{ba-green}{- 0.9 \%} & 4.54 MB & \color{ba-red}{+ 121.4 \%}\\
-    \textbf{mysql} & 174.94 MB & 158.14 MB & \color{ba-green}{- 9.6 \%} & x & \color{ba-red}{+ x \%}\\
-    \textbf{ruby} & 367.45 MB & 319.78 MB & \color{ba-green}{- 12.9 \%} & 333.13 MB & \color{ba-green}{- 9.3 \%}\\
-    \textbf{httpd} & 61.53 MB & 55.22 MB & \color{ba-green}{- 10.2 \%} & 110.75 MB & \color{ba-red}{+ x \%}\\
-    \textbf{golang} & 285.59 MB & 261.24 MB & \color{ba-green}{- 8.5 \%} & 520.70 MB & \color{ba-red}{+ x \%}\\
-    \textbf{mariadb} & 117.04 MB & 111.46 MB & \color{ba-green}{- 4.7 \%} & 223.08 MB & \color{ba-red}{+ x \%}\\
-    \textbf{ubuntu} & 28.17 MB & 26.38 MB & \color{ba-green}{- 6.3 \%} & 53.04 MB & \color{ba-red}{+ 84.7 \%}\\
-    \textbf{node} & 382.26 MB & 343.49 MB & \color{ba-green}{- 10.1 \%} & 340.26MB & \color{ba-green}{- 10.9 \%}\\
-	\bottomrule
-	\end{tabular}
-	\caption{Container Image Download Size}
-	\label{tab:container-size}
-\end{table}
-
-\noindent
-It can been seen from the results, that the \textit{reUpNix} differential update mechanism
-with the image layers still being packed in a \textit{tar}-archive is more efficient
-in installing container image updates, than using \code{docker pull}.
-However, this is mostly due to the fact that the updates are compressed with \textit{bzip2}
-instead of \textit{gzip}. A quick check when compressing the update with \textit{gzip}
-showed that the sizes are almost identical to the sizes of the images downloaded
-with \code{docker pull}.
-For all of the top 10 most pulled images from \textit{Docker Hub}, we can save
-transferred data size by using \textit{reUpNix} and \textit{bzip2}. This means
-that using \textit{reUpNix} to install container images on \ac{IoT} devices is more
-efficient than using \code{docker pull} and the proposed methodology can be used
-as a replacement which still works with \textit{Azure IoT Edge}.
-
-For using the \textit{reUpNix} differential update mechanism to install container
-with the layers of the image being extracted and uncompressed into the
-\textit{Nix store}, we can see that the update size is also smaller
-than the size of the \code{docker pull} command, when using \textit{bzip2} to
-compress the entire update. For some images, there is a slight advantage in size
-when
-unpacking the layers. This is mostly due to the fact that the layers
-contain files than can be recreated from existing files on the device.
-
-The hypothesis proposed in this thesis, that the \textit{reUpNix} differential
-update mechanism can be used to install container images on \ac{IoT} devices
-running \textit{Azure IoT Edge} was shown to be true and the results show that
-using \textit{reUpNix} will save data transmitted when installing container images.
-
-
-\section{Container Updates}
-For \ac{IoT} devices running \textit{Azure IoT Edge}, installing new containers
-is not the only use case. In most scenarios, existing containers will be updated
-with a newer version to include new features or security patches. It was already
-shown in the previous section that the \textit{reUpNix} differential update mechanism
-can be used to install container images on \ac{IoT} devices running \textit{Azure IoT Edge}.
 To measure the efficiency of the \textit{reUpNix} differential update mechanism
 when updating container images, a selection of the most popular container images
 from \textit{Docker hub} were updated to the latest version from the previous version
 using the \textit{reUpNix} differential update mechanism. \textit{Docker} uses
 \textit{gzip} to compress the layers of the image when pulling. For the differential
-updates of \textit{reUPNix}, \textit{gzip} was also used to compress the updates,
-however, the update can be compressed with any algorithm. The results of the
+updates of \textit{reUpNix}, \textit{gzip} was also used to compress the updates,
+however, the update can be compressed with any compression algorithm.
+The results of the
 comparison can be seen in table \ref{tab:container-update-size}.
 
 \begin{table}[H]
@@ -519,18 +372,23 @@ when using \code{docker pull} for most of the tested images. This is mostly due
 to the fact that when vendors
 publish new versions of their container images, they usually include new features
 and update the software in the image, which means that almost all files on all
-layers have to be updated.
-
-The additional size can be explained by the fact that the \textit{reUpNix}
+layers have to be updated. The additional size can be explained by the fact that the
+\textit{reUpNix}
 differential update mechanism takes up some space for the update script itself,
 which needs to store information about \textit{Nix store} paths were the files
-to update are located.
+to update are located. With all the layers unpacked, the paths of the files
+in the \textit{Nix store} are quite long, because they include the hash of the
+\textit{Nix store} object and are referenced over and over again in the update script,
+because of the large number of files.
 
 The established hypothesis, that the \textit{reUpNix} differential update mechanism
 are more efficient than using \code{docker pull} for updating container images
 is not true. There are however images, like \textit{ubuntu}, where the update size
 was smaller when updating with \textit{reUpNix}, but this was mainly due to the
-fact that the time between releases was the shortest for this image.
+fact that the time between releases was the shortest for this image. However,
+in an ideal scenario, where only a few files have changed in an otherwise large layer,
+\textit{reUpNix}'s differential update mechanism would be more efficient than
+pulling the whole layer.
 
 \subsection{Improved Compression}
 To further reduce the update size, the \textit{reUpNix} differential updates can

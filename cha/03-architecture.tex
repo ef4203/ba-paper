@@ -178,22 +178,24 @@ time to recover, since the \ac{OS} has to load less data from the disk. Further,
 
 \section{Container Updates}
 \label{sec:container-updates}
-When using Azure IoT Edge, \ac{IIoT} applications are deployed as containers and
+When using Azure IoT Edge, \ac{IoT} applications are deployed as containers and
 they tend change more frequent than the entire \ac{OS}. When a module is updated
 with a new deployment manifest, Azure IoT Edge retrieves any new container
 images that are not present on the device. It uses a \ac{UDS} to communicate
 with the container runtime and instructs it to pull the image. The same can be
 manually achieved with the \code{docker pull} command, when using \textit{Docker}
-as the container runtime.
+as the container runtime. Any container images which are already present on the
+system will not be transmitted again.
 
-In an \ac{IoT} scenario, where network connectivity is limited or expensive,
+In an scenario, where network connectivity is limited or expensive,
 it should be avoided to pull the entire container image when only a few files have
 changed. Since the \textit{Nix store} has a pretty efficient mechanism for
 deduplicating files, it has to be investigated if \textit{reUpNix}'s
 update mechanism can be used to update containers in a more efficient way.
 
-The proposed approach is to pull and unpack the container images during the build
-process of the \ac{OS}, and then storing the container image layers in the
+The proposed approach is to pull and unpack the container images and their layers
+during the build
+process of the \ac{OS}, and then storing the resulting files in the
 \textit{Nix store}. When a container image needs to be updated, it can
 be included in the system configuration and updated with \textit{reUpNix}.
 Since the container image layers are stored in the \textit{Nix store}, if an
@@ -201,11 +203,9 @@ image layer is already present, it will not be transmitted again. This is due
 to the differential update mechanism of \textit{reUpNix}.
 On boot, the container images can be loaded from the \textit{Nix store} and
 loaded wit the \code{docker image load} command.
-For further optimization, the container image layers can be also unpacked,
-such that \textit{reUpNix} can create a differential update on a file level for
-the layers, which will be very efficient if only a few files have changed.
 
-It needs to be verified by comparing the \textit{reUpNix} update size to the size of the container layers,
+It needs to be verified by comparing the \textit{reUpNix} update size to the size
+of the container layers,
 which are updated by a docker pull, that this approach reduces the data transmitted.
 
 \subsection{Hypothesis}
@@ -215,10 +215,8 @@ the \code{docker pull} command. This is due to the fact, that if the
 layers of the container image are extracted into the \textit{Nix store} and
 updated with \textit{reUpNix}, a layer which is already present on the system
 will not be transmitted again. This is very similar to how \code{docker pull}
-works, but wit the added benefit that there is a free choice of compression
-algorithm and that the update mechanism can be customized. On the other hand,
-if the layers are unpacked, and the differential update is done on a file level,
-there is a potential for even more efficient updates. For example, if a layer
-is updated which only contains minimal changes (e.g. only a few
+works, but with the added benefit that the differential update is done on a
+file level, so there is a potential for even more efficient updates. For example,
+if a layer is updated which only contains minimal changes (e.g. only a few
 changed files), the differential update will only transmit the changed files in
 that layer instead of the entire layer.
