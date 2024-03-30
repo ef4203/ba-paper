@@ -213,7 +213,14 @@ which are updated by a docker pull, that this approach reduces the data transmit
 \subsection{Hypothesis}
 Our hypothesis is that updating containers with \textit{reUpNix}'s differential
 update mechanism will be more efficient than updating them with Azure IoT Edge or
-the \code{docker pull} command. This is due to the fact that, if the uppermost
-layer of a container image only contains minimal changes (e.g. only a few
+the \code{docker pull} command. This is due to the fact, that if the
+layers of the container image are extracted into the \textit{Nix store} and
+updated with \textit{reUpNix}, a layer which is already present on the system
+will not be transmitted again. This is very similar to how \code{docker pull}
+works, but wit the added benefit that there is a free choice of compression
+algorithm and that the update mechanism can be customized. On the other hand,
+if the layers are unpacked, and the differential update is done on a file level,
+there is a potential for even more efficient updates. For example, if a layer
+is updated which only contains minimal changes (e.g. only a few
 changed files), the differential update will only transmit the changed files in
 that layer instead of the entire layer.

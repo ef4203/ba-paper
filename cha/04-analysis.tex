@@ -332,7 +332,7 @@ recommended \textit{Ubuntu 22.04}.
 
 
 %\clearpage
-\section{Container Updates}
+\section{Container Installation}
 With the proposed methodology in chapter \ref{sec:container-updates}, we were able
 to install \ac{OCI}-container images
 on an \ac{IoT} device running \textit{reUpNix} without using \code{docker pull}.
@@ -340,21 +340,42 @@ We verified that the installed images can be used to run containers with \textit
 and match the images from \textit{Docker Hub} by comparing the \textit{SHA256} checksums.
 Since the images are now stored in the \textit{Nix} store, we used the \textit{reUpNix}
 differential update mechanism to install the container images and compared the update size
-with the compressed size that would be downloaded with \code{docker pull}. We used
-the same compression algorithm (\textit{gzip}) to compress the update artifacts,
-as \textit{Docker} uses to compress the container images. With this methodology
-we tested the top 10 most pulled images from \textit{Docker Hub} and the results
-can be seen in table \ref{tab:container-size} and figure \ref{fig:container-size}.
+with the compressed size that would be downloaded with \code{docker pull}. In
+contrast to \textit{Docker}, \textit{reUpNix} updates can be compressed with a
+more efficient algorithm, since there's a freedom of choice up to the implementation.
+\textit{Docker} uses \textit{gzip} for compressing images, while the updates with
+\textit{reUpNix} in this comparison have been compressed with \textit{bzip2}.
+
+Further, it was investigated if the update size can be further reduced by extracting
+the file contents of the images layers into the \textit{Nix store}. This would mean
+that \textit{Nix} can use file-level deduplication and \textit{reUpNix} can use
+its differential update mechanism to reconstruct the files in the \textit{Nix store}
+by using the already existing files on the device. The resulting update file was
+then also compressed with \textit{bzip2}. However, due to the \textit{Nix store}
+not preserving timestamps and order of files,
+the reconstructed image does not have the same \textit{SHA256} checksum as the
+original image from \textit{Docker Hub}, but the files are identical. For
+\textit{Azure IoT Edge} this is not a problem, since the \textit{Edge Agent} only
+references the image by its name and tag and not by its \textit{SHA256} checksum.
+
+
+With this methodology the top 10 most pulled images from \textit{Docker Hub}
+were examined and the results can be seen in table \ref{tab:container-size} and figure
+\ref{fig:container-size}, where \textit{reUpNix (packed)} refers to the update
+with its layers still being packed in a \textit{tar}-archive and \textit{reUpNix (unpacked)}
+referring to the update with the layers being extracted and uncompressed into the
+\textit{Nix store}.
+\clearpage
 
 \begin{figure}[htbp]
   \centering
   \begin{tikzpicture}
     \begin{axis}[
       ybar,
-      bar width=0.5cm,
-      width=1.1\textwidth,
-      height=0.4\textwidth,
-      bar width=0.3cm,
+      width=1\textwidth,
+      height=0.45\textwidth,
+      enlarge y limits  = {0.4,upper},
+      bar width=0.24cm,
       xtick=data,
       xticklabels={
         nginx, mongo, busybox, mysql, ruby, httpd, golang, mariadb, ubuntu, node
@@ -380,6 +401,19 @@ can be seen in table \ref{tab:container-size} and figure \ref{fig:container-size
         (10,343.49) % node
       };
 
+      \addplot[fill=yellow!40] coordinates {
+        (1,61.68) % nginx
+        (2,233.41 ) % mongo
+        (3,4.54) % busybox
+        (4,0 ) % mysql
+        (5,333.13 ) % ruby
+        (6,110.75 ) % httpd
+        (7,520.70 ) % golang
+        (8,223.08 ) % mariadb
+        (9,53.04 ) % ubuntu
+        (10,340.26 ) % node
+      };
+
       \addplot[fill=red!40] coordinates {
         (1,67.25) % nginx
         (2,246.58 ) % mongo
@@ -393,31 +427,30 @@ can be seen in table \ref{tab:container-size} and figure \ref{fig:container-size
         (10,382.26 ) % node
       };
 
-      \legend{reUpNix, Docker Pull}
+
+      \legend{reUpNix (packed), reUpNix (unpacked), Docker Pull}
     \end{axis}
   \end{tikzpicture}
   \caption{Container Image Download Size in MB}
   \label{fig:container-size}
 \end{figure}
 
-\clearpage
-
 \begin{table}[H]
 	\centering
-	\begin{tabular}{l|l|l|l}
+	\begin{tabular}{l|c|c|c|c|c}
 	\toprule
-		Container Image & Docker Pull Size & reUpNix Size & $\Delta$ \% \\
+	 Image & Docker Pull & reUpNix (Packed) & $\Delta$ \% & reUpNix (Unpacked) & $\Delta$ \%\\
 	\midrule
-    \textbf{nginx} & 67.25 MB & 61.83 MB & \color{ba-green}{- 8.0\%} \\
-    \textbf{mongo} & 246.58 MB & 233.22 MB & \color{ba-green}{- 5.6\%} \\
-    \textbf{busybox} & 2.05 MB & 2.03 MB & \color{ba-green}{- 0.9\%} \\
-    \textbf{mysql} & 174.94 MB & 158.14 MB & \color{ba-green}{- 9.6\%} \\
-    \textbf{ruby} & 367.45 MB & 319.78 MB & \color{ba-green}{- 12.9\%} \\
-    \textbf{httpd} & 61.53 MB & 55.22 MB & \color{ba-green}{- 10.2\%} \\
-    \textbf{golang} & 285.59 MB & 261.24 MB & \color{ba-green}{- 8.5\%} \\
-    \textbf{mariadb} & 117.04 MB & 111.46 MB & \color{ba-green}{- 4.7\%} \\
-    \textbf{ubuntu} & 28.17 MB & 26.38 MB & \color{ba-green}{- 6.3\%} \\
-    \textbf{node} & 382.26 MB & 343.49 MB & \color{ba-green}{- 10.1\%} \\
+    \textbf{nginx} & 67.25 MB & 61.83 MB & \color{ba-green}{- 8.0 \%} & 61.68 MB & \color{ba-green}{- 8.2 \%}\\
+    \textbf{mongo} & 246.58 MB & 233.22 MB & \color{ba-green}{- 5.6 \%} & 233.41MB & \color{ba-green}{- 5.3 \%}\\
+    \textbf{busybox} & 2.05 MB & 2.03 MB & \color{ba-green}{- 0.9 \%} & 4.54 MB & \color{ba-red}{+ 121.4 \%}\\
+    \textbf{mysql} & 174.94 MB & 158.14 MB & \color{ba-green}{- 9.6 \%} & x & \color{ba-red}{+ x \%}\\
+    \textbf{ruby} & 367.45 MB & 319.78 MB & \color{ba-green}{- 12.9 \%} & 333.13 MB & \color{ba-green}{- 9.3 \%}\\
+    \textbf{httpd} & 61.53 MB & 55.22 MB & \color{ba-green}{- 10.2 \%} & 110.75 MB & \color{ba-red}{+ x \%}\\
+    \textbf{golang} & 285.59 MB & 261.24 MB & \color{ba-green}{- 8.5 \%} & 520.70 MB & \color{ba-red}{+ x \%}\\
+    \textbf{mariadb} & 117.04 MB & 111.46 MB & \color{ba-green}{- 4.7 \%} & 223.08 MB & \color{ba-red}{+ x \%}\\
+    \textbf{ubuntu} & 28.17 MB & 26.38 MB & \color{ba-green}{- 6.3 \%} & 53.04 MB & \color{ba-red}{+ 84.7 \%}\\
+    \textbf{node} & 382.26 MB & 343.49 MB & \color{ba-green}{- 10.1 \%} & 340.26MB & \color{ba-green}{- 10.9 \%}\\
 	\bottomrule
 	\end{tabular}
 	\caption{Container Image Download Size}
@@ -425,13 +458,61 @@ can be seen in table \ref{tab:container-size} and figure \ref{fig:container-size
 \end{table}
 
 \noindent
-We can see from the results that the \textit{reUpNix} differential update mechanism
-is more efficient in installing container image updates than using \code{docker pull}.
+It can been seen from the results, that the \textit{reUpNix} differential update mechanism
+with the image layers still being packed in a \textit{tar}-archive is more efficient
+in installing container image updates, than using \code{docker pull}.
+However, this is mostly due to the fact that the updates are compressed with \textit{bzip2}
+instead of \textit{gzip}. A quick check when compressing the update with \textit{gzip}
+showed that the sizes are almost identical to the sizes of the images downloaded
+with \code{docker pull}.
 For all of the top 10 most pulled images from \textit{Docker Hub}, we can save
-transferred data size by using \textit{reUpNix}. Even container images that are
-only a few Megabytes in size, like \textit{busybox}, can be transmitted in a more
-efficient way with \textit{reUpNix}'s differential update methodology. This means
+transferred data size by using \textit{reUpNix} and \textit{bzip2}. This means
 that using \textit{reUpNix} to install container images on \ac{IoT} devices is more
 efficient than using \code{docker pull} and our proposed methodology can be used
 as a replacement which still works with \textit{Azure IoT Edge}.
 
+For using the \textit{reUpNix} differential update mechanism to install container
+with the layers of the image being extracted and uncompressed into the
+\textit{Nix store}, we can see that the update size is also smaller
+than the size of the \code{docker pull} command, when using \textit{bzip2} to
+compress the entire update. For some images, there is a slight advantage in size
+when
+unpacking the layers. This is mostly due to the fact that the layers
+contain files than can be recreated from existing files on the device.
+
+The hypothesis proposed in this thesis, that the \textit{reUpNix} differential
+update mechanism can be used to install container images on \ac{IoT} devices
+running \textit{Azure IoT Edge} was shown to be true and the results show that
+using \textit{reUpNix} will save data transmitted when installing container images.
+
+
+\section{Container Updates}
+For \ac{IoT} devices running \textit{Azure IoT Edge}, installing new containers
+is not the only use case. In most scenarios, existing containers will be updated
+with a newer version to include new features or security patches. It was already
+shown in the previous section that the \textit{reUpNix} differential update mechanism
+can be used to install container images on \ac{IoT} devices running \textit{Azure IoT Edge}.
+To measure the efficiency of the \textit{reUpNix} differential update mechanism
+when updating container images, a selection of the most popular container images
+from \textit{Docker hub} were updated to the latest version from the previous version
+using the \textit{reUpNix} differential update mechanism. The results of the
+comparison
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{l|c|c|c}
+	\toprule
+	 Image & Docker Pull & reUpNix & $\Delta$ \% \\
+	\midrule
+    \textbf{nginx} & 67.25 MB & 61.83 MB & \color{ba-green}{- 8.0 \%} \\
+    \textbf{mongo} & 246.58 MB & 233.22 MB & \color{ba-green}{- 5.6 \%} \\
+    \textbf{busybox} & 2.05 MB & 2.03 MB & \color{ba-green}{- 0.9 \%} \\
+    \textbf{ubuntu} & 28.17 MB & 26.15 MB & \color{ba-green}{- 6.3 \%} \\
+	\bottomrule
+	\end{tabular}
+	\caption{Container Image Update Size}
+	\label{tab:container-update-size}
+\end{table}
+
+\noindent
+It is clear from the results

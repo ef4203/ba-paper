@@ -8,7 +8,7 @@ all major cloud providers such as Microsoft, Google, Amazon's AWS and IBM offer
 which are installed in remote locations, such as offshore oil rigs or airplanes,
 have limited, unstable, or costly network connections. Techniques to
 minimize the \ac{IIoT} software's network traffic both in message size
-(such as \textit{ProtoBuf} or other forms of compression), and in message amount
+(such as \textit{ProtoBuf} encoding or compression), and in message amount
 (such as local processing with edge computing) have already been established.
 However, the image size, update, and consistency of the underlying operating
 system is still a challenge. With Microsoft's \textit{Azure IoT Device
@@ -16,21 +16,21 @@ Update} service for example, the entire image for the operating system is sent
 to the device and then written to a secondary partition. This results in hundreds
 of megabytes being transmitted.
 
-In this study, we investigated if the \textit{NixOS}-based \textit{ReUpNix}
+In this study, it was investigated if the \textit{NixOS}-based \textit{ReUpNix}
 can be used as a suitable host operating system for Microsoft's commercial
 \ac{IoT} platform \textit{Azure IoT Edge}, since its image size is significantly
 smaller than Microsoft's recommended Linux images.
- For this we identified the
-minimum set of components and features that have to be added to heavily minified
-\textit{ReUpNix} in order to have the required functionality for the
+The  minimum set of components and features that have to be added to heavily
+minified \textit{ReUpNix} have been identified in order to have the required
+functionality for the
 Docker-container-based \textit{Azure IoT Edge}, while remaining at a small
 footprint in disk size.
 
-With \textit{ReUpNix} as a host operating system for \textit{Azure IoT Edge}, we
-observed 43\% smaller image size due to the minification and 90\% smaller size of
+With \textit{ReUpNix} as a host operating system for \textit{Azure IoT Edge}, a
+43\% smaller image size due to the minification was observed and 90\% smaller size of
 system updates due to the fact that only differences are sent, compared to
-Microsoft's recommended \textit{Ubuntu 22.04}
-image. Further, we showed that it is possible to pre-install Docker container
+Microsoft's recommended \textit{Ubuntu 22.04} image.
+Further, it was shown that it is possible to pre-install Docker container
 layers on the device, such that the amount of data that needs to be transmitted
 in the case of a container update with \textit{Azure IoT Edge} is heavily reduced.
 However, \textit{NixOS}-based systems do not receive official support from
