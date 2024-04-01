@@ -33,7 +33,7 @@ transmitted.
 \section{Problem}
 As applications often gain functionality and complexity with each release, the
 size of software may also increase. For \ac{IoT} devices operating in environments
-with limited bandwidth, this is an increased challenges. One case where this is
+with limited bandwidth, this is an increased challenge. One case where this is
 particularly evident is the \textit{Linux} kernel used by many \ac{IoT} and embedded
 devices, which has expanded in size with every new release \cite{linux-kernel-report}.
 
@@ -46,23 +46,23 @@ surface and where an outage can impose physical and financial damage \cite{s2024
 For \ac{IoT} devices with limited connectivity, crucial security updates can be
 significantly delayed or even impossible to apply, as the update size may exceed
 the available bandwidth or disk storage. But not just the security of \ac{IoT}
-devices is improved by frequent updating. Anand et al. showed in 2018 that the
+devices is improved by frequent updating, Anand et al. showed in 2018 that the
 performance and reliability of \ac{IoT} applications can be significantly improved
 by updating frequently \cite{Anand2018}.
 
 When updating the \ac{OS} for an \ac{IoT} device it is very common to use an
 A/B partition scheme, which will keep the device operational while downloading
-and installing the latest version to the inactive partition and then switch with
+and installing the latest version to the inactive partition, and then switch with
 a reboot once the update is complete. However, this approach is impractical for
-devices which have limited storage, as the inactive partition will consume
+devices that have limited storage, as the inactive partition will consume
 half of the available storage. Further and most importantly, when updating,
 it is required to download an entire bootable \ac{OS} image which can be
 hundreds of \ac{MB} in size. This is not feasible for devices with limited
 internet connection.
 
-For \ac{IoT} applications that are using an edge computing architecture, the popular
+For \ac{IoT} applications that are using an edge-computing architecture, the popular
 approach is to use \ac{OCI}-containers (e.g. Docker) to package and update applications.
-However, a large scale study conducted by Zhao et al. showed that 80\% of the
+However, a large-scale study conducted by Zhao et al. showed that 80\% of the
 70,000 most popular \ac{OCI}-container images on \textit{Dockerhub} are more than
 190 \ac{MB} in size, and contain a high amount of duplicate files shared across the images
 and layers, especially for the images which are larger than 190 \ac{MB} \cite{9242268}.
@@ -80,7 +80,7 @@ update mechanism is specifically designed for \ac{IoT} and embedded devices with
 limited bandwidth and storage \cite{gollenstede:23:lctes}. However, an integration
 with a popular \ac{IoT} platform cloud services and \textit{reUpNix} has not
 been done yet. The \textit{NixOS}-based \textit{reUpNix} provides a reproducible
-build system, which is highly desirable property for keeping a consistent state
+build system, which is a desirable property for keeping a consistent state
 in a large fleet of \ac{IoT} or \ac{IIoT} devices.
 
 As a cloud platform for \ac{IoT}, Microsoft's \textit{Azure IoT} has been chosen
@@ -89,8 +89,8 @@ as it is one of the most popular cloud platforms for \ac{IoT} and \ac{IIoT} appl
 \ac{OCI}-containers on \ac{IoT} devices, which is a popular approach for edge
 computing.
 
-In section \ref{sec:update-size} a strategy was designed to update the \ac{OS} of \ac{IoT} device running
-\textit{Azure IoT Edge} using \textit{Azure IoT Device Update Service} with
+In section \ref{sec:update-size} a strategy was designed to update the \ac{OS} of \ac{IoT} devices
+running \textit{Azure IoT Edge} using \textit{Azure IoT Device Update Service} with
 \textit{reUpNix}'s update mechanism. The strategy needs to reduce the transmitted data
 for an update significantly in comparison to using a full \ac{OS} image in an
 A/B partition schema. Additionally, it needs to be verified that using a different

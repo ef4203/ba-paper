@@ -67,19 +67,26 @@ will also be significantly smaller than the image size of \textit{NixOS},
 When updating the operating system with an A/B partition schema, the entire
 image needs to be downloaded and written to a secondary partition. In this
 \ac{OTA} scenario, the size of the operating system image is critical, as it has been
-already elaborated in chapter \ref{sec:image-size}.
+already elaborated in section \ref{sec:image-size}.
 However, if a different methodology than an A/B partition schema is being adapted
 for updating the operating system, the update size can potentially be reduced
 drastically.
 
-It has to be established, if using \textit{reUpNix}'s differential updates as the
+It has to be established if using \textit{reUpNix}'s differential updates as the
 update mechanism for an \ac{IIoT} device with \textit{Azure IoT Edge}
 will result in a smaller update size in comparison to using an A/B partition schema with
 \textit{Ubuntu 22.04} and \textit{Yocto Kirkstone}. To do so, an update for a \textit{reUpNix} system,
-in which the majority of software packages installed is being upgraded, needs to be created, so that it is comparable
+in which the majority of software packages installed are being upgraded,
+needs to be created, so that it is comparable
 to a distribution upgrade of \textit{Ubuntu 22.04} and \textit{Yocto Kirkstone}.
 
-Importantly, the created updates, regardless for which \ac{OS}, must all be
+Additionally, it needs to be investigated if \textit{reUpNix} provides a smaller
+update size, when only updating a small subset of packages, which is a common
+scenario for \ac{IoT} devices. This is a crucial comparison, since with an
+A/B partition schema, the entire image needs to be transmitted, regardless of
+how many packages are being updated.
+
+Importantly, the created updates, regardless of which \ac{OS}, must all be
 able to be installed using the \textit{Azure IoT Update Service} and respective
 \textit{Azure IoT Update Agent}. Since the \textit{Azure IoT Update Agent} is
 not officially supported on \textit{NixOS}, a \textit{Nix} package
@@ -103,7 +110,7 @@ their \ac{IIoT} devices and applications. These availability requirements
 are commonly legally and formally negotiated in a \ac{SLA} between
 the customer and a service provider \cite{msdoc-slas}. An important consideration
 for service providers to achieve high availability is the boot time of the
-\ac{OS}. However, for this experiment the time to recover is considered
+\ac{OS}. However, for this experiment, the time to recover is considered
 instead of the actual boot time of the \ac{OS}. For this experiment, the time to recover
 is defined as the time until Azure IoT Edge runtime is operable again after
 an unexpected reboot.
@@ -129,7 +136,7 @@ needs to be established.
 
 \noindent
 Just before the system is rebooted, the current time will be printed.
-After the \ac{OS} rebooted and the Azure IoT Edge runtime has started, the
+After the \ac{OS} reboots and the Azure IoT Edge runtime has started, the
 \textit{Edge Agent} container will send the current time to the Azure IoT Hub via
 the Azure IoT Edge Hub, where it can be retrieved. The full shell command can
 be seen in listing \ref{lst:reboot-command}.
@@ -188,7 +195,7 @@ time to recover, since the \ac{OS} has to load less data from the disk. Further,
 \section{Container Updates}
 \label{sec:container-updates}
 When using Azure IoT Edge, \ac{IoT} applications are deployed as containers and
-they tend change more frequent than the entire \ac{OS}. When a module is updated
+they tend to change more frequently than the entire \ac{OS}. When a module is updated
 with a new deployment manifest, Azure IoT Edge retrieves any new container
 images that are not present on the device. It uses a \ac{UDS} to communicate
 with the container runtime and instructs it to pull the image. The same can be
@@ -196,7 +203,7 @@ manually achieved with the \code{docker pull} command, when using \textit{Docker
 as the container runtime. Any container images which are already present on the
 system will not be transmitted again.
 
-In an scenario, where network connectivity is limited or expensive,
+In a scenario, where network connectivity is limited or expensive,
 it should be avoided to pull the entire container image when only a few files have
 changed. Since the \textit{Nix store} has a pretty efficient mechanism for
 deduplicating files, it has to be investigated if \textit{reUpNix}'s
@@ -204,7 +211,7 @@ update mechanism can be used to update containers in a more efficient way.
 
 The proposed approach is to pull and unpack the container images and their layers
 during the build
-process of the \ac{OS}, and then storing the resulting files in the
+process of the \ac{OS}, and then store the resulting files in the
 \textit{Nix store}. When a container image needs to be updated, it can
 be included in the system configuration and updated with \textit{reUpNix}.
 Since the container image layers are stored in the \textit{Nix store}, if an
@@ -222,10 +229,10 @@ The hypothesis is that updating containers with \textit{reUpNix}'s differential
 update mechanism will be more efficient than updating them with Azure IoT Edge or
 the \code{docker pull} command. This is due to the fact, that if the
 layers of the container image are extracted into the \textit{Nix store} and
-updated with \textit{reUpNix}, a layer which is already present on the system
+updated with \textit{reUpNix}, a layer that is already present on the system
 will not be transmitted again. This is very similar to how \code{docker pull}
 works, but with the added benefit that the differential update is done on a
 file level, so there is a potential for even more efficient updates. For example,
-if a layer is updated which only contains minimal changes (e.g. only a few
+if a layer is updated that only contains minimal changes (e.g. only a few
 changed files), the differential update will only transmit the changed files in
 that layer instead of the entire layer.

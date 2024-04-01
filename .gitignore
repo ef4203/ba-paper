@@ -306,3 +306,6 @@ main.min.pdf
 
 # MacOS
 .DS_Store
+
+# VS Code
+.vscode/

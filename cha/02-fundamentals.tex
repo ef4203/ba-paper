@@ -4,10 +4,10 @@ systems \textit{Ubuntu 22.04}, \textit{Yocto Kirkstone Linux}, \textit{NixOS},
 and \textit{ReUpNix}, which will be used for comparison in the later experiments.
 Further, the \textit{Azure IoT Edge} platform by Microsoft will be introduced
 with all the components that are used.
-Finally, the last subsections will give an overview about the related work.
+Finally, the last subsections will give an overview of the related work.
 
 \section{Ubuntu 22.04}
-\textit{Ubuntu 22.04} is the latest long term support release of the
+\textit{Ubuntu 22.04} is the latest long-term support release of the
 \textit{Linux}-based operating system \textit{Ubuntu} developed by Canonical.
 It will receive updates and support for the next 5 years, until April
 2027 \cite{ubuntu-releasenote}. Additionally, it is one of Microsoft's
@@ -17,7 +17,7 @@ tests and comparisons in this thesis, an \textit{Ubuntu 22.04} image was prepare
 with \textit{Docker}, \textit{Azure IoT Edge} and \textit{Azure Device Update Agent}
 installed, in addition to the default packages that come with the image. Like
 with most \textit{Debian}-based systems, \textit{Ubuntu} uses the \textit{apt-get}
-package manager by default to install, update and remove software packages \cite{book:344012}.
+package manager by default to install, update, and remove software packages \cite{book:344012}.
 However, when managing a fleet of \ac{IoT} devices, the update process can be
 centralized with the \textit{Azure IoT Device Update Service} (see subsection
 \ref{sec:azure-iot-device-update-service}) and applied with an A/B partitioning scheme.
@@ -27,12 +27,11 @@ The \textit{Yocto Project} is an open-source collaboration project that provides
 and resources for building custom Linux-based systems for embedded devices.
 \textit{Yocto Kirkstone Linux} is a recent long-term support release of the
 \textit{Yocto Project}, which will receive support until April 2026 \cite{yocto-releases}.
-The \textit{Yoctc Kirkstone} image, used for comparison in this thesis, was build
+The \textit{Yoctc Kirkstone} image, used for comparison in this thesis, was built
 with the \textit{Yocto Project} tools and the \textit{meta-azure-iot-edge} layer.
 Additionally, the image also contains \textit{Docker}, \textit{Azure Device Update Agent}
 and common packages that are typically found on \textit{Linux} systems like \ac{SSH}
 and \textit{systemd}.
-
 
 
 \section{NixOS}
@@ -78,30 +77,30 @@ embedded and \ac{IoT} devices. It was introduced at the International Conference
 \ac{LCTES} in 2023 and is primarily maintained by Niklas Gollenstede.
 
 Since \textit{NixOS} is a general-purpose operating system, it is not optimized
-for embedded and \ac{IoT} devices. As a result of this the base image size of
-\textit{NixOS} is relatively large, since it aims to support a wide range of
+for embedded and \ac{IoT} devices. As a result of this, the base image size of
+\textit{NixOS} is relatively large since it aims to support a wide range of
 software and hardware for different use cases. \textit{reUpNix} aims to address
 this issue by providing a minification process, which removes unnecessary
-files, configurations and applications from the base image \cite{gollenstede:23:lctes}.
+files, configurations, and applications from the base image \cite{gollenstede:23:lctes}.
 
 Additionally, it addresses the problem of the update size, which is an important
 factor for \ac{IoT} devices, since they might have limited bandwidth and
 potentially unreliable connections. The regular update mechanism for \textit{Nix}
 will compute which dependencies are required and are not already present in the \textit{Nix Store}.
 Once the dependencies are computed, the required packages are downloaded and
-placed in the \textit{Nix Store}, regardless of how many files where changed inside
+placed in the \textit{Nix Store}, regardless of how many files were changed inside
 the package. In a desktop or server environment, this
 update process is typically not an issue, since these devices are usually
-connected via high speed internet connections. In contrast, an \ac{IoT} device
+connected via high-speed internet connections. In contrast, an \ac{IoT} device
 would waste a lot of bandwidth and time to download packages in which only a
 small set of files have changed. \textit{reUpNix} addresses this issue by
 replacing the regular \textit{Nix} update mechanism with a custom update mechanism
-which only downloads the difference and applies them to the \textit{Nix Store}
+that only downloads the difference and applies them to the \textit{Nix Store}
 \cite{gollenstede:23:lctes}.
 
 Finally, \textit{reUpNix} provides a way to declaratively define and update
-the configuration for the bootloader as ll as disk partitioning. This wasn't
-covered by \textit{NixOS} before, and is a crucial feature for embedded and
+the configuration for the bootloader as well as disk partitioning. This wasn't
+covered by \textit{NixOS} before and is a crucial feature for embedded and
 \ac{IoT} devices \cite{gollenstede:23:lctes}.
 
 \section{Azure IoT}
@@ -122,9 +121,9 @@ offerings have the largest market share \cite{9116254}.
 
 \subsection{Azure IoT Identity Service}
 The \textit{Azure IoT Identity Service} is a set of system services developed
-by Microsoft that \ac{IoT} developers can leverage to build applications which
+by Microsoft that \ac{IoT} developers can leverage to build applications that
 communicate with the \textit{Azure IoT} cloud platform. They provide abstractions
-for provisioning, managing, and authenticating devices, as ll as managing
+for provisioning, managing, and authenticating devices, as well as managing
 certificates and secrets on the device \cite{aiiot}. The services are implemented
 in the Rust programming language and run under Linux-based systems as \textit{systemd}
 services.
@@ -149,7 +148,7 @@ libraries, which are installed on the device, are open source. Hover, the
 cloud services offered by Microsoft are almost exclusively closed source.
 Development and maintenance of \textit{Azure IoT Edge} is publicly visible on
 \textit{GitHub}. The biggest contributions
-to the public repository are done by Microsoft employees Varun Puranik,
+to the public repository are made by Microsoft employees Varun Puranik,
 Philip Lin and Damon Barry, but it also features bug-fixes and contributions
 from the community and non-Microsoft employees
 \footnote{Full overview of all contributions: https://github.com/Azure/iotedge/graphs/contributors}.
@@ -173,7 +172,7 @@ between the edge devices and the cloud \cite{msdoc-aziotedge-arch}.
 The \textit{Azure IoT Hub} is a cloud service developed by Microsoft, designed to
 enable secure and scalable communication between a fleet of \ac{IoT} devices and
 the cloud. It serves as a central message queue, enabling devices to send telemetry
-data, and be managed remotely. By default the devices communicate to the
+data, and be managed remotely. By default, the devices communicate with the
 \textit{Azure IoT Hub}
 via the \ac{AMQP} protocol, which is a lightweight, reliable, and efficient
 messaging protocol and can route the received messages to other cloud services,
@@ -201,7 +200,7 @@ responsible for the communication with the \textit{Azure IoT Device Update Servi
 \textit{Azure IoT Device Update Service} with a specific update manifest, in
 which all the necessary information about the update is specified, such as the
 version and target devices. Once an update is triggered, the \textit{Azure IoT Device Update
-Agent} will download the update image and apply it to the device and depending
+Agent} will download the updated image and apply it to the device and depending
 on the specified format will either perform an update in an A/B partitioning
 schema or will run a custom update script.
 
