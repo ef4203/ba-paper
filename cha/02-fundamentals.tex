@@ -4,7 +4,7 @@ systems \textit{Ubuntu 22.04}, \textit{Yocto Kirkstone Linux}, \textit{NixOS},
 and \textit{ReUpNix}, which will be used for comparison in the later experiments.
 Further, the \textit{Azure IoT Edge} platform by Microsoft will be introduced
 with all the components that are used.
-Finally, the last sections will give an overview about the related work.
+Finally, the last subsections will give an overview about the related work.
 
 \section{Ubuntu 22.04}
 \textit{Ubuntu 22.04} is the latest long term support release of the
@@ -12,22 +12,38 @@ Finally, the last sections will give an overview about the related work.
 It will receive updates and support for the next 5 years, until April
 2027 \cite{ubuntu-releasenote}. Additionally, it is one of Microsoft's
 recommended operating systems to run containerized applications with
-\textit{Azure IoT Edge} on Linux \cite{msdoc-supportetplatforms}.
+\textit{Azure IoT Edge} on Linux \cite{msdoc-supportetplatforms}. For all the
+tests and comparisons in this thesis, an \textit{Ubuntu 22.04} image was prepared
+with \textit{Docker}, \textit{Azure IoT Edge} and \textit{Azure Device Update Agent}
+installed, in addition to the default packages that come with the image. Like
+with most \textit{Debian}-based systems, \textit{Ubuntu} uses the \textit{apt-get}
+package manager by default to install, update and remove software packages \cite{book:344012}.
+However, when managing a fleet of \ac{IoT} devices, the update process can be
+centralized with the \textit{Azure IoT Device Update Service} (see subsection
+\ref{sec:azure-iot-device-update-service}) and applied with an A/B partitioning scheme.
 
 \section{Yocto Kirkstone Linux}
 The \textit{Yocto Project} is an open-source collaboration project that provides tools
 and resources for building custom Linux-based systems for embedded devices.
 \textit{Yocto Kirkstone Linux} is a recent long-term support release of the
 \textit{Yocto Project}, which will receive support until April 2026 \cite{yocto-releases}.
+The \textit{Yoctc Kirkstone} image, used for comparison in this thesis, was build
+with the \textit{Yocto Project} tools and the \textit{meta-azure-iot-edge} layer.
+Additionally, the image also contains \textit{Docker}, \textit{Azure Device Update Agent}
+and common packages that are typically found on \textit{Linux} systems like \ac{SSH}
+and \textit{systemd}.
+
+
 
 \section{NixOS}
 \textit{NixOS} is a \textit{Linux}-based operating system that uses the purely
 functional package manager \textit{Nix}. It is currently maintained as
 an open source project by the non-profit organization \textit{NixOS Foundation}
-and the \textit{NixOS Community}. The project started in 2003 by Eelco Dolstra,
+and the \textit{NixOS Community}. The project was started in 2003 by Eelco Dolstra,
 who is the current president of the \textit{NixOS Foundation} as
 a research project at the Utrecht University \cite{dolstra2003} and was introduced
-as \textit{NixOS} in his 2008 paper "NixOS: A Purely Functional Linux Distribution".
+as \textit{NixOS} in his 2008 paper "NixOS: A Purely Functional Linux Distribution"
+\cite{dolstra2008}.
 
 A \textit{NixOS} system is configured with a set of configuration files, which
 are evaluated by the \textit{Nix} package manager to produce a complete system.
@@ -35,7 +51,8 @@ The configuration files are written in the functional \textit{Nix} programming l
 which has the advantage of being declarative and reproducible. Further, \textit{Nix}
 utilizes cryptographic hashes to verify the integrity of the inputs and outputs
 for any given build. This means that the same configuration inputs produce the
-same system. This approach aims to improve the correctness and reliability of
+same system and it ensures the integrity of the entire system. This approach
+aims to improve the correctness and reliability of
 system deployments over traditional system build tools \cite{dolstra2006}.
 
 A key concept of \textit{NixOS} is the \textit{Nix Store}, where all packages,
@@ -48,7 +65,7 @@ it is also used to manage the system configuration (typically stored in the
 \textit{/etc} directory) and other static parts of the
 system \cite{1411255}.
 
-Lastly, \textit{NixOS} has the possibility to perform a rollback of the system to a
+Lastly, \textit{NixOS} provides the option to perform a rollback of the system to a
 previous configuration. \textit{NixOS} will keep the previous configuration
 in a list of generations for this purpose \cite{1411255}, allowing users to easily
 revert to a known stable state in case of errors or undesired changes. This
@@ -89,13 +106,13 @@ covered by \textit{NixOS} before, and is a crucial feature for embedded and
 
 \section{Azure IoT}
 \textit{Azure IoT} is a cloud platform provided by Microsoft that
-empors organizations to build, deploy, and manage \ac{IoT} solutions at scale.
+empowers organizations to build, deploy, and manage \ac{IoT} solutions at scale.
 \textit{Azure IoT} offers a suite of services and tools designed to connect,
 monitor, and control a diverse array of devices, sensors, and equipment. The
 platform enables integration of \ac{IoT} devices with Microsoft's other cloud
 services, facilitating the collection and analysis of data for actionable insights.
-This ecosystem supports a wide range of industries, from manufacturing and
-healthcare to transportation and smart cities \cite{msdoc-aziot}.
+The \ac{IoT} platform supports a wide range of industries and uses cases,
+for customers to build their own \ac{IoT} solutions \cite{msdoc-aziot}.
 
 While the "big three" cloud service providers, namely Microsoft, Amazon and
 Google, all offer \ac{IoT} platforms and services, a conducted comparison finds
@@ -130,46 +147,46 @@ is not possible \cite{msdoc-aziotedge}.
 All software, as well as \ac{SDK}s and
 libraries, which are installed on the device, are open source. Hover, the
 cloud services offered by Microsoft are almost exclusively closed source.
-Development and maintainance of \textit{Azure IoT Edge} is publicly visible on
+Development and maintenance of \textit{Azure IoT Edge} is publicly visible on
 \textit{GitHub}. The biggest contributions
 to the public repository are done by Microsoft employees Varun Puranik,
 Philip Lin and Damon Barry, but it also features bug-fixes and contributions
 from the community and non-Microsoft employees
 \footnote{Full overview of all contributions: https://github.com/Azure/iotedge/graphs/contributors}.
 
-\subsection{Azure IoT Edge Modules}
-In Microsoft's terminology, containerized workloads, which will be run on the \ac{IIoT}
-devices, are called \textit{IoT Edge Modules}. These modules "can be configured to
-communicate with each other, creating a pipeline of data processing." Hover, developers are
-not limited to only Microsoft's services, instead, they can deploy their own
-applications as long as they are running in \ac{OCI}-compliant \textit{Linux} containers.
-Microsoft calls this approach "bring your own code" and offers a variety of
-\ac{SDK}s for popular programming languages such as .NET, Java, C and Python
-\cite{msdoc-supportetplatforms}.
 
 \subsection{Azure IoT Edge Agent}
+In Microsoft's terminology, containerized workloads, which will be run on the \ac{IIoT}
+devices, are called \textit{IoT Edge Modules}.
 The \textit{Azure IoT Edge Agent} is a crucial component of the \textit{Azure IoT Edge}
 platform, responsible for managing the lifecycle of \textit{IoT Edge Modules} and
-handling communication beten these modules and the \textit{Azure IoT Hub}.
+handling communication between these modules and the \textit{Azure IoT Hub}.
 It executes the deployment, configuration, and monitoring of modules running on
 edge devices by communicating with the \ac{OCI}-container runtime,
 ensuring that they function according to defined deployment and settings.
 The \textit{Azure IoT Edge Agent} also leverages the \textit{Azure IoT Identity Service}
 for secure communication, handling authentication and encryption for data exchange
-beten the edge devices and the cloud \cite{msdoc-aziotedge-arch}.
+between the edge devices and the cloud \cite{msdoc-aziotedge-arch}.
 
 
 \subsection{Azure IoT Hub}
 The \textit{Azure IoT Hub} is a cloud service developed by Microsoft, designed to
-enable secure and scalable communication beten a fleet of \ac{IoT} devices and
+enable secure and scalable communication between a fleet of \ac{IoT} devices and
 the cloud. It serves as a central message queue, enabling devices to send telemetry
-data, and be managed remotely. With features such as device registration,
+data, and be managed remotely. By default the devices communicate to the
+\textit{Azure IoT Hub}
+via the \ac{AMQP} protocol, which is a lightweight, reliable, and efficient
+messaging protocol and can route the received messages to other cloud services,
+including services by Microsoft, such as \textit{Azure Stream Analytics} or
+\textit{Azure Data Explorer}.
+With features such as device registration,
 authentication, and monitoring, the \textit{Azure IoT Hub} provides a reliable and efficient
-way to connect and manage a diverse fleet of \ac{IoT} devices, emporing
-organizations and developers to build and deploy \ac{IoT} solutions at scale \cite{msdoc-aziothub}.
+way to connect and manage a diverse fleet of \ac{IoT} devices, with which
+organizations and developers can build and deploy \ac{IoT} solutions at scale \cite{msdoc-aziothub}.
 
 \subsection{Azure IoT Device Update Service}
-The \textit{Azure IoT Device Update Service} is a cloud service developed by Microsoft
+\label{sec:azure-iot-device-update-service}
+The \textit{Azure IoT Device Update Service} is a cloud service by Microsoft
 for managing and automating the firmware and system updates of \ac{IoT} devices at scale.
 It enables organizations to securely deploy, monitor, and schedule updates for
 a large number of connected devices, ensuring they are always up-to-date with
@@ -177,10 +194,16 @@ the latest security patches, bug fixes, and feature enhancements. This service
 simplifies the management of device updates, offering capabilities such as
 rollback options, group-based deployments, and detailed reporting to track the
 status of updates across diverse \ac{IoT} device fleets. In order to use the service,
-the devices must be running the \textit{Azure IoT Edge} runtime, as ll as the
+the devices must be running the \textit{Azure IoT Edge} runtime, as well as the
 \textit{Azure IoT Device Update Agent}, a \textit{systemd} service which is
 responsible for the communication with the \textit{Azure IoT Device Update Service}
-\cite{msdoc-adu}.
+\cite{msdoc-adu}. Device update images can be uploaded to the
+\textit{Azure IoT Device Update Service} with a specific update manifest, in
+which all the necessary information about the update is specified, such as the
+version and target devices. Once an update is triggered, the \textit{Azure IoT Device Update
+Agent} will download the update image and apply it to the device and depending
+on the specified format will either perform an update in an A/B partitioning
+schema or will run a custom update script.
 
 
 % \section{Related Work}

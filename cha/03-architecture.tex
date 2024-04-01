@@ -1,24 +1,32 @@
-% \begin{tcolorbox}[title=TODO]
-% Developed architecture / system design / implementation: 1/3
-% \begin{itemize}
-% \item start with a theoretical approach
-% \item describe the developed system/algorithm/method from a high-level point of view
-% \item go ahead in presenting your developments in more detail
-% \end{itemize}
-% \end{tcolorbox}
+
+In this chapter, the methodology for the experiments for this study
+is described and elaborated. The experiments will be conducted to evaluate the performance of
+\textit{reUpNix} as a host
+operating system for \textit{Azure IoT Edge} and to investigate the efficiency
+of its update mechanism. There will be an emphasis on the size of the \ac{OS}
+image, the size of the updates, the time to recover, and the efficiency of
+updating container images.
+
 \section{Image Size}
 \label{sec:image-size}
-Reducing the image size of an operating system is crucial for updating IoT devices
-with low bandwidth, regardless of which update methodology is used.
-In environments where network connectivity is limited or expensive,
-smaller image sizes result in faster and more efficient updates.
+Reducing the image size of an operating system is crucial for \ac{IoT} devices
+with low bandwidth or limited storage capacity, regardless of which update
+methodology is used. In environments where network connectivity is limited or expensive,
+smaller image sizes result in faster and more efficient updates with a traditional
+A/B partition schema.
 
-A minimal operating system image that is significantly smaller
-than Microsoft's recommended \textit{Ubuntu 22.04} needs to be created, while still being able to run the
-\textit{Azure IoT Edge} runtime and the required software. This image must also
-feature the efficient update mechanism of \textit{reUpNix}.
+By reducing the number of packages and components that are installed on the
+system or removing unused software entirely, the number of files that need to
+be transmitted during an update will also be reduced. Therefore,
+a minimal operating system image that is significantly smaller
+than Microsoft's recommended \textit{Ubuntu 22.04} needs to be created, while
+still being able to run the
+\textit{Azure IoT Edge} runtime and the required software. To investigate if using
+a different update methodology is more efficient than using an A/B partition schema,
+this image must also feature the update mechanism of \textit{reUpNix}.
 
-However, \textit{Azure Iot Edge} is not officially supported on \textit{NixOS}
+However, it must be considered that\textit{Azure Iot Edge} is not officially
+supported on \textit{NixOS}
 by Microsoft and there is no \textit{Nix} package available. Therefore, a \textit{Nix} package
 for \textit{Azure IoT Edge} and all of its dependencies from the publicly available source code
 needs to be created. This is a crucial step, since
@@ -26,11 +34,12 @@ without a working \textit{Azure IoT Edge} runtime, there cannot be drawn any mea
 conclusions for updating \ac{IIoT} devices using \textit{Azure IoT}.
 
 To create the \textit{Nix} packages, the dependencies of
-\textit{Azure IoT Edge} and how to package them needs to be understood. As it can be seen in figure
+\textit{Azure IoT Edge} and how to package them needs to be understood.
+As it can be seen in figure
 \ref{fig:dependency-tree}, \textit{Azure IoT Edge} runtime has a tree of dependencies,
-many of which are common to \textit{Linux} systems, which means that the over 80,000 already
-existing \textit{Nix} packages can be utilized to meet those dependencies.
-\clearpage
+many of which are common to \textit{Linux} systems, which means that the over
+80,000\footnote{Current number retrieved from the Nix search page: https://search.nixos.org/packages}
+already existing \textit{Nix} packages can be utilized to meet those dependencies.
 
 \begin{figure}[H]
     \centering
@@ -39,10 +48,10 @@ existing \textit{Nix} packages can be utilized to meet those dependencies.
     \label{fig:dependency-tree}
 \end{figure}
 
-
+\noindent
 Once a minimal operating system image using \textit{reUpNix} has been created, the size of the image
 needs to be measured. Then the measurements for
-\textit{Ubuntu 22.04}, \textit{Yocto Kirkstone}, and \textit{NixOS} have to be repeated, such that
+\textit{Ubuntu 22.04}, \textit{Yocto Kirkstone}, and \textit{NixOS} have to be conducted, such that
 it is possible to compare the operating systems and draw a conclusion.
 
 \subsection{Hypothesis}
@@ -58,7 +67,7 @@ will also be significantly smaller than the image size of \textit{NixOS},
 When updating the operating system with an A/B partition schema, the entire
 image needs to be downloaded and written to a secondary partition. In this
 \ac{OTA} scenario, the size of the operating system image is critical, as it has been
-already discussed in chapter \ref{sec:image-size}.
+already elaborated in chapter \ref{sec:image-size}.
 However, if a different methodology than an A/B partition schema is being adapted
 for updating the operating system, the update size can potentially be reduced
 drastically.
