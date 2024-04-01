@@ -1,11 +1,6 @@
-%\begin{tcolorbox}[title=TODO]
-%Measurement results / analysis / discussion: 1/3
-%\begin{itemize}
-%\item whatever you have done, you must comment it, compare it to other systems, evaluate it
-%\item usually, adequate graphs help to show the benefits of your approach
-%\item caution: each result/graph must be discussed! what's the reason for this peak or why have you ovserved this effect
-%\end{itemize}
-%\end{tcolorbox}
+This chapter will analyze the results of the conducted experiments and establish
+any conclusions that can be drawn from them. It will also discuss the implications
+and limitations of the results, while also providing suggestions for future work.
 
 \section{Image Size}
 It has been possible to create a minimal \ac{OS} image with the Azure IoT Edge runtime
@@ -13,7 +8,7 @@ using \textit{reUpNix}. To achieve this, \textit{Nix} derivations and modules fo
 the \textit{Azure IoT Edge} runtime and the \textit{Azure IoT Edge Identity Service}
 have been created. Additionally, a \textit{Nix} derivation for the \ac{ADU} Agent has been created.
 Microsoft has the source code for the previously mentioned components
-publicly available on GitHub, the \textit{Nix} packages could be built directly
+publicly available on GitHub, the \textit{Nix} packages have been built directly
 from source code, which is written in Rust and C and uses Cargo and CMake respectively.
 For the third-party dependencies, namely \textit{libc}, \textit{libtss}, \textit{libcurl}, and
 \textit{openssl}, of the \textit{Azure IoT Edge} runtime, the already existing \textit{Nix} packages
@@ -22,25 +17,27 @@ By using the existing \textit{Nix} packages, it could be ensured that the depend
 are linked with the correct paths in the \textit{Nix} store and can be reused
 by other \textit{Nix} packages.
 Further, the already existing \textit{Nix} package for \textit{Docker} had to be added
-to the system configuration, since it is required by \textit{Azure IoT Edge}.
+to the system configuration since it is an external run-time dependency of \textit{Azure IoT Edge}.
 However, it is not a hard dependency, in case the user wants to exchange \textit{Docker}
 with \textit{Moby} or \textit{Podman}, which are also able to run \ac{OCI}-compliant
 container images. \textit{Podman} in particular might even further reduce, the
 image size (see section \ref{sec:podman}).
 
-Finally, since \textit{reUpNix} removes some unnecessary
+Finally, since \textit{reUpNix} previously removed some unnecessary
 Kernel modules, Kernel modules had to be added back to the system configuration in order
 to be able to run \textit{Docker}.
 Most notably, the kernel modules
 \textit{br\_netfilter}, \textit{xt\_nat} and \textit{8021q} had to be added to the system configuration,
 since they are required for \textit{Docker} networking.
 
+In this study,
 \textit{reUpNix}, \textit{NixOS 23.01}, \textit{Ubuntu 22.04}, and
-\textit{Yocto Kirkstone} had to be compared by their installed image size, with the methodology introduced
-in chapter \ref{sec:image-size}. All system images feature an \ac{OCI}-compliant container runtime
-and the Azure IoT Edge runtime. The results of the comparison are shown in table \ref{tab:image-size}.
+\textit{Yocto Kirkstone} have been compared by their installed image size, as
+already mentioned in section \ref{sec:image-size}. All system images feature
+an \ac{OCI}-compliant container runtime
+and the Azure IoT Edge runtime. The results of the comparison are
+shown in table \ref{tab:image-size}.
 
-\clearpage
 
 \begin{table}[H]
 	\centering
@@ -168,45 +165,50 @@ running \textit{Azure IoT Edge} will significantly reduce the amount of data
 transmitted in comparison to using A/B partitioning. This is important for
 devices with a limited Internet connection and it enables a more frequent updating.
 
-\begin{figure}[htbp]
-  \centering
-  \begin{tikzpicture}
-    \begin{axis}[
-      ybar,
-      bar width=0.75cm,
-      % width=0.5\textwidth,
-      % height=0.5\textwidth,
-      xtick=data,
-      xticklabels={
-        {reUpNix},
-        {Ubuntu 22.04},
-        {Yocto Kirkstone}
-      },
-      x tick label style={rotate=45,anchor=east}, % Rotating labels
-      ymajorgrids=true, % Major grid lines for y-axis
-      ytick={0,1000,2000,3000,4000,5000}, % Y-axis tick marks
-      extra y ticks={1000,2000,3000,4000}, % Additional y-axis tick marks
-      extra y tick labels={}, % Remove labels for the extra ticks
-      ]
+It was also investigated how the update sizes would change if only one package was
+updated with \textit{reUpNix}'s differential update mechanism, since when using
+\textit{Nix}, a singular change in a package would result in a change in hash
+for all packages that depend on it. For this, an update was created that only
+updated the \textit{Azure IoT Edge} package to a newer version, to measure the size of the update
+for packages that have no packages depending on them. Additionally, we have measured
+the size of the update if \textit{glibc} package was updated, since it is a package on
+which many of the systems packages depend on, including \textit{Azure IoT Edge}.
+The results of the conducted comparison of the updates are shown
+in table \ref{tab:package-update-size}.
 
-      \addplot coordinates {
-        (1,206)
-        (2,2134)
-        (3,4717)
-      };
-
-    \end{axis}
-  \end{tikzpicture}
-\caption{Update Size by OS in Megabytes}
-\label{fig:update-size}
-\end{figure}
+\begin{table}[H]
+	\centering
+  \footnotesize
+	\begin{tabular}{l|c|c|c|c|c|c}
+	\toprule
+	 Package & From Version & To Version & reUpNix Update Size \\
+	\midrule
+    \textbf{Azure IoT Edge} & 1.4.25 & 1.4.26 & 0.028 MB \\
+    \textbf{glibc} & 2.38-27 & 2.38-44 & 31.78 MB  \\
+	\bottomrule
+	\end{tabular}
+	\caption{Package Update Size}
+	\label{tab:package-update-size}
+\end{table}
 
 \noindent
-In figure \ref{fig:update-size} it can be seen yet again how large the difference
-in size is and that \textit{reUpNix} is the most efficient \ac{OS} in this comparison.
-Using \textit{reUpNix} for \ac{IoT} devices running \textit{Azure IoT Edge}
-instead of Microsoft's recommended \textit{Ubuntu 22.04} will significantly reduce
-the data transmitted, when updating the \ac{OS} and the \textit{Azure IoT Edge} runtime.
+It can be seen that the update size for updating a single package is significantly
+smaller than updating with an A/B partitioning scheme. This is not surprising,
+since only the files related to the updated package have to be transferred, in
+contrast to the entire image. However, it is also clear that updating a package
+that many other packages depend on, such as \textit{glibc}, will result in a
+significantly larger update size, than updating a package that no other package
+depends on, despite only a singular file being changed in the package.
+This is explained by the fact that when a package is updated, the hash of the
+output changes, which in turn changes the hash of all packages that depend on it
+and therefore have to be updated as well.
+For such scenarios, other \ac{OS}s with package managers like \textit{apt-get}
+on \textit{Ubuntu} have the advantage that only the updated package has to be
+changed, and no other packages that depend on it. Despite this, package managers
+like \textit{apt-get} on \textit{Ubuntu} still have the download the entire package
+even if only a small number of files have been changed. This approach does
+not guarantee that the system will be in a consistent state after the update,
+like with \textit{Nix}.
 
 \section{Time To Recover}
 In order to verify that the \textit{reUpNix} system can recover from a reboot
@@ -229,7 +231,7 @@ can be seen in table \ref{tab:timetorecover} and figure \ref{fig:timetorecover}.
 		Operating System & Average & Adjusted Average\footnote &  Std. Deviation & Std. Error \\
 	\midrule
     \textbf{reUpNix} & 16.0 & 15.0 &  2.44 & 0.67 \\
-    \textbf{NixOS 23.01} & 24.06 & 19.06 & 8.73 & 1.62 \\
+    \textbf{NixOS 23.11} & 24.06 & 19.06 & 8.73 & 1.62 \\
     \textbf{Ubuntu 22.04} & 33.30 & 23.30 & 8.74 & 1.82 \\
     \textbf{Yocto Kirkstone} & 260.71 & 250.71 & 10.39  & 2.77 \\
 	\bottomrule

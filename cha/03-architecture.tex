@@ -25,7 +25,7 @@ still being able to run the
 a different update methodology is more efficient than using an A/B partition schema,
 this image must also feature the update mechanism of \textit{reUpNix}.
 
-However, it must be considered that\textit{Azure Iot Edge} is not officially
+However, it must be considered that\textit{Azure IoT Edge} is not officially
 supported on \textit{NixOS}
 by Microsoft and there is no \textit{Nix} package available. Therefore, a \textit{Nix} package
 for \textit{Azure IoT Edge} and all of its dependencies from the publicly available source code
@@ -90,7 +90,7 @@ Importantly, the created updates, regardless of which \ac{OS}, must all be
 able to be installed using the \textit{Azure IoT Update Service} and respective
 \textit{Azure IoT Update Agent}. Since the \textit{Azure IoT Update Agent} is
 not officially supported on \textit{NixOS}, a \textit{Nix} package
-for the \textit{Azure IoT Update Agent} and all of its dependencies needs to be created.
+for the \textit{Azure IoT Update Agent} and all of its dependencies need to be created.
 
 \subsection{Hypothesis}
 
@@ -111,7 +111,7 @@ are commonly legally and formally negotiated in a \ac{SLA} between
 the customer and a service provider \cite{msdoc-slas}. An important consideration
 for service providers to achieve high availability is the boot time of the
 \ac{OS}. However, for this experiment, the time to recover is considered
-instead of the actual boot time of the \ac{OS}. For this experiment, the time to recover
+instead of the raw boot time of the \ac{OS}. For this experiment, the time to recover
 is defined as the time until Azure IoT Edge runtime is operable again after
 an unexpected reboot.
 
@@ -121,12 +121,10 @@ outside of the scope of the \ac{OS}, for example, hardware, BIOS/UEFI or the boo
 loader \cite{almesberg}.
 
 % \subsection{Setup}
-For this experiment, the system will be restarted by sending a \textit{reboot} system
-call to the kernel with the \code{reboot} command line tool \cite{man-reboot}.
+For this experiment, the system will be restarted by instructing \textit{systemd}
+to restart the machine with the \code{reboot} command line tool.
 In order to execute the command, a \ac{SSH} connection to the target machine
 needs to be established.
-
-\clearpage
 
 \begin{figure}[H]
     \centering
@@ -190,7 +188,8 @@ The hypothesis is that the time to recover will be very similar for all
 a similar set of software, such as \textit{systemd}, and \ac{SSH}. However, due
 to the reduced size of \textit{reUpNix}, there may be a slight advantage in the
 time to recover, since the \ac{OS} has to load less data from the disk. Further,
-\textit{reUpNix} has a minified kernel and a reduced set of kernel modules.
+\textit{reUpNix} has a minified kernel and a reduced set of kernel modules that
+have to be loaded.
 
 \section{Container Updates}
 \label{sec:container-updates}
@@ -205,7 +204,7 @@ system will not be transmitted again.
 
 In a scenario, where network connectivity is limited or expensive,
 it should be avoided to pull the entire container image when only a few files have
-changed. Since the \textit{Nix store} has a pretty efficient mechanism for
+changed. Since the \textit{Nix store} has a efficient mechanism for
 deduplicating files, it has to be investigated if \textit{reUpNix}'s
 update mechanism can be used to update containers in a more efficient way.
 
